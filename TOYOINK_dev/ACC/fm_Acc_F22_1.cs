@@ -17,11 +17,19 @@ namespace TOYOINK_dev
     /*
      * 20210202 完成
      * 注意事項：幣別欄位需去除前後空白
-     * 20210602 洪淑雯提出，類型"轉帳"，原幣出帳金額錯誤，查看修正[原幣出帳.本幣出帳]，判別為'81' 有值其餘為0，
+     * 20210602 洪淑雯提出，(1)類型"轉帳"，原幣出帳金額錯誤，查看修正[原幣出帳.本幣出帳]，判別為'81' 有值其餘為0，
      * ,(case MQ003 when '82' then TG008 else 0 End) as	原幣入帳金額
 	   ,(case MQ003 when '81' then TG008 else 0 End) as	原幣出帳金額  <-修正
        ,(case MQ003 when '82' then TG019 else 0 End) as 本幣入帳金額
 	   ,(case MQ003 when '81' then TG019 else 0 End) as 本幣出帳金額  <-修正
+        
+        (2)//外幣存款月底重評價表
+            20210602 修正
+            (case MQ003 when '81' then TG008*-1 when '82' then TG008 end) as 原幣 ,
+					(case MQ003 when '81' then TG019*-1 when '82' then TG019 end) as 本幣
+                    from NOTTG
+                    left join NOTTF on TF001 = TG001 and TF002 = TG002
+                    left join CMSMQ on MQ001 = TF001
      */
     public partial class fm_Acc_F22_1 : Form
     {
@@ -342,6 +350,13 @@ NOTMA.UDF01 = '1'
 
 
             //外幣存款月底重評價表
+            /*20210602 修正
+            (case MQ003 when '81' then TG008*-1 when '82' then TG008 end) as 原幣 ,
+					(case MQ003 when '81' then TG019*-1 when '82' then TG019 end) as 本幣
+                    from NOTTG
+                    left join NOTTF on TF001 = TG001 and TF002 = TG002
+                    left join CMSMQ on MQ001 = TF001
+            */
             string sql_str_ADFOR = String.Format(@"select 幣別, 重估匯率, 銀行代號, 銀行簡稱
                 , 原幣存款金額, 平均匯率, 本幣存款金額, 重估本幣金額
                 ,(case when (重估本幣金額-本幣存款金額) > 0 then (重估本幣金額-本幣存款金額) else 0 End)	as 匯兌收益
@@ -370,9 +385,12 @@ NOTMA.UDF01 = '1'
                     from NOTLA
                     where LA003 <> 'NTD' and LA002 = '{1}')
                 union all
-                    (select TG005 as 銀行代號 ,left(TF003,6) as 存款年月 ,rtrim(TG017) as 幣別 ,TG008 as 原幣 ,TG019 as 本幣
+                    (select TG005 as 銀行代號 ,left(TF003,6) as 存款年月 ,rtrim(TG017) as 幣別 ,
+                    (case MQ003 when '81' then TG008*-1 when '82' then TG008 end) as 原幣 ,
+					(case MQ003 when '81' then TG019*-1 when '82' then TG019 end) as 本幣
                     from NOTTG
                     left join NOTTF on TF001 = TG001 and TF002 = TG002
+                    left join CMSMQ on MQ001 = TF001
                     where TG010 = 'Y' and TG017 <> 'NTD' and TG011 = '1' and TG004 = '2' and TF003 like '{1}%')) NOT_sum 
                     group by 幣別,銀行代號) NOT_Fin
                 where 本幣存款金額 <> 0

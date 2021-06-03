@@ -421,7 +421,7 @@
             this.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.Name = "fm_Acc_F22_1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "F22-1_銀行口座一覧表TAST (20210602 1530)";
+            this.Text = "F22-1_銀行口座一覧表TAST (20210602 1650)";
             this.Load += new System.EventHandler(this.fm_Acc_F22_1_Load);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
