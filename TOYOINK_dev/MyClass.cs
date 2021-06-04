@@ -42,18 +42,20 @@ namespace Myclass
         //   }
         // }
 
-            //關閉程式
+        //關閉程式
         //private void fm_menu_FormClosed(object sender, FormClosedEventArgs e)
         //{
         //    Environment.Exit(Environment.ExitCode);
         //}
         //****** 範例 ******
+        //20210603 加入public String strDbConA01A 及txterr 錯誤訊息
 
         public string ERP_v4 = "192.168.128.253", AD2SERVER = "192.168.128.250", S2008X64 = "192.168.128.219", HRM = "192.168.128.219\\HRM,50502";
         public String strDbCon = "";
 
         //private String strDbCon = "packet size=4096;user id=yj.chou;password=yjchou3369;data source=192.168.128.219;persist security info=False;initial catalog=Leader;";
-        private String strDbConA01A = "packet size=4096;user id=pwuser;password=sqlmis003;data source=192.168.128.219;persist security info=False;initial catalog=A01A;";
+        public String strDbConA01A = "packet size=4096;user id=pwuser;password=sqlmis003;data source=192.168.128.219;persist security info=False;initial catalog=A01A;";
+        public String strDbConLeader = "packet size=4096;user id=yj.chou;password=asdf0000;data source=192.168.128.219;persist security info=False;initial catalog=Leader;";
         public String prefix_table_name = "S2008X64.A01A.dbo.";
         public String str_enter = ((char)13).ToString() + ((char)10).ToString();
         public String DIRNAME = Application.StartupPath + @"\Log\";
@@ -368,6 +370,20 @@ namespace Myclass
         //    {
 
         //    }
+        //}
+        public void Error_MessageBar(TextBox txterr,string str_errMessage)
+        {
+            txterr.Text = String.Format(@"{0}
+{1}
+===================", DateTime.Now.ToString(), str_errMessage);
+            txterr.SelectionStart = txterr.Text.Length;
+            txterr.ScrollToCaret();  //跳到遊標處 
+        }
+
+        //private void txterr_TextChanged(object sender, EventArgs e)
+        //{
+        //    txterr.SelectionStart = txterr.Text.Length;
+        //    txterr.ScrollToCaret();  //跳到遊標處 
         //}
         public void WriteLog(string message)
         {
@@ -926,3 +942,17 @@ namespace Myclass
 備註	nvarchar(255)	Checked
  * 
  */
+
+/*  Datatable 轉 Dictionary
+ *  Dictionary<string, string> dict_SPECIAL = dt_SPECIAL.AsEnumerable()
+                .ToDictionary<DataRow, string, string> (
+                row => row.Field<string>("ERP_NO"),
+                row => row.Field<string>("SPECIAL"));
+
+    //如果是專用料，加註淺藍色底色 比對
+    if (dict_SPECIAL.ContainsKey(row[j].ToString()) == true ) 
+    {
+        wsheet.Cell(i + 3, j + 1).Style.Fill.BackgroundColor = XLColor.FromHtml("#00ccff");
+    }
+
+*/

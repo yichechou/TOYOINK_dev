@@ -81,11 +81,11 @@ namespace TOYOINK_dev
         {
             InitializeComponent();
             MyCode = new Myclass.MyClass();
-            MyCode.strDbCon = "packet size=4096;user id=pwuser;password=sqlmis003;data source=192.168.128.219;persist security info=False;initial catalog=A01A;";
-            this.sqlConnection1.ConnectionString = "Data Source=192.168.128.219;Initial Catalog=A01A;User ID=pwuser;Password=sqlmis003";
-            //MyCode.strDbCon = "packet size=4096;user id=yj.chou;password=asdf0000;data source=192.168.128.219;persist security info=False;initial catalog=Leader;";
-            //this.sqlConnection1.ConnectionString = "Data Source=192.168.128.219;Initial Catalog=Leader;User ID=pwuser;Password=sqlmis003";
+            //MyCode.strDbCon = MyCode.strDbConLeader;
+            //this.sqlConnection1.ConnectionString = MyCode.strDbConLeader;
 
+            MyCode.strDbCon = MyCode.strDbConA01A;
+            this.sqlConnection1.ConnectionString = MyCode.strDbConA01A;
         }
 
         //接收form1資料，並顯示
@@ -382,11 +382,15 @@ namespace TOYOINK_dev
                 }
                 
                 DialogResult dr_NoExist_Excel = MessageBox.Show("品號對照表，缺少下述品號：" + Environment.NewLine + str_NoExist_Excel, "品號對照表缺資料，是否新增品項", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+                
+                MyCode.Error_MessageBar(txterr, "品號對照表，缺少下述品號：" + Environment.NewLine + str_NoExist_Excel);
                 if (dr_NoExist_Excel == DialogResult.Yes)
                 {
                     bs_dtNoExist.DataSource = dt_NoExist_Excel;
                     cbo_AddERP_FAB.DataBindings.Add("Text", bs_dtNoExist, "FAB", true);
                     txt_AddERP_TYPE.DataBindings.Add("Text", bs_dtNoExist, "MATERIAL_TYPE", true);
+                    txt_AddERP_ERPNO.Text = "CDP-";
+                    cbo_AddERP_SPECIAL.Text = "";
                     lab_AddERP_Status.Text = "共" + dt_NoExist_Excel.Rows.Count.ToString() + "筆";
                 }
                 //else if (dr_NoExist_Excel == DialogResult.No)
@@ -440,8 +444,7 @@ namespace TOYOINK_dev
         }
         private void btn_AddERP_Add_Click(object sender, EventArgs e)
         {
-
-            if (cbo_AddERP_FAB.Text.Length != 0 && txt_AddERP_TYPE.Text.Length != 0 && txt_AddERP_ERPNO.Text.Length != 0)
+            if (cbo_AddERP_FAB.Text.Length != 0 && txt_AddERP_TYPE.Text.Length != 0 && txt_AddERP_ERPNO.Text.Length != 0 && cbo_AddERP_SPECIAL.Text.Length !=0)
             {
                 //驗證是否新增重複品號
                 DataTable dt_Check_AddRepeat = new DataTable();
@@ -499,9 +502,10 @@ namespace TOYOINK_dev
 
                 if (dr_AddERP == DialogResult.Yes)
                 {
-                    string sql_AddERP = String.Format(@"insert into [CT_AUO_ERPNO] VALUES('{0}','{1}','{2}','{3}','{4}');"
+
+                    string sql_AddERP = String.Format(@"insert into [CT_AUO_ERPNO] VALUES('{0}','{1}','{2}','{3}','{4}','{5}');"
                                     , DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), str_Import建立者ID
-                                    , cbo_AddERP_FAB.Text.ToString().Trim(), txt_AddERP_TYPE.Text.ToString().Trim(), txt_AddERP_ERPNO.Text.ToString().Trim());
+                                    , cbo_AddERP_FAB.Text.ToString().Trim(), txt_AddERP_TYPE.Text.ToString().Trim(), txt_AddERP_ERPNO.Text.ToString().Trim(), cbo_AddERP_SPECIAL.Text.ToString());
                     
                     MyCode.sqlExecuteNonQuery(sql_AddERP, "AD2SERVER");
 
@@ -558,6 +562,7 @@ namespace TOYOINK_dev
                         txt_AddERP_TYPE.Text = "";
                         txt_AddERP_ERPNO.Text = "";
                         lab_AddERP_Status.Text = "";
+                        cbo_AddERP_SPECIAL.Text = "";
                         MessageBox.Show("缺少品號已新增完成" + Environment.NewLine + "請重新[選擇檔案]進行匯入", "警示",MessageBoxButtons.OK,MessageBoxIcon.Information);
                     }
                 }
@@ -576,7 +581,7 @@ namespace TOYOINK_dev
         {
             sql_AddERP_Search_Subquery = "";
 
-            if (cbo_AddERP_FAB.Text.Length != 0 && txt_AddERP_TYPE.Text.Length != 0 && txt_AddERP_ERPNO.Text.Length != 0)
+            if (cbo_AddERP_FAB.Text.Length != 0 && txt_AddERP_TYPE.Text.Length != 0 && txt_AddERP_ERPNO.Text.Length != 0 && cbo_AddERP_SPECIAL.Text.Length != 0)
             {
                 sql_AddERP_Search_Subquery = "where";
                 if (cbo_AddERP_FAB.Text.Length != 0)
@@ -601,9 +606,9 @@ namespace TOYOINK_dev
                 if (dt_AddERP_Del_Check.Rows.Count == 0)
                 {
                     string str_ErrorMessage = "錯誤 - 無符合資料，無法刪除" + Environment.NewLine
-                             + cbo_AddERP_FAB.Text.ToString().Trim() + " / " + txt_AddERP_TYPE.Text.ToString().Trim() + " / " + txt_AddERP_ERPNO.Text.ToString();
+                             + cbo_AddERP_FAB.Text.ToString().Trim() + " / " + txt_AddERP_TYPE.Text.ToString().Trim() + " / " + txt_AddERP_ERPNO.Text.ToString() + " / " + cbo_AddERP_SPECIAL.Text.ToString();
 
-                    MessageBox.Show("[FAB]、[MATERIAL_TYPE]、[ERP_NO]須全部符合才能刪除，請確認資料!" + Environment.NewLine
+                    MessageBox.Show("[FAB]、[MATERIAL_TYPE]、[ERP_NO]、[SPECIAL]須全部符合才能刪除，請確認資料!" + Environment.NewLine
                     + str_ErrorMessage, "錯誤-無符合資料", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     
                     //MyCode.Error_MessageBar(txterr,str_ErrorMessage);
@@ -617,7 +622,7 @@ namespace TOYOINK_dev
                 }
 
                 DialogResult dr_AddERP = MessageBox.Show("請再次確認刪除資料" +Environment.NewLine
-                    + cbo_AddERP_FAB.Text.ToString().Trim() + " / " + txt_AddERP_TYPE.Text.ToString().Trim() + " / " + txt_AddERP_ERPNO.Text.ToString() 
+                    + cbo_AddERP_FAB.Text.ToString().Trim() + " / " + txt_AddERP_TYPE.Text.ToString().Trim() + " / " + txt_AddERP_ERPNO.Text.ToString() + " / " + cbo_AddERP_SPECIAL.Text.ToString()
                     , "刪除資料", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2);
                 if (dr_AddERP == DialogResult.Yes)
                 {
@@ -627,7 +632,7 @@ namespace TOYOINK_dev
                     MyCode.sqlExecuteNonQuery(sql_AddERP_Del, "AD2SERVER");
 
                     string str_ErrorMessage = "資料庫已刪除品項" + Environment.NewLine
-                        + cbo_AddERP_FAB.Text.ToString().Trim() + " / " + txt_AddERP_TYPE.Text.ToString().Trim() + " / " + txt_AddERP_ERPNO.Text.ToString();
+                        + cbo_AddERP_FAB.Text.ToString().Trim() + " / " + txt_AddERP_TYPE.Text.ToString().Trim() + " / " + txt_AddERP_ERPNO.Text.ToString() + " / " + cbo_AddERP_SPECIAL.Text.ToString();
 
                     MessageBox.Show(str_ErrorMessage);
                     //MyCode.Error_MessageBar(txterr,str_ErrorMessage);
@@ -640,15 +645,16 @@ namespace TOYOINK_dev
                     //            ">> 資料庫已刪除品項 " + cbo_AddERP_FAB.Text.ToString().Trim() + " / " + txt_AddERP_TYPE.Text.ToString().Trim() + " / " + txt_AddERP_ERPNO.Text.ToString() + Environment.NewLine +
                     //            "===========";
 
-                    cbo_AddERP_FAB.Text = "";
-                    txt_AddERP_TYPE.Text = "";
-                    txt_AddERP_ERPNO.Text = "";
 
                     //sqlapp log
                     string str_sql_log_AddERP_Del = String.Format(
                               @"insert into develop_app_log VALUES('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}')"
-                              , str_Import建立者ID,  str_Import建立日期, "", cbo_AddERP_FAB.Text.ToString().Trim() + "-" + cbo_AddERP_FAB.Text.ToString().Trim(), "CT_AUO_ERPNO", "fm_AUOPlannedOrder", "刪除AUO計劃訂單_品號對照表", DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"));
+                              , str_Import建立者ID,  str_Import建立日期, "", "", "CT_AUO_ERPNO", "fm_AUOPlannedOrder", "刪除AUO計劃訂單_品號對照表_(" + cbo_AddERP_FAB.Text.ToString().Trim() + "-" + txt_AddERP_TYPE.Text.ToString().Trim() + "-" + txt_AddERP_ERPNO.Text.ToString() + "-" + cbo_AddERP_SPECIAL.Text.ToString() + ")", DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"));
                     MyCode.sqlExecuteNonQuery(str_sql_log_AddERP_Del, "AD2SERVER");
+
+                    cbo_AddERP_FAB.Text = "";
+                    txt_AddERP_TYPE.Text = "";
+                    txt_AddERP_ERPNO.Text = "";
 
                     //刪除後重新查詢一次
                     dt_AddERP_Search = new DataTable();
@@ -663,7 +669,7 @@ namespace TOYOINK_dev
             }
             else
             {
-                MessageBox.Show("資料欄位不可為空值", "資料欄位為空值", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("[FAB]、[MATERIAL_TYPE]、[ERP_NO]、[SPECIAL]須全部不可為空值才能刪除，請確認資料!", "資料欄位為空值", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -709,7 +715,7 @@ namespace TOYOINK_dev
             cbo_AddERP_FAB.Text = dgv_ImportExcel.Rows[a].Cells[2].Value.ToString();
             txt_AddERP_TYPE.Text = dgv_ImportExcel.Rows[a].Cells[3].Value.ToString();
             txt_AddERP_ERPNO.Text = dgv_ImportExcel.Rows[a].Cells[4].Value.ToString();
-
+            cbo_AddERP_SPECIAL.Text = dgv_ImportExcel.Rows[a].Cells[5].Value.ToString();
         }
 
         private void btn_AddERP_Clean_Click(object sender, EventArgs e)
@@ -718,6 +724,7 @@ namespace TOYOINK_dev
             txt_AddERP_TYPE.Text = "";
             txt_AddERP_ERPNO.Text = "";
             lab_AddERP_Status.Text = "";
+            cbo_AddERP_SPECIAL.Text = "";
         }
             
         private void btn_AddERP_down_Click(object sender, EventArgs e)
@@ -805,7 +812,7 @@ namespace TOYOINK_dev
 
                 MessageBox.Show(str_ErrorMessage, "錯誤訊息", MessageBoxButtons.OK, MessageBoxIcon.Stop);
 
-                //MyCode.Error_MessageBar(txterr,str_ErrorMessage);
+                //MyCode.Error_MessageBar(txterr, str_ErrorMessage);
                 //txterr.Text += Environment.NewLine +
                 //                DateTime.Now.ToString() + Environment.NewLine +
                 //                "【 " + ex.Message + " 】" + Environment.NewLine +
@@ -2326,7 +2333,7 @@ VALUES({1})", str_sql_columns_d, str_sql_values_d);
                                 //sqlapp log
                                 str_sql_log = String.Format(
                                           @"insert into develop_app_log VALUES('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}')"
-                                          , str_ERPUP建立者ID, str_ERPUP建立日期, dt_單頭.Rows[x]["TC001"], dt_單頭.Rows[x]["TC002"], "COPTC", "客戶計劃訂單 匯入", "新增客戶計劃訂單單頭", DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"));
+                                          , str_ERPUP建立者ID, str_ERPUP建立日期, dt_單頭.Rows[x]["TC001"], dt_單頭.Rows[x]["TC002"], "COPTC", "fm_AUOPlannedOrder", "新增客戶計劃訂單單頭", DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"));
 
                                 // 上傳ERP Log字串整理後，屆時一次上傳
                                 str_sql_logs += str_sql_log + str_enter;
@@ -2654,6 +2661,22 @@ VALUES({1})", str_sql_columns_d, str_sql_values_d);
             //dt_ToExcel.Columns.RemoveAt(0);
             //dt_ToExcel.AcceptChanges();
 
+            //因兩個線別合併，須拆分，以便查詢
+            if (Line_Name == "CSDC6C") 
+            {
+                Line_Name = "C5D','C6C";
+            }
+            //判別專用料加入底色
+            string sql_SPECIAL = String.Format(@"SELECT [ERP_NO],[SPECIAL] FROM [A01A].[dbo].[CT_AUO_ERPNO]
+                             where  [SPECIAL] = 'Y' and [FAB] in ('{0}')", Line_Name);
+            DataTable dt_SPECIAL = new DataTable();
+            MyCode.Sql_dt(sql_SPECIAL, dt_SPECIAL);
+
+            Dictionary<string, string> dict_SPECIAL = dt_SPECIAL.AsEnumerable()
+                .ToDictionary<DataRow, string, string> (
+                row => row.Field<string>("ERP_NO"),
+                row => row.Field<string>("SPECIAL"));
+
             //設定數字顯示格式
             for (int k = 2; k < 10; k++)
             {
@@ -2717,6 +2740,11 @@ VALUES({1})", str_sql_columns_d, str_sql_values_d);
                 foreach (DataColumn Column in dt_ToExcel.Columns)
                 {
                     wsheet.Cell(i + 3, j + 1).Value = row[j];
+                    //如果是專用料，加註淺藍色底色
+                    if (dict_SPECIAL.ContainsKey(row[j].ToString()) == true ) 
+                    {
+                        wsheet.Cell(i + 3, j + 1).Style.Fill.BackgroundColor = XLColor.FromHtml("#00ccff");
+                    }
                     j++;
                 }
                 i++;
