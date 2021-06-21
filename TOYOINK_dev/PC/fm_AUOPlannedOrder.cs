@@ -551,7 +551,7 @@ namespace TOYOINK_dev
                         {
                             lab_AddERP_Status.Text = "共" + dt_NoExist_Excel.Rows.Count.ToString() + "筆";
                             bs_dtNoExist.DataSource = dt_NoExist_Excel;
-                            txt_AddERP_ERPNO.Text = "";
+                            txt_AddERP_ERPNO.Text = "CDP-";
                             //cbo_AddERP_FAB.DataBindings.Add("Text", bs_dtNoExist, "FAB", true);
                             //txt_AddERP_TYPE.DataBindings.Add("Text", bs_dtNoExist, "MATERIAL_TYPE", true);
                         }
@@ -563,6 +563,7 @@ namespace TOYOINK_dev
                         txt_AddERP_ERPNO.Text = "";
                         lab_AddERP_Status.Text = "";
                         cbo_AddERP_SPECIAL.Text = "";
+                        dgv_ImportExcel.DataSource = null;
                         MessageBox.Show("缺少品號已新增完成" + Environment.NewLine + "請重新[選擇檔案]進行匯入", "警示",MessageBoxButtons.OK,MessageBoxIcon.Information);
                     }
                 }
@@ -655,6 +656,7 @@ namespace TOYOINK_dev
                     cbo_AddERP_FAB.Text = "";
                     txt_AddERP_TYPE.Text = "";
                     txt_AddERP_ERPNO.Text = "";
+                    cbo_AddERP_SPECIAL.Text = "";
 
                     //刪除後重新查詢一次
                     dt_AddERP_Search = new DataTable();
