@@ -13,9 +13,11 @@ using Myclass;
 
 namespace TOYOINK_dev
 {
-    //20210111 CONVERT(varchar(6) 改為 CONVERT(varchar(7)
-    //", REPLICATE('0', (7 - LEN(CONVERT(varchar(6), (CFIPO.ERP_Num + " + str_key_客訂單號 + "))))) +CONVERT(varchar(6), (CFIPO.ERP_Num + " + str_key_客訂單號 + ")) as TD002" + str_enter +
-    //20210401 ,COPMA.MA024 as TC063 欄位值錯誤，改為,COPMA.MA025 as TC063 發票地址(一)
+    /*20210111 CONVERT(varchar(6) 改為 CONVERT(varchar(7)
+    * ", REPLICATE('0', (7 - LEN(CONVERT(varchar(6), (CFIPO.ERP_Num + " + str_key_客訂單號 + "))))) +CONVERT(varchar(6), (CFIPO.ERP_Num + " + str_key_客訂單號 + ")) as TD002" + str_enter +
+    * 20210401 ,COPMA.MA024 as TC063 欄位值錯誤，改為,COPMA.MA025 as TC063 發票地址(一)
+    * 20210623 將建立者欄位改為鎖定，無法變更
+    */
 
     public partial class fm_AUOCOPTC : Form
     {
