@@ -157,6 +157,9 @@ namespace Myclass
                         case "fm_AUOCOPTC":
                             sql = string.Format("SELECT * FROM [{0}] where Number is not null and rtrim(Number) <> '' order by Number", firstSheetName); //查询字符串
                             break;
+                        case "fm_AUO_NF_COPTC":
+                            sql = string.Format("SELECT * FROM [{0}] where [PO NO] is not null and rtrim([PO NO]) <> '' order by [PO NO]", firstSheetName); //查询字符串
+                            break;
                         default:
                             sql = string.Format("SELECT * FROM [{0}] WHERE [{1}] <> ''", firstSheetName, whereitem); //查询字符串
                             break;

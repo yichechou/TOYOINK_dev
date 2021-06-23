@@ -38,8 +38,8 @@ namespace TOYOINK_dev
         private void fm_login_Load(object sender, EventArgs e)
         {
             txt_id.Select();
-            //txt_id.Text = "1901329";
-            //txt_pw.Text = "asdf673690";
+            txt_id.Text = "1901329";
+            txt_pw.Text = "asdf673690";
 
         }
 
@@ -109,6 +109,12 @@ namespace TOYOINK_dev
                                 this.Show();
                                 return;
                             }
+                            break;
+                        case "fm_AUO_NF_COPTC":
+                            fm_AUO_NF_COPTC fm_AUO_NF_COPTC = new fm_AUO_NF_COPTC();
+                            fm_AUO_NF_COPTC.show_fmlogin_loginName(loginName);
+                            fm_AUO_NF_COPTC.show_fmlogin_CheckForm(1);
+                            fm_AUO_NF_COPTC.Show();
                             break;
 
                         default:

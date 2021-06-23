@@ -21,6 +21,7 @@ namespace TOYOINK_dev
         TOYOINK_dev.fm_Acc_5b fm_Acc_5b = new TOYOINK_dev.fm_Acc_5b();
         TOYOINK_dev.fm_Acc_F22_1 fm_Acc_F22_1 = new TOYOINK_dev.fm_Acc_F22_1();
         TOYOINK_dev.fm_Acc_RelatedVOU fm_Acc_RelatedVOU = new TOYOINK_dev.fm_Acc_RelatedVOU();
+        TOYOINK_dev.fm_AUO_NF_COPTC fm_AUO_NF_COPTC = new TOYOINK_dev.fm_AUO_NF_COPTC(); //20210623 AUO客戶訂單北廠 生管林玲禎提出
 
         public fm_menu()
         {
@@ -175,6 +176,13 @@ namespace TOYOINK_dev
         {
             this.Hide(); //隱藏父視窗
             fm_login.show_fmlogin_FormName("fm_Acc_RelatedVOU");
+            fm_login.Show();
+        }
+
+        private void btn_AUO_NF_COPTC_Click(object sender, EventArgs e)
+        {
+            this.Hide(); //隱藏父視窗
+            fm_login.show_fmlogin_FormName("fm_AUO_NF_COPTC");
             fm_login.Show();
         }
 

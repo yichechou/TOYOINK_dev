@@ -145,6 +145,12 @@
     <Compile Include="ACC\fm_Acc_RelatedVOU.designer.cs">
       <DependentUpon>fm_Acc_RelatedVOU.cs</DependentUpon>
     </Compile>
+    <Compile Include="PC\fm_AUO_NF_COPTC.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PC\fm_AUO_NF_COPTC.designer.cs">
+      <DependentUpon>fm_AUO_NF_COPTC.cs</DependentUpon>
+    </Compile>
     <Compile Include="PC\fm_AUOCOPTC.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -207,6 +213,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ACC\fm_Acc_RelatedVOU.resx">
       <DependentUpon>fm_Acc_RelatedVOU.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PC\fm_AUO_NF_COPTC.resx">
+      <DependentUpon>fm_AUO_NF_COPTC.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PC\fm_AUOCOPTC.resx">
       <DependentUpon>fm_AUOCOPTC.cs</DependentUpon>
