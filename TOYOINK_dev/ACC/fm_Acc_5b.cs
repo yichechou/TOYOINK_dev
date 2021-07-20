@@ -17,7 +17,8 @@ namespace TOYOINK_dev
     public partial class fm_Acc_5b : Form
     {
         //20200604 開發完成 建立者：周怡甄 需求者：鄭玉菁
-        //20210118 林姿刪提出，去除347單別
+        //20210118 財務林姿刪提出，去除347單別
+        //20210720 財務林姿刪提出，去除進退貨條件式【(case when PURTG.TG005 = N'TVS' AND PURTG.TG007 = N'JPY' then 0 else 1 end=1)】
         public MyClass MyCode;
         月曆 fm_月曆;
 
@@ -397,12 +398,19 @@ namespace TOYOINK_dev
             string filder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             txt_path.Text = filder;
 
-            //20210118 林姿刪提出，去除347單別
+            //20210118 財務林姿刪提出，去除347單別
+            //20210720 財務林姿刪提出，去除進退貨條件式【(case when PURTG.TG005 = N'TVS' AND PURTG.TG007 = N'JPY' then 0 else 1 end=1)】
             cond_5b = @"彙總[進貨明細表、在途當月(加)、在途去年(減)]";
+            //cond_PURTH = @"((PURTH.TH030 = N'Y') AND (PURTH.TH001 in(N'340',N'345',N'349',N'C340')) 
+            //         AND (PURMA.MA085 <> '') AND (case when PURTG.TG005 = N'TVS' AND PURTG.TG007 = N'JPY' then 0 else 1 end=1))";
+            //cond_PURTJ = @"((PURTJ.TJ020 = N'Y') AND (PURTJ.TJ001 in(N'350',N'355',N'359',N'C350'))
+            //         AND (PURMA.MA085 <> '') AND (case when PURTI.TI004 = N'TVS' AND PURTI.TI006 = N'JPY' then 0 else 1 end=1))";
+
             cond_PURTH = @"((PURTH.TH030 = N'Y') AND (PURTH.TH001 in(N'340',N'345',N'349',N'C340')) 
-                     AND (PURMA.MA085 <> '') AND (case when PURTG.TG005 = N'TVS' AND PURTG.TG007 = N'JPY' then 0 else 1 end=1))";
+                     AND (PURMA.MA085 <> ''))";
             cond_PURTJ = @"((PURTJ.TJ020 = N'Y') AND (PURTJ.TJ001 in(N'350',N'355',N'359',N'C350'))
-                     AND (PURMA.MA085 <> '') AND (case when PURTI.TI004 = N'TVS' AND PURTI.TI006 = N'JPY' then 0 else 1 end=1))";
+                     AND (PURMA.MA085 <> ''))";
+
             cond_IPS_Now = @"";
             cond_IPS_Last = @"取[結束日期]抓取年份，換算去年年底，例如：201912";
 

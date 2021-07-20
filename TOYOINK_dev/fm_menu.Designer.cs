@@ -38,10 +38,10 @@
             this.btn_Acc_5b = new System.Windows.Forms.Button();
             this.btn_Package7b = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.btn_AUO_NF_COPTC = new System.Windows.Forms.Button();
             this.btn_AUOCOPTC = new System.Windows.Forms.Button();
             this.btn_AUOPlannedOrder = new System.Windows.Forms.Button();
             this.btn_Proc_premium = new System.Windows.Forms.Button();
-            this.btn_AUO_NF_COPTC = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -172,6 +172,17 @@
             this.tabPage2.Text = "生管相關";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // btn_AUO_NF_COPTC
+            // 
+            this.btn_AUO_NF_COPTC.Font = new System.Drawing.Font("微軟正黑體", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.btn_AUO_NF_COPTC.Location = new System.Drawing.Point(241, 83);
+            this.btn_AUO_NF_COPTC.Name = "btn_AUO_NF_COPTC";
+            this.btn_AUO_NF_COPTC.Size = new System.Drawing.Size(222, 70);
+            this.btn_AUO_NF_COPTC.TabIndex = 6;
+            this.btn_AUO_NF_COPTC.Text = "AUO客戶訂單北廠";
+            this.btn_AUO_NF_COPTC.UseVisualStyleBackColor = true;
+            this.btn_AUO_NF_COPTC.Click += new System.EventHandler(this.btn_AUO_NF_COPTC_Click);
+            // 
             // btn_AUOCOPTC
             // 
             this.btn_AUOCOPTC.Font = new System.Drawing.Font("微軟正黑體", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
@@ -206,17 +217,6 @@
             this.btn_Proc_premium.UseVisualStyleBackColor = true;
             this.btn_Proc_premium.Click += new System.EventHandler(this.btn_Proc_premium_Click);
             // 
-            // btn_AUO_NF_COPTC
-            // 
-            this.btn_AUO_NF_COPTC.Font = new System.Drawing.Font("微軟正黑體", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.btn_AUO_NF_COPTC.Location = new System.Drawing.Point(241, 83);
-            this.btn_AUO_NF_COPTC.Name = "btn_AUO_NF_COPTC";
-            this.btn_AUO_NF_COPTC.Size = new System.Drawing.Size(222, 70);
-            this.btn_AUO_NF_COPTC.TabIndex = 6;
-            this.btn_AUO_NF_COPTC.Text = "AUO客戶訂單北廠";
-            this.btn_AUO_NF_COPTC.UseVisualStyleBackColor = true;
-            this.btn_AUO_NF_COPTC.Click += new System.EventHandler(this.btn_AUO_NF_COPTC_Click);
-            // 
             // fm_menu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
@@ -227,7 +227,7 @@
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "fm_menu";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "台灣東洋先端_系統開發(20210623 1000)";
+            this.Text = "台灣東洋先端_系統開發(20210720 1450)";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.fm_menu_FormClosed);
             this.Load += new System.EventHandler(this.fm_menu_Load);
             this.tabControl1.ResumeLayout(false);

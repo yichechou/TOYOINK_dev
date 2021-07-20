@@ -554,7 +554,7 @@
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "fm_Acc_5b";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "關聯方進貨淨額明細5b (20210317 1600)";
+            this.Text = "關聯方進貨淨額明細5b (20210720 1450)";
             this.Load += new System.EventHandler(this.fm_Acc_5b_Load);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
