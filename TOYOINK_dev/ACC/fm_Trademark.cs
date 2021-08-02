@@ -22,6 +22,7 @@ namespace TOYOINK_dev
          * 20210303 2月份有新增銷貨單別:2SHT佣金-關係人，故要修改新增商標權程式中2個工作表勞務收入(佣金)總表、 銷貨單_勞務收入(佣金)關係人) 資料
          * 20210305 除查詢需加入2SHT外，Excel轉出仍需加入單別
          * 20210513 更改查詢條件，不指定單別，改套代號cond及判別客戶基本資料COPMA-MA124關係人代號不為空值及開頭9
+         * 20210802 財務邱鈺婷20210729提出，本社報表格式修改，【關聯方銷貨彙總表】【年度客戶別銷售金額統計表】加入【關係人代號】欄位
          */
         public MyClass MyCode;
         string str_enter = ((char)13).ToString() + ((char)10).ToString();
@@ -56,7 +57,14 @@ namespace TOYOINK_dev
         {
             InitializeComponent();
             MyCode = new Myclass.MyClass();
-            MyCode.strDbCon = "packet size=4096;user id=pwuser;password=sqlmis003;data source=192.168.128.219;persist security info=False;initial catalog=A01A;";
+
+            //MyCode.strDbCon = MyCode.strDbConLeader;
+            //this.sqlConnection1.ConnectionString = MyCode.strDbConLeader;
+
+            MyCode.strDbCon = MyCode.strDbConA01A;
+            //this.sqlConnection1.ConnectionString = MyCode.strDbConA01A;
+
+            //MyCode.strDbCon = "packet size=4096;user id=pwuser;password=sqlmis003;data source=192.168.128.219;persist security info=False;initial catalog=A01A;";
             temp_excel = @"\\192.168.128.219\Company\MIS自開發主檔\會計報表公版\商標權報表_temp.xlsx";
             //temp_excel = @"D:\商標權報表_temp.xlsx";
         }
@@ -193,9 +201,11 @@ namespace TOYOINK_dev
             //txt_date_e.Text = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-01")).AddDays(-1).ToString("yyyyMMdd");
             //DateTime.Parse(DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString() + "1").AddMonths(1).AddDays(-1).ToShortDateString();
 
-            if (int.Parse(DateTime.Now.ToString("MM")) > 6)
+            //TODO:分上下年度查詢，當3月執行程式，日期為20210101-20210228、4月執行，日期為20210101-20210331；
+            //當下半年度9月執行，日期為20210701-20210831
+            if (int.Parse(DateTime.Now.ToString("MM")) >= 8)
             {
-                txt_date_s.Text = DateTime.Parse(DateTime.Now.ToString("yyyy-01-01")).AddMonths(6).ToString("yyyyMMdd");
+                txt_date_s.Text = DateTime.Parse(DateTime.Now.ToString("yyyy-07-01")).ToString("yyyyMMdd");
                 txt_date_e.Text = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-01")).AddDays(-1).ToString("yyyyMMdd");
             }
             else
@@ -320,10 +330,10 @@ namespace TOYOINK_dev
                 MyCode.Sql_dgv(sql_str_Order, dt_Order, dgv_Order);
 
                 //關聯方銷貨彙總表 年度客戶別銷售金額統計表 清單
-                
+                // 20210729 財務邱鈺婷提出，本社報表格式修改，【關聯方銷貨彙總表】加入【關係人代號】欄位
                 string sql_str_CustOrderList = String.Format(
-                    @"select 客戶代號,客戶簡稱,品種別,sum(數量) as 全期銷貨量,sum(本幣未稅金額) as 全期金額
-                    from (select   TG004 as 客戶代號 , MA002 as 客戶簡稱
+                    @"select 客戶代號,客戶簡稱,關係人代號,品種別,sum(數量) as 全期銷貨量,sum(本幣未稅金額) as 全期金額
+                    from (select   TG004 as 客戶代號 , MA002 as 客戶簡稱, MA124 as 關係人代號
                     , SUBSTRING(TG003,1,4) 年份 , SUBSTRING(TG003,5,2) 月份 , SUBSTRING(TG003,1,6) 年月
                     , MB006 as 品種別, TH004 as 品號, TH005 as 品名 , TH009 as 單位, sum(TH008) as 數量, sum(TH037) as 本幣未稅金額
                     , TH020 as 確認碼 , TH026 as 結帳碼
@@ -331,9 +341,9 @@ namespace TOYOINK_dev
                     left join COPTG on COPTG.TG001 = COPTH.TH001 and  COPTG.TG002 = COPTH.TH002 
                     left join COPMA on COPMA.MA001 = COPTG.TG004 
                     left join INVMB on INVMB.MB001=COPTH.TH004
-                    group by COPTG.TG004,MA002,MB006,TH004,TH005,TH009,SUBSTRING(TG003,5,2) , SUBSTRING(TG003,1,4), SUBSTRING(TG003,1,6),TH020,TH026
+                    group by COPTG.TG004,MA002,MA124,MB006,TH004,TH005,TH009,SUBSTRING(TG003,5,2) , SUBSTRING(TG003,1,4), SUBSTRING(TG003,1,6),TH020,TH026
                      UNION 
-                    select   TI004 as 客戶代號 , MA002 as 客戶簡稱
+                    select   TI004 as 客戶代號 , MA002 as 客戶簡稱, MA124 as 關係人代號
                     ,SUBSTRING(TI003,1,4) 年份,SUBSTRING(TI003,5,2) 月份,SUBSTRING(TI003,1,6) 年月
                     , MB006 as 品種別, TJ004 as 品號
                     , TJ005 as 品名, TJ008 as 單位, sum(-TJ007) as 數量 , sum(-TJ033) as 本幣未稅金額
@@ -342,17 +352,17 @@ namespace TOYOINK_dev
                     left join COPTI on COPTI.TI001 = COPTJ.TJ001 and  COPTI.TI002 = COPTJ.TJ002 
                     left join COPMA on COPMA.MA001 = COPTI.TI004 
                     left join INVMB on INVMB.MB001=COPTJ.TJ004
-                    group by COPTI.TI004,MA002,MB006,TJ004,TJ005,TJ008,SUBSTRING(TI003,5,2),SUBSTRING(TI003,1,4),SUBSTRING(TI003,1,6),TJ021,TJ024 ) a
+                    group by COPTI.TI004,MA002,MA124,MB006,TJ004,TJ005,TJ008,SUBSTRING(TI003,5,2),SUBSTRING(TI003,1,4),SUBSTRING(TI003,1,6),TJ021,TJ024 ) a
                     left join COPMA on COPMA.MA001 = 客戶代號
                     where {0}
                     and 年月 >= '{1}' and 年月 <= '{2}'
-                    group by 客戶代號,客戶簡稱,品種別", sql_str_cond_CustOrder, str_date_y_e + "01", str_date_m_e);
+                    group by 客戶代號,客戶簡稱,關係人代號,品種別", sql_str_cond_CustOrder, str_date_y_e + "01", str_date_m_e);
 
                 MyCode.Sql_dt(sql_str_CustOrderList, dt_CustOrderList);
 
                 //年度客戶別銷售金額統計表
                 string sql_str_CustOrder = String.Format(
-                    @"select 客戶代號,客戶簡稱,品種別,品號,品名,單位
+                    @"select 客戶代號,客戶簡稱,關係人代號,品種別,品號,品名,單位
                     ,SUM(CASE WHEN 月份 =01THEN 數量 ELSE 0 END) '01銷貨量'
                     ,SUM(CASE WHEN 月份 =01THEN 本幣未稅金額 ELSE 0 END) '01金額'
                     ,SUM(CASE WHEN 月份 =02THEN 數量 ELSE 0 END) '02銷貨量'
@@ -378,7 +388,7 @@ namespace TOYOINK_dev
                     ,SUM(CASE WHEN 月份 =12THEN 數量 ELSE 0 END) '12銷貨量'
                     ,SUM(CASE WHEN 月份 =12THEN 本幣未稅金額 ELSE 0 END) '12金額'
                     ,sum(數量) as 全期銷貨量,sum(本幣未稅金額) as 全期金額
-                    from (select   TG004 as 客戶代號 , MA002 as 客戶簡稱
+                    from (select   TG004 as 客戶代號 , MA002 as 客戶簡稱, MA124 as 關係人代號
                     , SUBSTRING(TG003,1,4) 年份 , SUBSTRING(TG003,5,2) 月份 , SUBSTRING(TG003,1,6) 年月
                     , MB006 as 品種別, TH004 as 品號, TH005 as 品名 , TH009 as 單位, sum(TH008) as 數量, sum(TH037) as 本幣未稅金額
                     , TH020 as 確認碼 , TH026 as 結帳碼
@@ -386,9 +396,9 @@ namespace TOYOINK_dev
                     left join COPTG on COPTG.TG001 = COPTH.TH001 and  COPTG.TG002 = COPTH.TH002 
                     left join COPMA on COPMA.MA001 = COPTG.TG004 
                     left join INVMB on INVMB.MB001=COPTH.TH004
-                    group by COPTG.TG004,MA002,MB006,TH004,TH005,TH009,SUBSTRING(TG003,5,2) , SUBSTRING(TG003,1,4), SUBSTRING(TG003,1,6),TH020,TH026
+                    group by COPTG.TG004,MA002,MA124,MB006,TH004,TH005,TH009,SUBSTRING(TG003,5,2) , SUBSTRING(TG003,1,4), SUBSTRING(TG003,1,6),TH020,TH026
                      UNION 
-                    select   TI004 as 客戶代號 , MA002 as 客戶簡稱
+                    select   TI004 as 客戶代號 , MA002 as 客戶簡稱, MA124 as 關係人代號
                     ,SUBSTRING(TI003,1,4) 年份,SUBSTRING(TI003,5,2) 月份,SUBSTRING(TI003,1,6) 年月
                     , MB006 as 品種別, TJ004 as 品號
                     , TJ005 as 品名, TJ008 as 單位, sum(-TJ007) as 數量 , sum(-TJ033) as 本幣未稅金額
@@ -397,11 +407,11 @@ namespace TOYOINK_dev
                     left join COPTI on COPTI.TI001 = COPTJ.TJ001 and  COPTI.TI002 = COPTJ.TJ002 
                     left join COPMA on COPMA.MA001 = COPTI.TI004 
                     left join INVMB on INVMB.MB001=COPTJ.TJ004
-                    group by COPTI.TI004,MA002,MB006,TJ004,TJ005,TJ008,SUBSTRING(TI003,5,2),SUBSTRING(TI003,1,4),SUBSTRING(TI003,1,6),TJ021,TJ024 ) a
+                    group by COPTI.TI004,MA002,MA124,MB006,TJ004,TJ005,TJ008,SUBSTRING(TI003,5,2),SUBSTRING(TI003,1,4),SUBSTRING(TI003,1,6),TJ021,TJ024 ) a
                     left join COPMA on COPMA.MA001 = 客戶代號
                     where {0}
                     and 年月 >= '{1}' and 年月 <= '{2}'
-                    group by 客戶代號,客戶簡稱,品種別,品號,品名,單位", sql_str_cond_CustOrder, str_date_y_e + "01", str_date_m_e);
+                    group by 客戶代號,客戶簡稱,關係人代號,品種別,品號,品名,單位", sql_str_cond_CustOrder, str_date_y_e + "01", str_date_m_e);
 
                 MyCode.Sql_dgv(sql_str_CustOrder, dt_CustOrder, dgv_CustOrder);
 
@@ -726,6 +736,7 @@ namespace TOYOINK_dev
 
                 //var wsheet_CustOrderList = wb_Trademark.Worksheet("關聯方銷貨彙總表");
                 //var wsheet_CustOrder = wb_Trademark.Worksheet("年度客戶別銷售金額統計表");
+                //20210802  財務邱鈺婷20210729提出，本社報表格式修改，【關聯方銷貨彙總表】【年度客戶別銷售金額統計表】加入【關係人代號】欄位
                 //====== 關聯方銷貨彙總表 =====================
                 int rows_count_CustOrderList = dt_CustOrderList.Rows.Count;
                 int p = 0;
@@ -737,25 +748,26 @@ namespace TOYOINK_dev
                 {
                     wsheet_CustOrderList.Cell(p + 7, 1).Value = row[0]; //客戶代號
                     wsheet_CustOrderList.Cell(p + 7, 2).Value = row[1]; //客戶簡稱
-                    wsheet_CustOrderList.Cell(p + 7, 3).Style.NumberFormat.Format = "@";
-                    wsheet_CustOrderList.Cell(p + 7, 3).Value = row[2]; //品種別
-                    wsheet_CustOrderList.Cell(p + 7, 4).Style.NumberFormat.Format = "#,##0_);[RED](#,##0)";
-                    wsheet_CustOrderList.Cell(p + 7, 4).FormulaA1 = "=SUMIFS(年度客戶別銷售金額統計表!AE:AE,年度客戶別銷售金額統計表!$A:$A,$A" + (p + 7) + ",年度客戶別銷售金額統計表!$C:$C,$C" + (p + 7) + ")";
+                    wsheet_CustOrderList.Cell(p + 7, 3).Value = row[2]; //關係人代號 20210729提出增加欄位
+                    wsheet_CustOrderList.Cell(p + 7, 4).Style.NumberFormat.Format = "@";
+                    wsheet_CustOrderList.Cell(p + 7, 4).Value = row[3]; //品種別
                     wsheet_CustOrderList.Cell(p + 7, 5).Style.NumberFormat.Format = "#,##0_);[RED](#,##0)";
-                    wsheet_CustOrderList.Cell(p + 7, 5).FormulaA1 = "=SUMIFS(年度客戶別銷售金額統計表!AF:AF,年度客戶別銷售金額統計表!$A:$A,$A" + (p + 7) + ",年度客戶別銷售金額統計表!$C:$C,$C" + (p + 7) + ")";
+                    wsheet_CustOrderList.Cell(p + 7, 5).FormulaA1 = "=SUMIFS(年度客戶別銷售金額統計表!AF:AF,年度客戶別銷售金額統計表!$A:$A,$A" + (p + 7) + ",年度客戶別銷售金額統計表!$D:$D,$D" + (p + 7) + ")";
+                    wsheet_CustOrderList.Cell(p + 7, 6).Style.NumberFormat.Format = "#,##0_);[RED](#,##0)";
+                    wsheet_CustOrderList.Cell(p + 7, 6).FormulaA1 = "=SUMIFS(年度客戶別銷售金額統計表!AG:AG,年度客戶別銷售金額統計表!$A:$A,$A" + (p + 7) + ",年度客戶別銷售金額統計表!$D:$D,$D" + (p + 7) + ")";
 
                     if ((rows_count_CustOrderList - 1) == dt_CustOrderList.Rows.IndexOf(row)) //資料列結尾運算
                     {
                         p++;
-                        wsheet_CustOrderList.Range("A" + (p + 7) + ":E" + (p + 7)).Style.Border.TopBorder = XLBorderStyleValues.Thin;
-                        wsheet_CustOrderList.Range("A" + (p + 7) + ":E" + (p + 7)).Style.Border.BottomBorder = XLBorderStyleValues.Thin;
-                        wsheet_CustOrderList.Range("A" + (p + 7) + ":E" + (p + 7)).Style.Fill.BackgroundColor = XLColor.LightGoldenrodYellow;
+                        wsheet_CustOrderList.Range("A" + (p + 7) + ":F" + (p + 7)).Style.Border.TopBorder = XLBorderStyleValues.Thin;
+                        wsheet_CustOrderList.Range("A" + (p + 7) + ":F" + (p + 7)).Style.Border.BottomBorder = XLBorderStyleValues.Thin;
+                        wsheet_CustOrderList.Range("A" + (p + 7) + ":F" + (p + 7)).Style.Fill.BackgroundColor = XLColor.LightGoldenrodYellow;
 
                         wsheet_CustOrderList.Cell(p + 7, 1).Value = "合計";
-                        wsheet_CustOrderList.Cell(p + 7, 4).Style.NumberFormat.Format = "#,##0_);[RED](#,##0)";
-                        wsheet_CustOrderList.Cell(p + 7, 4).FormulaA1 = "=SUM(D7:D" + (p + 6) + ")";
                         wsheet_CustOrderList.Cell(p + 7, 5).Style.NumberFormat.Format = "#,##0_);[RED](#,##0)";
                         wsheet_CustOrderList.Cell(p + 7, 5).FormulaA1 = "=SUM(E7:E" + (p + 6) + ")";
+                        wsheet_CustOrderList.Cell(p + 7, 6).Style.NumberFormat.Format = "#,##0_);[RED](#,##0)";
+                        wsheet_CustOrderList.Cell(p + 7, 6).FormulaA1 = "=SUM(F7:F" + (p + 6) + ")";
                     }
 
                     p++;
@@ -776,38 +788,38 @@ namespace TOYOINK_dev
                     Snewq = row[0].ToString();
                     if (Soldq != Snewq && q != 0)
                     {
-                        wsheet_CustOrder.Range("A" + (q + 6) + ":AF" + (q + 6)).Style.Border.TopBorder = XLBorderStyleValues.Thin;
-                        wsheet_CustOrder.Range("A" + (q + 6) + ":AF" + (q + 6)).Style.Border.BottomBorder = XLBorderStyleValues.Thin;
-                        wsheet_CustOrder.Range("A" + (q + 6) + ":AF" + (q + 6)).Style.Fill.BackgroundColor = XLColor.LightGoldenrodYellow;
+                        wsheet_CustOrder.Range("A" + (q + 6) + ":AG" + (q + 6)).Style.Border.TopBorder = XLBorderStyleValues.Thin;
+                        wsheet_CustOrder.Range("A" + (q + 6) + ":AG" + (q + 6)).Style.Border.BottomBorder = XLBorderStyleValues.Thin;
+                        wsheet_CustOrder.Range("A" + (q + 6) + ":AG" + (q + 6)).Style.Fill.BackgroundColor = XLColor.LightGoldenrodYellow;
 
-                        wsheet_CustOrder.Cell(q + 6, 6).Value = "小計";
-                        wsheet_CustOrder.Range("G" + (q + 6) + ":AF" + (q + 6)).Style.NumberFormat.Format = "#,##0_);[RED](#,##0)";
-                        wsheet_CustOrder.Cell(q + 6, 7).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",G:G)"; //01銷貨量
-                        wsheet_CustOrder.Cell(q + 6, 8).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",H:H)"; //01金額
-                        wsheet_CustOrder.Cell(q + 6, 9).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",I:I)"; //02銷貨量
-                        wsheet_CustOrder.Cell(q + 6, 10).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",J:J)"; //02金額
-                        wsheet_CustOrder.Cell(q + 6, 11).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",K:K)"; //03銷貨量
-                        wsheet_CustOrder.Cell(q + 6, 12).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",L:L)"; //03金額
-                        wsheet_CustOrder.Cell(q + 6, 13).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",M:M)"; //04銷貨量
-                        wsheet_CustOrder.Cell(q + 6, 14).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",N:N)"; //04金額
-                        wsheet_CustOrder.Cell(q + 6, 15).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",O:O)"; //05銷貨量
-                        wsheet_CustOrder.Cell(q + 6, 16).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",P:P)"; //05金額
-                        wsheet_CustOrder.Cell(q + 6, 17).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",Q:Q)"; //06銷貨量
-                        wsheet_CustOrder.Cell(q + 6, 18).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",R:R)"; //06金額
-                        wsheet_CustOrder.Cell(q + 6, 19).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",S:S)"; //07銷貨量
-                        wsheet_CustOrder.Cell(q + 6, 20).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",T:T)"; //07金額
-                        wsheet_CustOrder.Cell(q + 6, 21).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",U:U)"; //08銷貨量
-                        wsheet_CustOrder.Cell(q + 6, 22).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",V:V)"; //08金額
-                        wsheet_CustOrder.Cell(q + 6, 23).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",W:W)"; //09銷貨量
-                        wsheet_CustOrder.Cell(q + 6, 24).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",X:X)"; //09金額
-                        wsheet_CustOrder.Cell(q + 6, 25).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",Y:Y)"; //10銷貨量
-                        wsheet_CustOrder.Cell(q + 6, 26).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",Z:Z)"; //10金額
-                        wsheet_CustOrder.Cell(q + 6, 27).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",AA:AA)"; //11銷貨量
-                        wsheet_CustOrder.Cell(q + 6, 28).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",AB:AB)"; //11金額
-                        wsheet_CustOrder.Cell(q + 6, 29).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",AC:AC)"; //12銷貨量
-                        wsheet_CustOrder.Cell(q + 6, 30).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",AD:AD)"; //12金額
-                        wsheet_CustOrder.Cell(q + 6, 31).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",AE:AE)"; //全期銷貨量
-                        wsheet_CustOrder.Cell(q + 6, 32).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",AF:AF)"; //全期金額
+                        wsheet_CustOrder.Cell(q + 6, 7).Value = "小計";
+                        wsheet_CustOrder.Range("H" + (q + 6) + ":AG" + (q + 6)).Style.NumberFormat.Format = "#,##0_);[RED](#,##0)";
+                        wsheet_CustOrder.Cell(q + 6, 8).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",H:H)"; //01銷貨量
+                        wsheet_CustOrder.Cell(q + 6, 9).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",I:I)"; //01金額
+                        wsheet_CustOrder.Cell(q + 6, 10).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",J:J)"; //02銷貨量
+                        wsheet_CustOrder.Cell(q + 6, 11).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",K:K)"; //02金額
+                        wsheet_CustOrder.Cell(q + 6, 12).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",L:L)"; //03銷貨量
+                        wsheet_CustOrder.Cell(q + 6, 13).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",M:M)"; //03金額
+                        wsheet_CustOrder.Cell(q + 6, 14).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",N:N)"; //04銷貨量
+                        wsheet_CustOrder.Cell(q + 6, 15).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",O:O)"; //04金額
+                        wsheet_CustOrder.Cell(q + 6, 16).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",P:P)"; //05銷貨量
+                        wsheet_CustOrder.Cell(q + 6, 17).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",Q:Q)"; //05金額
+                        wsheet_CustOrder.Cell(q + 6, 18).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",R:R)"; //06銷貨量
+                        wsheet_CustOrder.Cell(q + 6, 19).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",S:S)"; //06金額
+                        wsheet_CustOrder.Cell(q + 6, 20).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",T:T)"; //07銷貨量
+                        wsheet_CustOrder.Cell(q + 6, 21).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",U:U)"; //07金額
+                        wsheet_CustOrder.Cell(q + 6, 22).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",V:V)"; //08銷貨量
+                        wsheet_CustOrder.Cell(q + 6, 23).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",W:W)"; //08金額
+                        wsheet_CustOrder.Cell(q + 6, 24).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",X:X)"; //09銷貨量
+                        wsheet_CustOrder.Cell(q + 6, 25).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",Y:Y)"; //09金額
+                        wsheet_CustOrder.Cell(q + 6, 26).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",Z:Z)"; //10銷貨量
+                        wsheet_CustOrder.Cell(q + 6, 27).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",AA:AA)"; //10金額
+                        wsheet_CustOrder.Cell(q + 6, 28).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",AB:AB)"; //11銷貨量
+                        wsheet_CustOrder.Cell(q + 6, 29).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",AC:AC)"; //11金額
+                        wsheet_CustOrder.Cell(q + 6, 30).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",AD:AD)"; //12銷貨量
+                        wsheet_CustOrder.Cell(q + 6, 31).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",AE:AE)"; //12金額
+                        wsheet_CustOrder.Cell(q + 6, 32).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",AF:AF)"; //全期銷貨量
+                        wsheet_CustOrder.Cell(q + 6, 33).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",AG:AG)"; //全期金額
 
                         q++;
                     }
@@ -816,109 +828,112 @@ namespace TOYOINK_dev
 
                     wsheet_CustOrder.Cell(q + 6, 1).Value = row[0]; //客戶代號
                     wsheet_CustOrder.Cell(q + 6, 2).Value = row[1]; //客戶簡稱
-                    wsheet_CustOrder.Cell(q + 6, 3).Style.NumberFormat.Format = "@";
-                    wsheet_CustOrder.Cell(q + 6, 3).Value = row[2]; //品種別
-                    wsheet_CustOrder.Cell(q + 6, 4).Value = row[3]; //品號
-                    wsheet_CustOrder.Cell(q + 6, 5).Value = row[4]; //品名
-                    wsheet_CustOrder.Cell(q + 6, 6).Value = row[5]; //單位
-                    wsheet_CustOrder.Range("G" + (q + 6) + ":AF" + (q + 6)).Style.NumberFormat.Format = "#,##0_);[RED](#,##0)";
-                    wsheet_CustOrder.Cell(q + 6, 7).Value = row[6]; //01銷貨量
-                    wsheet_CustOrder.Cell(q + 6, 8).Value = row[7]; //01金額
-                    wsheet_CustOrder.Cell(q + 6, 9).Value = row[8]; //02銷貨量
-                    wsheet_CustOrder.Cell(q + 6, 10).Value = row[9]; //02金額
-                    wsheet_CustOrder.Cell(q + 6, 11).Value = row[10]; //03銷貨量
-                    wsheet_CustOrder.Cell(q + 6, 12).Value = row[11]; //03金額
-                    wsheet_CustOrder.Cell(q + 6, 13).Value = row[12]; //04銷貨量
-                    wsheet_CustOrder.Cell(q + 6, 14).Value = row[13]; //04金額
-                    wsheet_CustOrder.Cell(q + 6, 15).Value = row[14]; //05銷貨量
-                    wsheet_CustOrder.Cell(q + 6, 16).Value = row[15]; //05金額
-                    wsheet_CustOrder.Cell(q + 6, 17).Value = row[16]; //06銷貨量
-                    wsheet_CustOrder.Cell(q + 6, 18).Value = row[17]; //06金額
-                    wsheet_CustOrder.Cell(q + 6, 19).Value = row[18]; //07銷貨量
-                    wsheet_CustOrder.Cell(q + 6, 20).Value = row[19]; //07金額
-                    wsheet_CustOrder.Cell(q + 6, 21).Value = row[20]; //08銷貨量
-                    wsheet_CustOrder.Cell(q + 6, 22).Value = row[21]; //08金額
-                    wsheet_CustOrder.Cell(q + 6, 23).Value = row[22]; //09銷貨量
-                    wsheet_CustOrder.Cell(q + 6, 24).Value = row[23]; //09金額
-                    wsheet_CustOrder.Cell(q + 6, 25).Value = row[24]; //10銷貨量
-                    wsheet_CustOrder.Cell(q + 6, 26).Value = row[25]; //10金額
-                    wsheet_CustOrder.Cell(q + 6, 27).Value = row[26]; //11銷貨量
-                    wsheet_CustOrder.Cell(q + 6, 28).Value = row[27]; //11金額
-                    wsheet_CustOrder.Cell(q + 6, 29).Value = row[28]; //12銷貨量
-                    wsheet_CustOrder.Cell(q + 6, 30).Value = row[29]; //12金額
-                    wsheet_CustOrder.Cell(q + 6, 31).Value = row[30]; //全期銷貨量
-                    wsheet_CustOrder.Cell(q + 6, 32).Value = row[31]; //全期金額
+                    wsheet_CustOrder.Cell(q + 6, 3).Value = row[2]; //關係人代號
+                    wsheet_CustOrder.Cell(q + 6, 4).Style.NumberFormat.Format = "@";
+                    wsheet_CustOrder.Cell(q + 6, 4).Value = row[3]; //品種別
+                    wsheet_CustOrder.Cell(q + 6, 5).Value = row[4]; //品號
+                    wsheet_CustOrder.Cell(q + 6, 6).Value = row[5]; //品名
+                    wsheet_CustOrder.Cell(q + 6, 7).Value = row[6]; //單位
+                    wsheet_CustOrder.Range("H" + (q + 6) + ":AG" + (q + 6)).Style.NumberFormat.Format = "#,##0_);[RED](#,##0)";
+                    wsheet_CustOrder.Cell(q + 6, 8).Value = row[7]; //01銷貨量
+                    wsheet_CustOrder.Cell(q + 6, 9).Value = row[8]; //01金額
+                    wsheet_CustOrder.Cell(q + 6, 10).Value = row[9]; //02銷貨量
+                    wsheet_CustOrder.Cell(q + 6, 11).Value = row[10]; //02金額
+                    wsheet_CustOrder.Cell(q + 6, 12).Value = row[11]; //03銷貨量
+                    wsheet_CustOrder.Cell(q + 6, 13).Value = row[12]; //03金額
+                    wsheet_CustOrder.Cell(q + 6, 14).Value = row[13]; //04銷貨量
+                    wsheet_CustOrder.Cell(q + 6, 15).Value = row[14]; //04金額
+                    wsheet_CustOrder.Cell(q + 6, 16).Value = row[15]; //05銷貨量
+                    wsheet_CustOrder.Cell(q + 6, 17).Value = row[16]; //05金額
+                    wsheet_CustOrder.Cell(q + 6, 18).Value = row[17]; //06銷貨量
+                    wsheet_CustOrder.Cell(q + 6, 19).Value = row[18]; //06金額
+                    wsheet_CustOrder.Cell(q + 6, 20).Value = row[19]; //07銷貨量
+                    wsheet_CustOrder.Cell(q + 6, 21).Value = row[20]; //07金額
+                    wsheet_CustOrder.Cell(q + 6, 22).Value = row[21]; //08銷貨量
+                    wsheet_CustOrder.Cell(q + 6, 23).Value = row[22]; //08金額
+                    wsheet_CustOrder.Cell(q + 6, 24).Value = row[23]; //09銷貨量
+                    wsheet_CustOrder.Cell(q + 6, 25).Value = row[24]; //09金額
+                    wsheet_CustOrder.Cell(q + 6, 26).Value = row[25]; //10銷貨量
+                    wsheet_CustOrder.Cell(q + 6, 27).Value = row[26]; //10金額
+                    wsheet_CustOrder.Cell(q + 6, 28).Value = row[27]; //11銷貨量
+                    wsheet_CustOrder.Cell(q + 6, 29).Value = row[28]; //11金額
+                    wsheet_CustOrder.Cell(q + 6, 30).Value = row[29]; //12銷貨量
+                    wsheet_CustOrder.Cell(q + 6, 31).Value = row[30]; //12金額
+                    wsheet_CustOrder.Cell(q + 6, 32).Value = row[31]; //全期銷貨量
+                    wsheet_CustOrder.Cell(q + 6, 33).Value = row[32]; //全期金額
+
 
                     if ((rows_count_CustOrder - 1) == dt_CustOrder.Rows.IndexOf(row)) //資料列結尾運算
                     {
                         q++;
-                        wsheet_CustOrder.Range("A" + (q + 6) + ":AF" + (q + 6)).Style.Border.TopBorder = XLBorderStyleValues.Thin;
-                        wsheet_CustOrder.Range("A" + (q + 6) + ":AF" + (q + 6)).Style.Border.BottomBorder = XLBorderStyleValues.Thin;
-                        wsheet_CustOrder.Range("A" + (q + 6) + ":AF" + (q + 6)).Style.Fill.BackgroundColor = XLColor.LightGoldenrodYellow;
+                        wsheet_CustOrder.Range("A" + (q + 6) + ":AG" + (q + 6)).Style.Border.TopBorder = XLBorderStyleValues.Thin;
+                        wsheet_CustOrder.Range("A" + (q + 6) + ":AG" + (q + 6)).Style.Border.BottomBorder = XLBorderStyleValues.Thin;
+                        wsheet_CustOrder.Range("A" + (q + 6) + ":AG" + (q + 6)).Style.Fill.BackgroundColor = XLColor.LightGoldenrodYellow;
 
-                        wsheet_CustOrder.Cell(q + 6, 6).Value = "小計";
-                        wsheet_CustOrder.Range("G" + (q + 6) + ":AF" + (q + 6)).Style.NumberFormat.Format = "#,##0_);[RED](#,##0)";
-                        wsheet_CustOrder.Cell(q + 6, 7).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",G:G)"; //01銷貨量
-                        wsheet_CustOrder.Cell(q + 6, 8).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",H:H)"; //01金額
-                        wsheet_CustOrder.Cell(q + 6, 9).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",I:I)"; //02銷貨量
-                        wsheet_CustOrder.Cell(q + 6, 10).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",J:J)"; //02金額
-                        wsheet_CustOrder.Cell(q + 6, 11).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",K:K)"; //03銷貨量
-                        wsheet_CustOrder.Cell(q + 6, 12).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",L:L)"; //03金額
-                        wsheet_CustOrder.Cell(q + 6, 13).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",M:M)"; //04銷貨量
-                        wsheet_CustOrder.Cell(q + 6, 14).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",N:N)"; //04金額
-                        wsheet_CustOrder.Cell(q + 6, 15).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",O:O)"; //05銷貨量
-                        wsheet_CustOrder.Cell(q + 6, 16).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",P:P)"; //05金額
-                        wsheet_CustOrder.Cell(q + 6, 17).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",Q:Q)"; //06銷貨量
-                        wsheet_CustOrder.Cell(q + 6, 18).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",R:R)"; //06金額
-                        wsheet_CustOrder.Cell(q + 6, 19).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",S:S)"; //07銷貨量
-                        wsheet_CustOrder.Cell(q + 6, 20).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",T:T)"; //07金額
-                        wsheet_CustOrder.Cell(q + 6, 21).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",U:U)"; //08銷貨量
-                        wsheet_CustOrder.Cell(q + 6, 22).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",V:V)"; //08金額
-                        wsheet_CustOrder.Cell(q + 6, 23).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",W:W)"; //09銷貨量
-                        wsheet_CustOrder.Cell(q + 6, 24).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",X:X)"; //09金額
-                        wsheet_CustOrder.Cell(q + 6, 25).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",Y:Y)"; //10銷貨量
-                        wsheet_CustOrder.Cell(q + 6, 26).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",Z:Z)"; //10金額
-                        wsheet_CustOrder.Cell(q + 6, 27).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",AA:AA)"; //11銷貨量
-                        wsheet_CustOrder.Cell(q + 6, 28).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",AB:AB)"; //11金額
-                        wsheet_CustOrder.Cell(q + 6, 29).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",AC:AC)"; //12銷貨量
-                        wsheet_CustOrder.Cell(q + 6, 30).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",AD:AD)"; //12金額
-                        wsheet_CustOrder.Cell(q + 6, 31).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",AE:AE)"; //全期銷貨量
-                        wsheet_CustOrder.Cell(q + 6, 32).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",AF:AF)"; //全期金額
+                        wsheet_CustOrder.Cell(q + 6, 7).Value = "小計";
+                        wsheet_CustOrder.Range("H" + (q + 6) + ":AG" + (q + 6)).Style.NumberFormat.Format = "#,##0_);[RED](#,##0)";
+                        wsheet_CustOrder.Cell(q + 6, 8).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",H:H)"; //01銷貨量
+                        wsheet_CustOrder.Cell(q + 6, 9).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",I:I)"; //01金額
+                        wsheet_CustOrder.Cell(q + 6, 10).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",J:J)"; //02銷貨量
+                        wsheet_CustOrder.Cell(q + 6, 11).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",K:K)"; //02金額
+                        wsheet_CustOrder.Cell(q + 6, 12).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",L:L)"; //03銷貨量
+                        wsheet_CustOrder.Cell(q + 6, 13).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",M:M)"; //03金額
+                        wsheet_CustOrder.Cell(q + 6, 14).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",N:N)"; //04銷貨量
+                        wsheet_CustOrder.Cell(q + 6, 15).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",O:O)"; //04金額
+                        wsheet_CustOrder.Cell(q + 6, 16).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",P:P)"; //05銷貨量
+                        wsheet_CustOrder.Cell(q + 6, 17).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",Q:Q)"; //05金額
+                        wsheet_CustOrder.Cell(q + 6, 18).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",R:R)"; //06銷貨量
+                        wsheet_CustOrder.Cell(q + 6, 19).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",S:S)"; //06金額
+                        wsheet_CustOrder.Cell(q + 6, 20).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",T:T)"; //07銷貨量
+                        wsheet_CustOrder.Cell(q + 6, 21).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",U:U)"; //07金額
+                        wsheet_CustOrder.Cell(q + 6, 22).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",V:V)"; //08銷貨量
+                        wsheet_CustOrder.Cell(q + 6, 23).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",W:W)"; //08金額
+                        wsheet_CustOrder.Cell(q + 6, 24).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",X:X)"; //09銷貨量
+                        wsheet_CustOrder.Cell(q + 6, 25).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",Y:Y)"; //09金額
+                        wsheet_CustOrder.Cell(q + 6, 26).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",Z:Z)"; //10銷貨量
+                        wsheet_CustOrder.Cell(q + 6, 27).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",AA:AA)"; //10金額
+                        wsheet_CustOrder.Cell(q + 6, 28).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",AB:AB)"; //11銷貨量
+                        wsheet_CustOrder.Cell(q + 6, 29).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",AC:AC)"; //11金額
+                        wsheet_CustOrder.Cell(q + 6, 30).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",AD:AD)"; //12銷貨量
+                        wsheet_CustOrder.Cell(q + 6, 31).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",AE:AE)"; //12金額
+                        wsheet_CustOrder.Cell(q + 6, 32).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",AF:AF)"; //全期銷貨量
+                        wsheet_CustOrder.Cell(q + 6, 33).FormulaA1 = "=SUMIF(A:A,\"" + Soldq + "\",AG:AG)"; //全期金額
 
                         q++;
-                        wsheet_CustOrder.Range("A" + (q + 6) + ":AF" + (q + 6)).Style.Border.TopBorder = XLBorderStyleValues.Thin;
-                        wsheet_CustOrder.Range("A" + (q + 6) + ":AF" + (q + 6)).Style.Border.BottomBorder = XLBorderStyleValues.Thin;
-                        wsheet_CustOrder.Range("A" + (q + 6) + ":AF" + (q + 6)).Style.Fill.BackgroundColor = XLColor.Honeydew;
+                        wsheet_CustOrder.Range("A" + (q + 6) + ":AG" + (q + 6)).Style.Border.TopBorder = XLBorderStyleValues.Thin;
+                        wsheet_CustOrder.Range("A" + (q + 6) + ":AG" + (q + 6)).Style.Border.BottomBorder = XLBorderStyleValues.Thin;
+                        wsheet_CustOrder.Range("A" + (q + 6) + ":AG" + (q + 6)).Style.Fill.BackgroundColor = XLColor.Honeydew;
 
-                        wsheet_CustOrder.Cell(q + 6, 6).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Right);
-                        wsheet_CustOrder.Cell(q + 6, 6).Value = "總計";
-                        wsheet_CustOrder.Range("G" + (q + 6) + ":AF" + (q + 6)).Style.NumberFormat.Format = "#,##0_);[RED](#,##0)";
-                        wsheet_CustOrder.Cell(q + 6, 7).FormulaA1 = "=SUMIF(F:F,\"小計\",G:G)"; //01銷貨量
-                        wsheet_CustOrder.Cell(q + 6, 8).FormulaA1 = "=SUMIF(F:F,\"小計\",H:H)"; //01金額
-                        wsheet_CustOrder.Cell(q + 6, 9).FormulaA1 = "=SUMIF(F:F,\"小計\",I:I)"; //02銷貨量
-                        wsheet_CustOrder.Cell(q + 6, 10).FormulaA1 = "=SUMIF(F:F,\"小計\",J:J)"; //02金額
-                        wsheet_CustOrder.Cell(q + 6, 11).FormulaA1 = "=SUMIF(F:F,\"小計\",K:K)"; //03銷貨量
-                        wsheet_CustOrder.Cell(q + 6, 12).FormulaA1 = "=SUMIF(F:F,\"小計\",L:L)"; //03金額
-                        wsheet_CustOrder.Cell(q + 6, 13).FormulaA1 = "=SUMIF(F:F,\"小計\",M:M)"; //04銷貨量
-                        wsheet_CustOrder.Cell(q + 6, 14).FormulaA1 = "=SUMIF(F:F,\"小計\",N:N)"; //04金額
-                        wsheet_CustOrder.Cell(q + 6, 15).FormulaA1 = "=SUMIF(F:F,\"小計\",O:O)"; //05銷貨量
-                        wsheet_CustOrder.Cell(q + 6, 16).FormulaA1 = "=SUMIF(F:F,\"小計\",P:P)"; //05金額
-                        wsheet_CustOrder.Cell(q + 6, 17).FormulaA1 = "=SUMIF(F:F,\"小計\",Q:Q)"; //06銷貨量
-                        wsheet_CustOrder.Cell(q + 6, 18).FormulaA1 = "=SUMIF(F:F,\"小計\",R:R)"; //06金額
-                        wsheet_CustOrder.Cell(q + 6, 19).FormulaA1 = "=SUMIF(F:F,\"小計\",S:S)"; //07銷貨量
-                        wsheet_CustOrder.Cell(q + 6, 20).FormulaA1 = "=SUMIF(F:F,\"小計\",T:T)"; //07金額
-                        wsheet_CustOrder.Cell(q + 6, 21).FormulaA1 = "=SUMIF(F:F,\"小計\",U:U)"; //08銷貨量
-                        wsheet_CustOrder.Cell(q + 6, 22).FormulaA1 = "=SUMIF(F:F,\"小計\",V:V)"; //08金額
-                        wsheet_CustOrder.Cell(q + 6, 23).FormulaA1 = "=SUMIF(F:F,\"小計\",W:W)"; //09銷貨量
-                        wsheet_CustOrder.Cell(q + 6, 24).FormulaA1 = "=SUMIF(F:F,\"小計\",X:X)"; //09金額
-                        wsheet_CustOrder.Cell(q + 6, 25).FormulaA1 = "=SUMIF(F:F,\"小計\",Y:Y)"; //10銷貨量
-                        wsheet_CustOrder.Cell(q + 6, 26).FormulaA1 = "=SUMIF(F:F,\"小計\",Z:Z)"; //10金額
-                        wsheet_CustOrder.Cell(q + 6, 27).FormulaA1 = "=SUMIF(F:F,\"小計\",AA:AA)"; //11銷貨量
-                        wsheet_CustOrder.Cell(q + 6, 28).FormulaA1 = "=SUMIF(F:F,\"小計\",AB:AB)"; //11金額
-                        wsheet_CustOrder.Cell(q + 6, 29).FormulaA1 = "=SUMIF(F:F,\"小計\",AC:AC)"; //12銷貨量
-                        wsheet_CustOrder.Cell(q + 6, 30).FormulaA1 = "=SUMIF(F:F,\"小計\",AD:AD)"; //12金額
-                        wsheet_CustOrder.Cell(q + 6, 31).FormulaA1 = "=SUMIF(F:F,\"小計\",AE:AE)"; //全期銷貨量
-                        wsheet_CustOrder.Cell(q + 6, 32).FormulaA1 = "=SUMIF(F:F,\"小計\",AF:AF)"; //全期金額
+                        wsheet_CustOrder.Cell(q + 6, 7).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Right);
+                        wsheet_CustOrder.Cell(q + 6, 7).Value = "總計";
+                        wsheet_CustOrder.Range("H" + (q + 6) + ":AG" + (q + 6)).Style.NumberFormat.Format = "#,##0_);[RED](#,##0)";
+                        wsheet_CustOrder.Cell(q + 6, 8).FormulaA1 = "=SUMIF(G:G,\"小計\",H:H)"; //01銷貨量
+                        wsheet_CustOrder.Cell(q + 6, 9).FormulaA1 = "=SUMIF(G:G,\"小計\",I:I)"; //01金額
+                        wsheet_CustOrder.Cell(q + 6, 10).FormulaA1 = "=SUMIF(G:G,\"小計\",J:J)"; //02銷貨量
+                        wsheet_CustOrder.Cell(q + 6, 11).FormulaA1 = "=SUMIF(G:G,\"小計\",K:K)"; //02金額
+                        wsheet_CustOrder.Cell(q + 6, 12).FormulaA1 = "=SUMIF(G:G,\"小計\",L:L)"; //03銷貨量
+                        wsheet_CustOrder.Cell(q + 6, 13).FormulaA1 = "=SUMIF(G:G,\"小計\",M:M)"; //03金額
+                        wsheet_CustOrder.Cell(q + 6, 14).FormulaA1 = "=SUMIF(G:G,\"小計\",N:N)"; //04銷貨量
+                        wsheet_CustOrder.Cell(q + 6, 15).FormulaA1 = "=SUMIF(G:G,\"小計\",O:O)"; //04金額
+                        wsheet_CustOrder.Cell(q + 6, 16).FormulaA1 = "=SUMIF(G:G,\"小計\",P:P)"; //05銷貨量
+                        wsheet_CustOrder.Cell(q + 6, 17).FormulaA1 = "=SUMIF(G:G,\"小計\",Q:Q)"; //05金額
+                        wsheet_CustOrder.Cell(q + 6, 18).FormulaA1 = "=SUMIF(G:G,\"小計\",R:R)"; //06銷貨量
+                        wsheet_CustOrder.Cell(q + 6, 19).FormulaA1 = "=SUMIF(G:G,\"小計\",S:S)"; //06金額
+                        wsheet_CustOrder.Cell(q + 6, 20).FormulaA1 = "=SUMIF(G:G,\"小計\",T:T)"; //07銷貨量
+                        wsheet_CustOrder.Cell(q + 6, 21).FormulaA1 = "=SUMIF(G:G,\"小計\",U:U)"; //07金額
+                        wsheet_CustOrder.Cell(q + 6, 22).FormulaA1 = "=SUMIF(G:G,\"小計\",V:V)"; //08銷貨量
+                        wsheet_CustOrder.Cell(q + 6, 23).FormulaA1 = "=SUMIF(G:G,\"小計\",W:W)"; //08金額
+                        wsheet_CustOrder.Cell(q + 6, 24).FormulaA1 = "=SUMIF(G:G,\"小計\",X:X)"; //09銷貨量
+                        wsheet_CustOrder.Cell(q + 6, 25).FormulaA1 = "=SUMIF(G:G,\"小計\",Y:Y)"; //09金額
+                        wsheet_CustOrder.Cell(q + 6, 26).FormulaA1 = "=SUMIF(G:G,\"小計\",Z:Z)"; //10銷貨量
+                        wsheet_CustOrder.Cell(q + 6, 27).FormulaA1 = "=SUMIF(G:G,\"小計\",AA:AA)"; //10金額
+                        wsheet_CustOrder.Cell(q + 6, 28).FormulaA1 = "=SUMIF(G:G,\"小計\",AB:AB)"; //11銷貨量
+                        wsheet_CustOrder.Cell(q + 6, 29).FormulaA1 = "=SUMIF(G:G,\"小計\",AC:AC)"; //11金額
+                        wsheet_CustOrder.Cell(q + 6, 30).FormulaA1 = "=SUMIF(G:G,\"小計\",AD:AD)"; //12銷貨量
+                        wsheet_CustOrder.Cell(q + 6, 31).FormulaA1 = "=SUMIF(G:G,\"小計\",AE:AE)"; //12金額
+                        wsheet_CustOrder.Cell(q + 6, 32).FormulaA1 = "=SUMIF(G:G,\"小計\",AF:AF)"; //全期銷貨量
+                        wsheet_CustOrder.Cell(q + 6, 33).FormulaA1 = "=SUMIF(G:G,\"小計\",AG:AG)"; //全期金額
+
                     }
                     q++;
                 }

@@ -37,6 +37,12 @@ namespace Myclass
         //   {
         //     InitializeComponent();
         //     MyCode = new Myclass.MyClass();
+        //      MyCode.strDbCon = MyCode.strDbConLeader;
+        //      this.sqlConnection1.ConnectionString = MyCode.strDbConLeader;
+
+        //      MyCode.strDbCon = MyCode.strDbConA01A;
+        //      this.sqlConnection1.ConnectionString = MyCode.strDbConA01A;
+
         //     MyCode.strDbCon = "packet size=4096;user id=pwuser;password=sqlmis003;data source=192.168.128.219;persist security info=False;initial catalog=A01A;";
         //     //MyCode.strDbCon = "packet size=4096;user id=yj.chou;password=yjchou3369;data source=192.168.128.219;persist security info=False;initial catalog=Leader;";
         //   }
