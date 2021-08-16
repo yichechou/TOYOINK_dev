@@ -65,8 +65,8 @@ namespace TOYOINK_dev
             MyCode = new Myclass.MyClass();
             MyCode.strDbCon = "packet size=4096;user id=pwuser;password=sqlmis003;data source=192.168.128.219;persist security info=False;initial catalog=A01A;";
             //MyCode.strDbCon = "packet size=4096;user id=yj.chou;password=yjchou3369;data source=192.168.128.219;persist security info=False;initial catalog=Leader;";
-            temp_excel_5a = @"\\192.168.128.219\Company\MIS自開發主檔\會計報表公版\銷貨成本分析月報5a_temp.xlsx";
-            temp_excel_8a = @"\\192.168.128.219\Company\MIS自開發主檔\會計報表公版\品種別月報8a_temp.xlsx";
+            temp_excel_5a = @"\\192.168.128.219\Conductor\Company\MIS自開發主檔\會計報表公版\銷貨成本分析月報5a_temp.xlsx";
+            temp_excel_8a = @"\\192.168.128.219\Conductor\Company\MIS自開發主檔\會計報表公版\品種別月報8a_temp.xlsx";
 
 
             //MyClass.WriteLog("恢復預設值");

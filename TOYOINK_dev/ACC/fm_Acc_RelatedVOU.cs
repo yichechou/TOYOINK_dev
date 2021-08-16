@@ -76,7 +76,7 @@ namespace TOYOINK_dev
             MyCode = new Myclass.MyClass();
             MyCode.strDbCon = "packet size=4096;user id=pwuser;password=sqlmis003;data source=192.168.128.219;persist security info=False;initial catalog=A01A;";
             //MyCode.strDbCon = "packet size=4096;user id=yj.chou;password=asdf0000;data source=192.168.128.219;persist security info=False;initial catalog=Leader;";
-            temp_excel_RelatedVOU = @"\\192.168.128.219\Company\MIS自開發主檔\會計報表公版\關係人交易_temp.xlsx";
+            temp_excel_RelatedVOU = @"\\192.168.128.219\Conductor\Company\MIS自開發主檔\會計報表公版\關係人交易_temp.xlsx";
         }
 
         //接收form1資料，並顯示

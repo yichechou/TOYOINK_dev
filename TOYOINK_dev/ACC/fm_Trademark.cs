@@ -65,7 +65,7 @@ namespace TOYOINK_dev
             //this.sqlConnection1.ConnectionString = MyCode.strDbConA01A;
 
             //MyCode.strDbCon = "packet size=4096;user id=pwuser;password=sqlmis003;data source=192.168.128.219;persist security info=False;initial catalog=A01A;";
-            temp_excel = @"\\192.168.128.219\Company\MIS自開發主檔\會計報表公版\商標權報表_temp.xlsx";
+            temp_excel = @"\\192.168.128.219\Conductor\Company\MIS自開發主檔\會計報表公版\商標權報表_temp.xlsx";
             //temp_excel = @"D:\商標權報表_temp.xlsx";
         }
 
