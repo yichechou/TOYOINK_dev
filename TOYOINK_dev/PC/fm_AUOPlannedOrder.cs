@@ -18,6 +18,9 @@ using System.Globalization;
 
 namespace TOYOINK_dev
 {
+    /*//20210816 須注意 有使用[SAP].[dbo].fm_COPTC_log、[SAP].[dbo].fm_COPTD_log，同ERP欄位 前面加入 DEL_DATE
+     * 
+     */
     public partial class fm_AUOPlannedOrder : Form
     {
         public MyClass MyCode;
@@ -2153,16 +2156,17 @@ str_ETA, row[str_NOTE].ToString().Trim(), "9", str_ERPUP_CustID, str_廠別 , st
                     "1"
                 };
             //TODO: 交易機制-單頭及單身寫入
+            //20210816 須注意 有使用[SAP].[dbo].fm_COPTC_log、[SAP].[dbo].fm_COPTD_log，同ERP欄位 前面加入 DEL_DATE
             using (TransactionScope scope1 = new TransactionScope())
             {
                 try
                 {
                     sql_del_COPTCD = String.Format(
-@"INSERT [SAP].[dbo].COPTC
+@"INSERT [SAP].[dbo].fm_COPTC_log
 select GETDATE(),* from COPTC
 where TC001 = '223' and TC002 = '{0}' and TC032 = '{1}' 
 
-INSERT [SAP].[dbo].COPTD
+INSERT [SAP].[dbo].fm_COPTD_log
 select GETDATE(),* from COPTD
 where TD001 = '223' and TD002 = '{0}'
 
