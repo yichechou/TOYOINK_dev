@@ -18,6 +18,9 @@ namespace TOYOINK_dev
     {
         /*
          * 20210623 開發完成，生管林玲禎提出，參考 客戶訂單For 友達(fm_AUOCOPTC)，修改來源Excel判別
+         * 20210901 生管林玲禎提出 TD201 希望交貨日改為空值【CFIPO.[Need By Date] as TD201】 ->【'' as TD201】，
+         *          經了解，[希望交貨日]為個案欄位，目前已無使用，了解使用者需求，初判該欄位應可使用標準[排定交貨日]應用，
+         *          個案書內容 W71565_016.W71565_018.W71565_022.W71565_064
          * 
          */
         /// <summary>
@@ -750,6 +753,7 @@ namespace TOYOINK_dev
             //單身 ERP格式
             //20210111 CONVERT(varchar(6) 改為 CONVERT(varchar(7)
             //", REPLICATE('0', (7 - LEN(CONVERT(varchar(6), (CFIPO.ERP_Num + " + str_key_客訂單號 + "))))) +CONVERT(varchar(6), (CFIPO.ERP_Num + " + str_key_客訂單號 + ")) as TD002" + str_enter +
+            //20210901 生管林玲禎提出 TD201 希望交貨日改為空值【CFIPO.[Need By Date] as TD201】 ->【'' as TD201】
             DataTable dt_單身 = new DataTable();
             string str_sql_td =
             "SELECT '220' as TD001" + str_enter +
@@ -768,7 +772,7 @@ namespace TOYOINK_dev
             ",'' as TD066,'' as TD067,'' as TD068,'' as TD069" + str_enter +
             ",(select NN004 from CMSNN where NN001 = (select MA118 from COPMA where MA001 = CFIPO.ERP_客代)) as TD070" + str_enter +
             ",'' as TD071,'' as TD072,'' as TD073,'' as TD074,'' as TD500,'0' as TD501,'' as TD502,'' as TD503" + str_enter +
-            ",'' as TD504,'' as TD200,CFIPO.[Need By Date] as TD201,'0' as TD202,'' as TD203,'Y' as TD204,'' as TD205" + str_enter +
+            ",'' as TD504,'' as TD200,'' as TD201,'0' as TD202,'' as TD203,'Y' as TD204,'' as TD205" + str_enter +
             "FROM CFIPO" + str_enter +
             "left join INVMB on(select MG002 from COPMG where MG003 = CFIPO.Item and MG001 = CFIPO.ERP_客代) = INVMB.MB001" + str_enter +
             "left join INVMD on(select MG002 from COPMG where MG003 = CFIPO.Item and MG001 = CFIPO.ERP_客代) = INVMD.MD001" + str_enter +

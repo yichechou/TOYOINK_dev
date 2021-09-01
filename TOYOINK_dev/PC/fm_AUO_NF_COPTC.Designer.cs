@@ -520,7 +520,7 @@
             this.Margin = new System.Windows.Forms.Padding(5);
             this.Name = "fm_AUO_NF_COPTC";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "客戶訂單匯入 For 友達北廠 (20210623 1050)";
+            this.Text = "客戶訂單匯入 For 友達北廠 (20210901 0850)";
             this.Load += new System.EventHandler(this.fm_AUO_NF_COPTC_Load);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
