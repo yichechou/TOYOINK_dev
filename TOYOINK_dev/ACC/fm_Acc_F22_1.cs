@@ -30,6 +30,9 @@ namespace TOYOINK_dev
                     from NOTTG
                     left join NOTTF on TF001 = TG001 and TF002 = TG002
                     left join CMSMQ on MQ001 = TF001
+
+       20210902 修改連線方式，改為參考MyClass
+       20210902 洪淑雯提出，評價表內的[小計.總計]改為取小數點2位
      */
     public partial class fm_Acc_F22_1 : Form
     {
@@ -56,9 +59,13 @@ namespace TOYOINK_dev
         {
             InitializeComponent();
             MyCode = new Myclass.MyClass();
-            MyCode.strDbCon = "packet size=4096;user id=pwuser;password=sqlmis003;data source=192.168.128.219;persist security info=False;initial catalog=A01A;";
-            //MyCode.strDbCon = "packet size=4096;user id=yj.chou;password=yjchou3369;data source=192.168.128.219;persist security info=False;initial catalog=Leader;";
-            //MyCode.strDbCon = "packet size=4096;user id=pwuser;password=sqlmis003;data source=192.168.128.219;persist security info=False;initial catalog=Leader;";
+
+            //MyCode.strDbCon = MyCode.strDbConLeader;
+            //this.sqlConnection1.ConnectionString = MyCode.strDbConLeader;
+
+            MyCode.strDbCon = MyCode.strDbConA01A;
+            //this.sqlConnection1.ConnectionString = MyCode.strDbConA01A;
+
             temp_excel_F22_1 = @"\\192.168.128.219\Conductor\Company\MIS自開發主檔\會計報表公版\F22-1_銀行口座一覧表TAST_temp.xlsx";
         }
 
@@ -485,7 +492,10 @@ NOTMA.UDF01 = '1'
                         wsheet.Range("A" + (i + i_col) + ":K" + (i + i_col)).Style.Fill.BackgroundColor = XLColor.LightGoldenrodYellow;
                         wsheet.Cell(i + i_col, 2).Value = str_SubTotal_Name;
                         wsheet.Cell(i + i_col, 4).Value = "小計";
-                        wsheet.Range("E" + (i + i_col) + ":K" + (i + i_col)).Style.NumberFormat.Format = "#,##0_);[RED](#,##0)";
+                        //20210902 洪淑雯提出，評價表內的[小計.總計]改為取小數點2位
+                        //wsheet.Range("E" + (i + i_col) + ":K" + (i + i_col)).Style.NumberFormat.Format = "#,##0_);[RED](#,##0)";
+                        wsheet.Cell(i + i_col, 5).Style.NumberFormat.Format = "#,##0.00";
+                        wsheet.Range("G" + (i + i_col) + ":K" + (i + i_col)).Style.NumberFormat.Format = "#,##0_);[RED](#,##0)";
                         wsheet.Cell(i + i_col, 5).FormulaA1 = "=SUMIFS(E:E,$A:$A,\"" + str_SubTotal_Name + "\")";
                         wsheet.Cell(i + i_col, 7).FormulaA1 = "=SUMIFS(G:G,$A:$A,\"" + str_SubTotal_Name + "\")";
                         wsheet.Cell(i + i_col, 8).FormulaA1 = "=SUMIFS(H:H,$A:$A,\"" + str_SubTotal_Name + "\")";
@@ -521,7 +531,7 @@ NOTMA.UDF01 = '1'
                         case "原幣期末餘額":
                         case "原幣存款金額":
                         case "單位製費成本":
-                            wsheet.Cell(i + i_col, j + j_row).Style.NumberFormat.Format = "#,##0.00";
+                            wsheet.Cell(i + i_col, j + j_row).Style.NumberFormat.Format = "#,##0.00;[RED](#,##0.00)";
                             break;
                         case "匯率":
                         case "重估匯率":
@@ -564,7 +574,10 @@ NOTMA.UDF01 = '1'
                         wsheet.Range("A" + (i + i_col) + ":K" + (i + i_col)).Style.Fill.BackgroundColor = XLColor.LightGoldenrodYellow;
                         wsheet.Cell(i + i_col, 2).Value = str_SubTotal_Name;
                         wsheet.Cell(i + i_col, 4).Value = "小計";
-                        wsheet.Range("E" + (i + i_col) + ":K" + (i + i_col)).Style.NumberFormat.Format = "#,##0_);[RED](#,##0)";
+                        //20210902 洪淑雯提出，評價表內的[小計.總計]改為取小數點2位
+                        //wsheet.Range("E" + (i + i_col) + ":K" + (i + i_col)).Style.NumberFormat.Format = "#,##0_);[RED](#,##0)"
+                        wsheet.Cell(i + i_col, 5).Style.NumberFormat.Format = "#,##0.00";
+                        wsheet.Range("G" + (i + i_col) + ":K" + (i + i_col)).Style.NumberFormat.Format = "#,##0_);[RED](#,##0)";
                         wsheet.Cell(i + i_col, 5).FormulaA1 = "=SUMIFS(E:E,$A:$A,\"" + str_SubTotal_Name + "\")";
                         wsheet.Cell(i + i_col, 7).FormulaA1 = "=SUMIFS(G:G,$A:$A,\"" + str_SubTotal_Name + "\")";
                         wsheet.Cell(i + i_col, 8).FormulaA1 = "=SUMIFS(H:H,$A:$A,\"" + str_SubTotal_Name + "\")";
@@ -576,7 +589,10 @@ NOTMA.UDF01 = '1'
                         wsheet.Range("A" + (i + i_col) + ":K" + (i + i_col)).Style.Border.BottomBorder = XLBorderStyleValues.Thin;
                         wsheet.Range("A" + (i + i_col) + ":K" + (i + i_col)).Style.Fill.BackgroundColor = XLColor.Honeydew;
                         wsheet.Cell(i + i_col, 4).Value = "總計";
-                        wsheet.Range("E" + (i + i_col) + ":K" + (i + i_col)).Style.NumberFormat.Format = "#,##0_);[RED](#,##0)";
+                        //20210902 洪淑雯提出，評價表內的[小計.總計]改為取小數點2位
+                        //wsheet.Range("E" + (i + i_col) + ":K" + (i + i_col)).Style.NumberFormat.Format = "#,##0_);[RED](#,##0)"
+                        wsheet.Cell(i + i_col, 5).Style.NumberFormat.Format = "#,##0.00";
+                        wsheet.Range("G" + (i + i_col) + ":K" + (i + i_col)).Style.NumberFormat.Format = "#,##0_);[RED](#,##0)";
                         wsheet.Cell(i + i_col, 5).FormulaA1 = "=SUMIFS(E:E,$D:$D,\"小計\")";
                         wsheet.Cell(i + i_col, 7).FormulaA1 = "=SUMIFS(G:G,$D:$D,\"小計\")";
                         wsheet.Cell(i + i_col, 8).FormulaA1 = "=SUMIFS(H:H,$D:$D,\"小計\")";
