@@ -227,7 +227,7 @@
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "fm_menu";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "台灣東洋先端_系統開發(20210902 0930)";
+            this.Text = "台灣東洋先端_系統開發(20210913 1530)";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.fm_menu_FormClosed);
             this.Load += new System.EventHandler(this.fm_menu_Load);
             this.tabControl1.ResumeLayout(false);

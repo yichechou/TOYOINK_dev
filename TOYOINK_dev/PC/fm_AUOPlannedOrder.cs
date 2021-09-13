@@ -19,6 +19,8 @@ using System.Globalization;
 namespace TOYOINK_dev
 {
     /*//20210816 須注意 有使用[SAP].[dbo].fm_COPTC_log、[SAP].[dbo].fm_COPTD_log，同ERP欄位 前面加入 DEL_DATE
+     *20210913 升級GP4單身增加兩個欄位，計價數量(TD076).計價單位(TD077)，同原欄位 數量(TD008).單位(TD010)
+     * ,[AMOUNT] as TD076,INVMB.MB004 as TD077,
      * 
      */
     public partial class fm_AUOPlannedOrder : Form
@@ -2075,6 +2077,8 @@ str_ETA, row[str_NOTE].ToString().Trim(), "9", str_ERPUP_CustID, str_廠別 , st
             //新增至CT_AUO_TOERP_Temp
             MyCode.sqlExecuteNonQuery(sql_ToTemp, "AD2SERVER");
 
+            //20210913 升級GP4單身增加兩個欄位，計價數量(TD076).計價單位(TD077)，同原欄位 數量(TD008).單位(TD010)
+            //,[AMOUNT] as TD076,INVMB.MB004 as TD077,
             //單身 ERP格式,TD021 確認碼
             DataTable dt_單身 = new DataTable();
             string str_sql_td = String.Format(@"select [TTC001] as TD001, [TTC002] as TD002
@@ -2091,7 +2095,8 @@ str_ETA, row[str_NOTE].ToString().Trim(), "9", str_ERPUP_CustID, str_廠別 , st
                                 ,'' as TD058,'0' as TD059,'' as TD060,'0' as TD061,'' as TD062,'' as TD063,'' as TD064,'' as TD065
                                 ,'' as TD066,'' as TD067,'' as TD068,'' as TD069
                                 ,(select NN004 from CMSNN where NN001 = (select MA118 from COPMA where MA001 = [TMA001])) as TD070
-                                ,'' as TD071,'' as TD072,'' as TD073,'' as TD074,'' as TD500,'0' as TD501,'' as TD502,'' as TD503
+                                ,'' as TD071,'' as TD072,'' as TD073,'' as TD074,[AMOUNT] as TD076,INVMB.MB004 as TD077
+                                ,'' as TD500,'0' as TD501,'' as TD502,'' as TD503
                                 ,'' as TD504,'' as TD200,[ETA] as TD201,'0' as TD202,'' as TD203,'Y' as TD204,'' as TD205
                             FROM [CT_AUO_TOERP_Temp]
                                 left join INVMB on INVMB.MB001 = [ERPNO]

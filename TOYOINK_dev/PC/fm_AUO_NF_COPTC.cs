@@ -21,6 +21,8 @@ namespace TOYOINK_dev
          * 20210901 生管林玲禎提出 TD201 希望交貨日改為空值【CFIPO.[Need By Date] as TD201】 ->【'' as TD201】，
          *          經了解，[希望交貨日]為個案欄位，目前已無使用，了解使用者需求，初判該欄位應可使用標準[排定交貨日]應用，
          *          個案書內容 W71565_016.W71565_018.W71565_022.W71565_064
+         * 20210913 升級GP4單身增加兩個欄位，計價數量(TD076).計價單位(TD077)，同原欄位 數量(TD008).單位(TD010) 及更新連線方式改由MyClass代入
+         * ,CFIPO.Quantity as TD076,CFIPO.UOM as TD077,
          * 
          */
         /// <summary>
@@ -54,9 +56,7 @@ namespace TOYOINK_dev
             MyCode.strDbCon = MyCode.strDbConA01A;
             this.sqlConnection1.ConnectionString = MyCode.strDbConA01A;
 
-            //MyCode.strDbCon = "packet size=4096;user id=pwuser;password=sqlmis003;data source=192.168.128.219;persist security info=False;initial catalog=A01A;";
-            ////MyCode.strDbCon = "packet size=4096;user id=yj.chou;password=yjchou3369;data source=192.168.128.219;persist security info=False;initial catalog=Leader;";
-        }
+           }
 
         //TODO: get_sql_value() 若為文字，前面補上N'，強制為string為Unicode字符串
         private string get_sql_value(string data_type, string str_value)
@@ -754,6 +754,8 @@ namespace TOYOINK_dev
             //20210111 CONVERT(varchar(6) 改為 CONVERT(varchar(7)
             //", REPLICATE('0', (7 - LEN(CONVERT(varchar(6), (CFIPO.ERP_Num + " + str_key_客訂單號 + "))))) +CONVERT(varchar(6), (CFIPO.ERP_Num + " + str_key_客訂單號 + ")) as TD002" + str_enter +
             //20210901 生管林玲禎提出 TD201 希望交貨日改為空值【CFIPO.[Need By Date] as TD201】 ->【'' as TD201】
+            //20210913 升級GP4單身增加兩個欄位，計價數量(TD076).計價單位(TD077)，同原欄位 數量(TD008).單位(TD010)
+            //,CFIPO.Quantity as TD076,CFIPO.UOM as TD077,
             DataTable dt_單身 = new DataTable();
             string str_sql_td =
             "SELECT '220' as TD001" + str_enter +
@@ -771,7 +773,7 @@ namespace TOYOINK_dev
             ",'' as TD058,'0' as TD059,'' as TD060,'0' as TD061,'' as TD062,'' as TD063,'' as TD064,'' as TD065" + str_enter +
             ",'' as TD066,'' as TD067,'' as TD068,'' as TD069" + str_enter +
             ",(select NN004 from CMSNN where NN001 = (select MA118 from COPMA where MA001 = CFIPO.ERP_客代)) as TD070" + str_enter +
-            ",'' as TD071,'' as TD072,'' as TD073,'' as TD074,'' as TD500,'0' as TD501,'' as TD502,'' as TD503" + str_enter +
+            ",'' as TD071,'' as TD072,'' as TD073,'' as TD074,CFIPO.Quantity as TD076,CFIPO.UOM as TD077,'' as TD500,'0' as TD501,'' as TD502,'' as TD503" + str_enter +
             ",'' as TD504,'' as TD200,'' as TD201,'0' as TD202,'' as TD203,'Y' as TD204,'' as TD205" + str_enter +
             "FROM CFIPO" + str_enter +
             "left join INVMB on(select MG002 from COPMG where MG003 = CFIPO.Item and MG001 = CFIPO.ERP_客代) = INVMB.MB001" + str_enter +
