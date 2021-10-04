@@ -23,6 +23,7 @@ namespace TOYOINK_dev
          * 20210305 除查詢需加入2SHT外，Excel轉出仍需加入單別
          * 20210513 更改查詢條件，不指定單別，改套代號cond及判別客戶基本資料COPMA-MA124關係人代號不為空值及開頭9
          * 20210802 財務邱鈺婷20210729提出，本社報表格式修改，【關聯方銷貨彙總表】【年度客戶別銷售金額統計表】加入【關係人代號】欄位
+         * 20211004 財務邱鈺婷20211004提出，【年度客戶別銷售金額統計表】統計年度位置調整，因上次加入[關係人代號]欄位，位置需調整，已修正
          */
         public MyClass MyCode;
         string str_enter = ((char)13).ToString() + ((char)10).ToString();
@@ -64,9 +65,7 @@ namespace TOYOINK_dev
             MyCode.strDbCon = MyCode.strDbConA01A;
             //this.sqlConnection1.ConnectionString = MyCode.strDbConA01A;
 
-            //MyCode.strDbCon = "packet size=4096;user id=pwuser;password=sqlmis003;data source=192.168.128.219;persist security info=False;initial catalog=A01A;";
             temp_excel = @"\\192.168.128.219\Conductor\Company\MIS自開發主檔\會計報表公版\商標權報表_temp.xlsx";
-            //temp_excel = @"D:\商標權報表_temp.xlsx";
         }
 
         private void txt_date_s_TextChanged(object sender, EventArgs e)
@@ -782,7 +781,7 @@ namespace TOYOINK_dev
                 wsheet_CustOrder.Cell(3, 2).Value = str_date_y_e + "01" + "~" + str_date_m_e; //查詢月份區間
                 wsheet_CustOrder.Cell(4, 2).Style.NumberFormat.Format = "@";
                 wsheet_CustOrder.Cell(4, 2).Value = DateTime.Now.ToString("yyyy/MM/dd"); //製表日期
-                wsheet_CustOrder.Cell(4, 16).Value = "統計年度:"+ str_date_twy_e; //統計年度
+                wsheet_CustOrder.Cell(4, 17).Value = "統計年度:"+ str_date_twy_e; //統計年度
                 foreach (DataRow row in dt_CustOrder.Rows)
                 {
                     Snewq = row[0].ToString();

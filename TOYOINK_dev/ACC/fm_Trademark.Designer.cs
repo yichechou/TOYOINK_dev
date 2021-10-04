@@ -29,11 +29,11 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(fm_Trademark));
-            System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem(new string[] {
             "單別",
             "2",
             "3"}, -1);
-            System.Windows.Forms.ListViewItem listViewItem4 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem(new string[] {
             "客戶代號",
             "2",
             "3"}, -1);
@@ -433,7 +433,7 @@
             // 
             this.listView2.HideSelection = false;
             this.listView2.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem3});
+            listViewItem1});
             this.listView2.Location = new System.Drawing.Point(273, 6);
             this.listView2.Name = "listView2";
             this.listView2.Size = new System.Drawing.Size(152, 116);
@@ -479,7 +479,7 @@
             // 
             this.listView1.HideSelection = false;
             this.listView1.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem4});
+            listViewItem2});
             this.listView1.Location = new System.Drawing.Point(6, 6);
             this.listView1.Name = "listView1";
             this.listView1.Size = new System.Drawing.Size(152, 116);
@@ -670,7 +670,7 @@
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "fm_Trademark";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "商標權報表(20210802 1530)";
+            this.Text = "商標權報表(20211004 0915)";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.fm_Trademark_FormClosed);
             this.Load += new System.EventHandler(this.fm_Trademark_Load);
             this.panel1.ResumeLayout(false);
