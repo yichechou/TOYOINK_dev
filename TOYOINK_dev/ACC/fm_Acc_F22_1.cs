@@ -33,6 +33,11 @@ namespace TOYOINK_dev
 
        20210902 修改連線方式，改為參考MyClass
        20210902 洪淑雯提出，評價表內的[小計.總計]改為取小數點2位
+       20220418 財務林姿刪提出，
+       1.新增[小口現金],銀行代號1105101 零用金及週轉金-台南 =SUM(SUMIFS('明細帳(評價前)'!H:H,'明細帳(評價前)'!B:B,E42,'明細帳(評價前)'!A:A,R42))
+       2.新增[現金・普通預金・当座預金]、[定期預金]、[借入金]合計
+       3.定期預金,新增換算金額(殘證)、換算金額(差額)以及合計
+       NOTMA.UDF01 = '1'，改為 NOTMA.UDF01 in ('1','2')
      */
     public partial class fm_Acc_F22_1 : Form
     {
@@ -95,15 +100,15 @@ namespace TOYOINK_dev
 2.日期變更後，先前查詢資料須重新查詢，若無查詢，禁止Excel轉出。
 3.Excel轉出後包含明細，程式自動開啟該報表。
 4.銀行帳號建立作業 NOTMA，新增自訂欄位UDF01，
-【1使用中.2零用金.3變更代號.0銷戶】，抓取【1】
+【1使用中.2零用金.3變更代號.0銷戶】，抓取【1,2】
 5.查詢條件(幣別需去除前後空白)：
 ======== 銀行存款明細帳(評價前) ===========
 以NOTMA為主檔串查合併 月統計表(NOTLA)及明細表(CT_F22_1_SGLDT_After_Temp) 
 來源類型 <> '匯兌損益' 
-NOTMA.UDF01 = '1'，
+NOTMA.UDF01 in ('1','2')，
 需再加入【銀行月統計檔NOTLA】並需扣除【匯兌損益調整單身檔(NOTTQ)】
 ======== 銀行存款明細帳(評價後) ===========
-NOTMA.UDF01 = '1'
+NOTMA.UDF01 in ('1','2')，
 來自【存款提款:銀行存款存提單頭檔NOTTF+轉帳:銀行存款存提單身檔NOTTG+應收兌現:應收票據單頭檔NOTTC+匯兌損益:匯兌損益調整單身檔NOTTQ】合併
 加入【銀行月統計檔NOTLA】
 ======== 外幣存款月底重評價表 ===========
@@ -292,7 +297,7 @@ NOTMA.UDF01 = '1'
                         left join CMSMQ on MQ001 = TF001
                         where  TF010 = 'Y' and TF003 like '{0}%') SGL_Detail_After
                     left join NOTMA on  MA001 = 銀行代號
-                    where NOTMA.UDF01 = '1'", str_date_ym_e);
+                    where NOTMA.UDF01 in ('1','2')", str_date_ym_e);
             MyCode.sqlExecuteNonQuery(sql_str_Insert_CT_F22_1_SGLDT_After_Temp, "S2008X64");
 
             string sql_str_CT_F22_1_SGLDT_After_Temp = String.Format(@"
@@ -318,7 +323,7 @@ NOTMA.UDF01 = '1'
                             , LA006 as 本幣期初餘額, '0' as 本幣入帳金額, '0' as 本幣出帳金額, '0' as 本幣期末餘額
                              from NOTLA
                             left join NOTMA on MA001 = LA001
-                             where NOTMA.UDF01 = '1' and LA002 = '{0}'
+                             where NOTMA.UDF01 in ('1','2') and LA002 = '{0}'
                         union all
                             select  銀行代號, 幣別, 銀行簡稱, 銀行帳號
                             ,'0' as 原幣期初餘額, 原幣入帳金額, 原幣出帳金額,'0' as 原幣期末餘額
@@ -346,7 +351,7 @@ NOTMA.UDF01 = '1'
                             , LA006 as 本幣期初餘額, '0' as 本幣入帳金額, '0' as 本幣出帳金額, '0' as 本幣期末餘額
                              from NOTLA
                             left join NOTMA on MA001 = LA001
-                             where NOTMA.UDF01 = '1' and LA002 = '{0}'
+                             where NOTMA.UDF01 in ('1','2') and LA002 = '{0}'
                         union all
                             select  銀行代號, 幣別, 銀行簡稱, 銀行帳號
                             ,'0' as 原幣期初餘額, 原幣入帳金額, 原幣出帳金額,'0' as 原幣期末餘額
