@@ -24,7 +24,10 @@ namespace TOYOINK_dev
          * 20210513 更改查詢條件，不指定單別，改套代號cond及判別客戶基本資料COPMA-MA124關係人代號不為空值及開頭9
          * 20210802 財務邱鈺婷20210729提出，本社報表格式修改，【關聯方銷貨彙總表】【年度客戶別銷售金額統計表】加入【關係人代號】欄位
          * 20211004 財務邱鈺婷20211004提出，【年度客戶別銷售金額統計表】統計年度位置調整，因上次加入[關係人代號]欄位，位置需調整，已修正
-         */
+         * 20220704 財務邱鈺婷20220704提出，結帳單_東洋集團關係人 因國稅局更改佣金申報認列方式,故有修改申報月份，查詢條件修正為[單據日期]
+         * and left(TA003,6) >= '{1}' and left(TA003,6) <= '{2}'
+         * 20220705 財務部邱鈺婷提出，結帳單_東洋集團關係人 報表 TA032[申報年月]欄位名稱改為[結帳年月]，取結帳日期的年月
+             * */
         public MyClass MyCode;
         string str_enter = ((char)13).ToString() + ((char)10).ToString();
         月曆 fm_月曆;
@@ -255,9 +258,11 @@ namespace TOYOINK_dev
                  MyCode.Sql_dgv(sql_str_Income, dt_Income, dgv_Income);
 
                 //結帳單_東洋集團關係人
-                
+                //20220704 邱鈺婷提出 將日期條件原申報年月TA032改為結帳日期TA003 [and TA032 >= '{1}' and TA032 <= '{2}']
+                //20220705 財務部邱鈺婷提出，結帳單_東洋集團關係人 報表 TA032[申報年月]欄位名稱改為[結帳年月]，取結帳日期的年月
+
                 string sql_str_Statement = String.Format(
-                    @"SELECT TA032 as 申報年月, TA004 as 客戶代號, TA008 as 客戶全名,  TB001 as 結帳單別
+                    @"SELECT left(TA003,6) as 結帳年月, TA004 as 客戶代號, TA008 as 客戶全名,  TB001 as 結帳單別
                     , MQ002 as 單據名稱, TA003 as 結帳日期, TB002 as 結帳單號, TB003 as 結帳序號,TB004 as 來源
                     ,(case TB013 when '' then MB012 else TB013 end)as 會計科目
                     ,TB019 as 本幣未稅金額,TB005 as 銷貨單別,TB008 as 銷貨單據日期,TB006 as 銷貨單號
@@ -267,8 +272,8 @@ namespace TOYOINK_dev
                         left JOIN AJSMB on AJSMB.MB002 = ACRTB.TB001
                         left join COPMA on COPMA.MA001 = TA004
                         where {0}
-                        and TA032 >= '{1}' and TA032 <= '{2}'
-                        order by TA032,TB001,TA003", sql_str_cond_Statement, str_date_m_s, str_date_m_e);
+                        and left(TA003,6) >= '{1}' and left(TA003,6) <= '{2}'
+                        order by left(TA003,6),TB001,TA003", sql_str_cond_Statement, str_date_m_s, str_date_m_e);
 
                  MyCode.Sql_dgv(sql_str_Statement, dt_Statement, dgv_Statement);
 
@@ -532,7 +537,7 @@ namespace TOYOINK_dev
                         wsheet_Statement.Range("A" + (j + 5) + ":N" + (j + 5)).Style.Border.BottomBorder = XLBorderStyleValues.Thin;
                         wsheet_Statement.Range("A" + (j + 5) + ":N" + (j + 5)).Style.Fill.BackgroundColor = XLColor.LightGoldenrodYellow;
 
-                        wsheet_Statement.Cell(j + 5, 2).Value = Soldj; //申報年月
+                        wsheet_Statement.Cell(j + 5, 2).Value = Soldj; //申報年月 20220705 改結帳年月
                         wsheet_Statement.Cell(j + 5, 3).Value = "小計";
                         wsheet_Statement.Cell(j + 5, 11).Style.NumberFormat.Format = "#,##0_);[RED](#,##0)";
                         wsheet_Statement.Cell(j + 5, 11).FormulaA1 = "=SUMIF(A:A,\"" + Soldj +"\",K:K)";
@@ -542,7 +547,7 @@ namespace TOYOINK_dev
 
                     Soldj = row[0].ToString();
 
-                    wsheet_Statement.Cell(j + 5, 1).Value = row[0]; //申報年月
+                    wsheet_Statement.Cell(j + 5, 1).Value = row[0]; //申報年月 20220705 改結帳年月
                     wsheet_Statement.Cell(j + 5, 2).Value = row[1]; //客戶代號
                     wsheet_Statement.Cell(j + 5, 3).Value = row[2]; //客戶全名
                     wsheet_Statement.Cell(j + 5, 4).Style.NumberFormat.Format = "@";

@@ -145,10 +145,10 @@
             this.tabPage3.Controls.Add(this.btn_fileopen);
             this.tabPage3.Controls.Add(this.chk_colorM);
             this.tabPage3.Controls.Add(this.txt_date_s);
-            this.tabPage3.Location = new System.Drawing.Point(4, 34);
+            this.tabPage3.Location = new System.Drawing.Point(4, 29);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(1102, 169);
+            this.tabPage3.Size = new System.Drawing.Size(1102, 174);
             this.tabPage3.TabIndex = 0;
             this.tabPage3.Text = "查詢";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -158,7 +158,7 @@
             this.txt_Mnum.Location = new System.Drawing.Point(528, 12);
             this.txt_Mnum.Name = "txt_Mnum";
             this.txt_Mnum.ReadOnly = true;
-            this.txt_Mnum.Size = new System.Drawing.Size(34, 34);
+            this.txt_Mnum.Size = new System.Drawing.Size(34, 29);
             this.txt_Mnum.TabIndex = 45;
             // 
             // panel3
@@ -178,7 +178,7 @@
             this.label2.ForeColor = System.Drawing.Color.White;
             this.label2.Location = new System.Drawing.Point(8, 14);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(140, 36);
+            this.label2.Size = new System.Drawing.Size(110, 28);
             this.label2.TabIndex = 37;
             this.label2.Text = "Excel轉出";
             // 
@@ -204,7 +204,7 @@
             this.txt_date_e.Location = new System.Drawing.Point(286, 13);
             this.txt_date_e.Name = "txt_date_e";
             this.txt_date_e.ReadOnly = true;
-            this.txt_date_e.Size = new System.Drawing.Size(114, 34);
+            this.txt_date_e.Size = new System.Drawing.Size(114, 29);
             this.txt_date_e.TabIndex = 12;
             this.txt_date_e.Text = "20190531";
             this.txt_date_e.TextChanged += new System.EventHandler(this.txt_date_e_TextChanged);
@@ -214,7 +214,7 @@
             this.Label6.AutoSize = true;
             this.Label6.Location = new System.Drawing.Point(439, 17);
             this.Label6.Name = "Label6";
-            this.Label6.Size = new System.Drawing.Size(92, 25);
+            this.Label6.Size = new System.Drawing.Size(73, 20);
             this.Label6.TabIndex = 44;
             this.Label6.Text = "區間月數";
             // 
@@ -224,7 +224,7 @@
             this.label3.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label3.Location = new System.Drawing.Point(257, 18);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(27, 25);
+            this.label3.Size = new System.Drawing.Size(21, 20);
             this.label3.TabIndex = 33;
             this.label3.Text = "~";
             // 
@@ -233,7 +233,7 @@
             this.txt_path.Location = new System.Drawing.Point(102, 61);
             this.txt_path.Name = "txt_path";
             this.txt_path.ReadOnly = true;
-            this.txt_path.Size = new System.Drawing.Size(372, 34);
+            this.txt_path.Size = new System.Drawing.Size(372, 29);
             this.txt_path.TabIndex = 23;
             this.txt_path.Text = "D:\\";
             // 
@@ -242,7 +242,7 @@
             this.cbo_colorM.FormattingEnabled = true;
             this.cbo_colorM.Location = new System.Drawing.Point(369, 132);
             this.cbo_colorM.Name = "cbo_colorM";
-            this.cbo_colorM.Size = new System.Drawing.Size(102, 33);
+            this.cbo_colorM.Size = new System.Drawing.Size(102, 28);
             this.cbo_colorM.TabIndex = 43;
             // 
             // Btn_date_s
@@ -260,7 +260,7 @@
             this.label1.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label1.Location = new System.Drawing.Point(10, 66);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(92, 25);
+            this.label1.Size = new System.Drawing.Size(73, 20);
             this.label1.TabIndex = 21;
             this.label1.Text = "存檔位置";
             // 
@@ -270,7 +270,7 @@
             this.label4.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label4.Location = new System.Drawing.Point(562, 17);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(92, 25);
+            this.label4.Size = new System.Drawing.Size(73, 20);
             this.label4.TabIndex = 41;
             this.label4.Text = "所需月數";
             // 
@@ -312,7 +312,7 @@
             "12"});
             this.cbo_sheet.Location = new System.Drawing.Point(654, 13);
             this.cbo_sheet.Name = "cbo_sheet";
-            this.cbo_sheet.Size = new System.Drawing.Size(52, 33);
+            this.cbo_sheet.Size = new System.Drawing.Size(52, 28);
             this.cbo_sheet.TabIndex = 42;
             this.cbo_sheet.Text = "6";
             this.cbo_sheet.SelectedIndexChanged += new System.EventHandler(this.cbo_sheet_SelectedIndexChanged);
@@ -336,7 +336,7 @@
             this.label5.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label5.Location = new System.Drawing.Point(8, 18);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(92, 25);
+            this.label5.Size = new System.Drawing.Size(73, 20);
             this.label5.TabIndex = 27;
             this.label5.Text = "日期區間";
             // 
@@ -357,7 +357,7 @@
             this.chk_colorM.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chk_colorM.Location = new System.Drawing.Point(369, 103);
             this.chk_colorM.Name = "chk_colorM";
-            this.chk_colorM.Size = new System.Drawing.Size(114, 29);
+            this.chk_colorM.Size = new System.Drawing.Size(92, 24);
             this.chk_colorM.TabIndex = 38;
             this.chk_colorM.Text = "底色月份";
             this.chk_colorM.UseVisualStyleBackColor = true;
@@ -370,7 +370,7 @@
             this.txt_date_s.Location = new System.Drawing.Point(103, 13);
             this.txt_date_s.Name = "txt_date_s";
             this.txt_date_s.ReadOnly = true;
-            this.txt_date_s.Size = new System.Drawing.Size(114, 34);
+            this.txt_date_s.Size = new System.Drawing.Size(114, 29);
             this.txt_date_s.TabIndex = 10;
             this.txt_date_s.Text = "20190501";
             this.txt_date_s.TextChanged += new System.EventHandler(this.txt_date_s_TextChanged);
@@ -387,10 +387,10 @@
             this.tabPage4.Controls.Add(this.button2);
             this.tabPage4.Controls.Add(this.button1);
             this.tabPage4.Controls.Add(this.listView1);
-            this.tabPage4.Location = new System.Drawing.Point(4, 34);
+            this.tabPage4.Location = new System.Drawing.Point(4, 29);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(1102, 169);
+            this.tabPage4.Size = new System.Drawing.Size(1102, 174);
             this.tabPage4.TabIndex = 1;
             this.tabPage4.Text = "條件設定";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -408,7 +408,7 @@
             // 
             this.textBox2.Location = new System.Drawing.Point(274, 129);
             this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(106, 34);
+            this.textBox2.Size = new System.Drawing.Size(106, 29);
             this.textBox2.TabIndex = 8;
             // 
             // button5
@@ -454,7 +454,7 @@
             // 
             this.textBox1.Location = new System.Drawing.Point(7, 129);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(106, 34);
+            this.textBox1.Size = new System.Drawing.Size(106, 29);
             this.textBox1.TabIndex = 3;
             // 
             // button2
@@ -489,9 +489,9 @@
             // 
             // tabPage1
             // 
-            this.tabPage1.Location = new System.Drawing.Point(4, 34);
+            this.tabPage1.Location = new System.Drawing.Point(4, 29);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Size = new System.Drawing.Size(1102, 169);
+            this.tabPage1.Size = new System.Drawing.Size(1102, 174);
             this.tabPage1.TabIndex = 2;
             this.tabPage1.Text = "條件說明";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -660,7 +660,7 @@
             // 
             // fm_Trademark
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1142, 728);
             this.Controls.Add(this.panel2);
@@ -670,7 +670,7 @@
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "fm_Trademark";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "商標權報表(20211004 0915)";
+            this.Text = "商標權報表(20220705 1530)";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.fm_Trademark_FormClosed);
             this.Load += new System.EventHandler(this.fm_Trademark_Load);
             this.panel1.ResumeLayout(false);
