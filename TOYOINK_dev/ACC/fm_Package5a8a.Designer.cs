@@ -70,6 +70,10 @@
             this.dgv_ACTML = new System.Windows.Forms.DataGridView();
             this.tab_ACRTB = new System.Windows.Forms.TabPage();
             this.dgv_ACRTB = new System.Windows.Forms.DataGridView();
+            this.tab_ACTTB = new System.Windows.Forms.TabPage();
+            this.dgv_ACTTB = new System.Windows.Forms.DataGridView();
+            this.tab_ZYCC_5A8A = new System.Windows.Forms.TabPage();
+            this.dgv_ZYCC_5A8A = new System.Windows.Forms.DataGridView();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -89,6 +93,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgv_ACTML)).BeginInit();
             this.tab_ACRTB.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_ACRTB)).BeginInit();
+            this.tab_ACTTB.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_ACTTB)).BeginInit();
+            this.tab_ZYCC_5A8A.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_ZYCC_5A8A)).BeginInit();
             this.SuspendLayout();
             // 
             // panel2
@@ -395,6 +403,8 @@
             this.tabControl1.Controls.Add(this.tab_ACPMB);
             this.tabControl1.Controls.Add(this.tab_ACPML);
             this.tabControl1.Controls.Add(this.tab_ACRTB);
+            this.tabControl1.Controls.Add(this.tab_ACTTB);
+            this.tabControl1.Controls.Add(this.tab_ZYCC_5A8A);
             this.tabControl1.HotTrack = true;
             this.tabControl1.Location = new System.Drawing.Point(10, 230);
             this.tabControl1.Name = "tabControl1";
@@ -618,6 +628,60 @@
             this.dgv_ACRTB.Size = new System.Drawing.Size(1127, 449);
             this.dgv_ACRTB.TabIndex = 1;
             // 
+            // tab_ACTTB
+            // 
+            this.tab_ACTTB.Controls.Add(this.dgv_ACTTB);
+            this.tab_ACTTB.Location = new System.Drawing.Point(4, 34);
+            this.tab_ACTTB.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tab_ACTTB.Name = "tab_ACTTB";
+            this.tab_ACTTB.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tab_ACTTB.Size = new System.Drawing.Size(1135, 459);
+            this.tab_ACTTB.TabIndex = 10;
+            this.tab_ACTTB.Text = "販管費明細表";
+            this.tab_ACTTB.UseVisualStyleBackColor = true;
+            // 
+            // dgv_ACTTB
+            // 
+            this.dgv_ACTTB.AllowUserToAddRows = false;
+            this.dgv_ACTTB.AllowUserToDeleteRows = false;
+            this.dgv_ACTTB.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.dgv_ACTTB.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_ACTTB.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgv_ACTTB.Location = new System.Drawing.Point(4, 5);
+            this.dgv_ACTTB.Name = "dgv_ACTTB";
+            this.dgv_ACTTB.ReadOnly = true;
+            this.dgv_ACTTB.RowHeadersWidth = 51;
+            this.dgv_ACTTB.RowTemplate.Height = 27;
+            this.dgv_ACTTB.Size = new System.Drawing.Size(1127, 449);
+            this.dgv_ACTTB.TabIndex = 2;
+            // 
+            // tab_ZYCC_5A8A
+            // 
+            this.tab_ZYCC_5A8A.Controls.Add(this.dgv_ZYCC_5A8A);
+            this.tab_ZYCC_5A8A.Location = new System.Drawing.Point(4, 34);
+            this.tab_ZYCC_5A8A.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tab_ZYCC_5A8A.Name = "tab_ZYCC_5A8A";
+            this.tab_ZYCC_5A8A.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tab_ZYCC_5A8A.Size = new System.Drawing.Size(1135, 459);
+            this.tab_ZYCC_5A8A.TabIndex = 11;
+            this.tab_ZYCC_5A8A.Text = "銷貨未到貨明細表";
+            this.tab_ZYCC_5A8A.UseVisualStyleBackColor = true;
+            // 
+            // dgv_ZYCC_5A8A
+            // 
+            this.dgv_ZYCC_5A8A.AllowUserToAddRows = false;
+            this.dgv_ZYCC_5A8A.AllowUserToDeleteRows = false;
+            this.dgv_ZYCC_5A8A.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.dgv_ZYCC_5A8A.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_ZYCC_5A8A.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgv_ZYCC_5A8A.Location = new System.Drawing.Point(4, 5);
+            this.dgv_ZYCC_5A8A.Name = "dgv_ZYCC_5A8A";
+            this.dgv_ZYCC_5A8A.ReadOnly = true;
+            this.dgv_ZYCC_5A8A.RowHeadersWidth = 51;
+            this.dgv_ZYCC_5A8A.RowTemplate.Height = 27;
+            this.dgv_ZYCC_5A8A.Size = new System.Drawing.Size(1127, 449);
+            this.dgv_ZYCC_5A8A.TabIndex = 3;
+            // 
             // fm_Package5a8a
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
@@ -630,7 +694,7 @@
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "fm_Package5a8a";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "銷貨成本分析月報5a及品種別月報8a (20210223 1700)";
+            this.Text = "銷貨成本分析月報5a及品種別月報8a (20230331 1645)";
             this.Load += new System.EventHandler(this.fm_Package5a8a_Load);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
@@ -653,6 +717,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgv_ACTML)).EndInit();
             this.tab_ACRTB.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgv_ACRTB)).EndInit();
+            this.tab_ACTTB.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_ACTTB)).EndInit();
+            this.tab_ZYCC_5A8A.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_ZYCC_5A8A)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -700,5 +768,9 @@
         private System.Windows.Forms.Button btn_8aMonth;
         private System.Windows.Forms.TabPage tab_8aCOPTH;
         private System.Windows.Forms.DataGridView dgv_8aCOPTH;
+        private System.Windows.Forms.TabPage tab_ACTTB;
+        private System.Windows.Forms.DataGridView dgv_ACTTB;
+        private System.Windows.Forms.TabPage tab_ZYCC_5A8A;
+        private System.Windows.Forms.DataGridView dgv_ZYCC_5A8A;
     }
 }
