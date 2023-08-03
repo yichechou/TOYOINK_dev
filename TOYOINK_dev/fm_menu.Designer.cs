@@ -38,8 +38,11 @@
             this.btn_Acc_5b = new System.Windows.Forms.Button();
             this.btn_Package7b = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.btn_PC_PURTC = new System.Windows.Forms.Button();
             this.btn_AUO_NF_COPTC = new System.Windows.Forms.Button();
             this.btn_AUOCOPTC = new System.Windows.Forms.Button();
+            this.btn_AUOPlannedOrderUpdate = new System.Windows.Forms.Button();
+            this.btn_AUOPlannedOrderInput = new System.Windows.Forms.Button();
             this.btn_AUOPlannedOrder = new System.Windows.Forms.Button();
             this.btn_Proc_premium = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
@@ -142,7 +145,7 @@
             this.btn_Acc_5b.Name = "btn_Acc_5b";
             this.btn_Acc_5b.Size = new System.Drawing.Size(222, 70);
             this.btn_Acc_5b.TabIndex = 6;
-            this.btn_Acc_5b.Text = "關聯方進貨淨額5b";
+            this.btn_Acc_5b.Text = "關聯方進貨明細5b";
             this.btn_Acc_5b.UseVisualStyleBackColor = true;
             this.btn_Acc_5b.Click += new System.EventHandler(this.btn_Acc_5b_Click);
             // 
@@ -160,8 +163,11 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.btn_PC_PURTC);
             this.tabPage2.Controls.Add(this.btn_AUO_NF_COPTC);
             this.tabPage2.Controls.Add(this.btn_AUOCOPTC);
+            this.tabPage2.Controls.Add(this.btn_AUOPlannedOrderUpdate);
+            this.tabPage2.Controls.Add(this.btn_AUOPlannedOrderInput);
             this.tabPage2.Controls.Add(this.btn_AUOPlannedOrder);
             this.tabPage2.Controls.Add(this.btn_Proc_premium);
             this.tabPage2.Location = new System.Drawing.Point(4, 34);
@@ -172,36 +178,72 @@
             this.tabPage2.Text = "生管相關";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // btn_PC_PURTC
+            // 
+            this.btn_PC_PURTC.Enabled = false;
+            this.btn_PC_PURTC.Font = new System.Drawing.Font("微軟正黑體", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.btn_PC_PURTC.Location = new System.Drawing.Point(13, 238);
+            this.btn_PC_PURTC.Name = "btn_PC_PURTC";
+            this.btn_PC_PURTC.Size = new System.Drawing.Size(222, 70);
+            this.btn_PC_PURTC.TabIndex = 7;
+            this.btn_PC_PURTC.Text = "採購單匯入";
+            this.btn_PC_PURTC.UseVisualStyleBackColor = true;
+            this.btn_PC_PURTC.Click += new System.EventHandler(this.btn_PC_PURTC_Click);
+            // 
             // btn_AUO_NF_COPTC
             // 
-            this.btn_AUO_NF_COPTC.Font = new System.Drawing.Font("微軟正黑體", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.btn_AUO_NF_COPTC.Location = new System.Drawing.Point(241, 83);
+            this.btn_AUO_NF_COPTC.Font = new System.Drawing.Font("微軟正黑體", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.btn_AUO_NF_COPTC.Location = new System.Drawing.Point(241, 162);
             this.btn_AUO_NF_COPTC.Name = "btn_AUO_NF_COPTC";
-            this.btn_AUO_NF_COPTC.Size = new System.Drawing.Size(222, 70);
+            this.btn_AUO_NF_COPTC.Size = new System.Drawing.Size(223, 70);
             this.btn_AUO_NF_COPTC.TabIndex = 6;
-            this.btn_AUO_NF_COPTC.Text = "AUO客戶訂單北廠";
+            this.btn_AUO_NF_COPTC.Text = "AUO客訂北廠";
             this.btn_AUO_NF_COPTC.UseVisualStyleBackColor = true;
             this.btn_AUO_NF_COPTC.Click += new System.EventHandler(this.btn_AUO_NF_COPTC_Click);
             // 
             // btn_AUOCOPTC
             // 
-            this.btn_AUOCOPTC.Font = new System.Drawing.Font("微軟正黑體", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.btn_AUOCOPTC.Location = new System.Drawing.Point(13, 83);
+            this.btn_AUOCOPTC.Font = new System.Drawing.Font("微軟正黑體", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.btn_AUOCOPTC.Location = new System.Drawing.Point(13, 162);
             this.btn_AUOCOPTC.Name = "btn_AUOCOPTC";
             this.btn_AUOCOPTC.Size = new System.Drawing.Size(222, 70);
             this.btn_AUOCOPTC.TabIndex = 5;
-            this.btn_AUOCOPTC.Text = "AUO客戶訂單";
+            this.btn_AUOCOPTC.Text = "AUO客訂南廠";
             this.btn_AUOCOPTC.UseVisualStyleBackColor = true;
             this.btn_AUOCOPTC.Click += new System.EventHandler(this.btn_AUOCOPTC_Click);
             // 
+            // btn_AUOPlannedOrderUpdate
+            // 
+            this.btn_AUOPlannedOrderUpdate.Enabled = false;
+            this.btn_AUOPlannedOrderUpdate.Font = new System.Drawing.Font("微軟正黑體", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.btn_AUOPlannedOrderUpdate.Location = new System.Drawing.Point(242, 87);
+            this.btn_AUOPlannedOrderUpdate.Name = "btn_AUOPlannedOrderUpdate";
+            this.btn_AUOPlannedOrderUpdate.Size = new System.Drawing.Size(222, 70);
+            this.btn_AUOPlannedOrderUpdate.TabIndex = 4;
+            this.btn_AUOPlannedOrderUpdate.Text = "AUO計劃訂單更新";
+            this.btn_AUOPlannedOrderUpdate.UseVisualStyleBackColor = true;
+            this.btn_AUOPlannedOrderUpdate.Click += new System.EventHandler(this.btn_AUOPlannedOrderUpdate_Click);
+            // 
+            // btn_AUOPlannedOrderInput
+            // 
+            this.btn_AUOPlannedOrderInput.Enabled = false;
+            this.btn_AUOPlannedOrderInput.Font = new System.Drawing.Font("微軟正黑體", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.btn_AUOPlannedOrderInput.Location = new System.Drawing.Point(13, 86);
+            this.btn_AUOPlannedOrderInput.Name = "btn_AUOPlannedOrderInput";
+            this.btn_AUOPlannedOrderInput.Size = new System.Drawing.Size(222, 70);
+            this.btn_AUOPlannedOrderInput.TabIndex = 3;
+            this.btn_AUOPlannedOrderInput.Text = "AUO計劃訂單匯入";
+            this.btn_AUOPlannedOrderInput.UseVisualStyleBackColor = true;
+            this.btn_AUOPlannedOrderInput.Click += new System.EventHandler(this.btn_AUOPlannedOrderInput_Click);
+            // 
             // btn_AUOPlannedOrder
             // 
-            this.btn_AUOPlannedOrder.Font = new System.Drawing.Font("微軟正黑體", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.btn_AUOPlannedOrder.Font = new System.Drawing.Font("微軟正黑體", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.btn_AUOPlannedOrder.Location = new System.Drawing.Point(242, 9);
             this.btn_AUOPlannedOrder.Name = "btn_AUOPlannedOrder";
             this.btn_AUOPlannedOrder.Size = new System.Drawing.Size(222, 70);
             this.btn_AUOPlannedOrder.TabIndex = 2;
-            this.btn_AUOPlannedOrder.Text = "客戶計劃訂單匯入";
+            this.btn_AUOPlannedOrder.Text = "AUO計劃訂單";
             this.btn_AUOPlannedOrder.UseVisualStyleBackColor = true;
             this.btn_AUOPlannedOrder.Click += new System.EventHandler(this.btn_AUOPlannedOrder_Click);
             // 
@@ -227,7 +269,7 @@
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "fm_menu";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "台灣東洋先端_系統開發(20220825 1620)";
+            this.Text = "台灣東洋先端_系統開發(20230803 1510)";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.fm_menu_FormClosed);
             this.Load += new System.EventHandler(this.fm_menu_Load);
             this.tabControl1.ResumeLayout(false);
@@ -247,11 +289,14 @@
         private System.Windows.Forms.Button btn_Proc_premium;
         private System.Windows.Forms.Button btn_Package7b;
         private System.Windows.Forms.Button btn_AUOPlannedOrder;
+        private System.Windows.Forms.Button btn_AUOPlannedOrderUpdate;
+        private System.Windows.Forms.Button btn_AUOPlannedOrderInput;
         private System.Windows.Forms.Button btn_AUOCOPTC;
         private System.Windows.Forms.Button btn_Acc_5b;
+        private System.Windows.Forms.Button btn_AUO_NF_COPTC;
         private System.Windows.Forms.Button btn_Acc_F22_1;
         private System.Windows.Forms.Button btn_Acc_RelatedVOU;
-        private System.Windows.Forms.Button btn_AUO_NF_COPTC;
+        private System.Windows.Forms.Button btn_PC_PURTC;
     }
 }
 

@@ -19,6 +19,7 @@ namespace TOYOINK_dev
     * 20210623 將建立者欄位改為鎖定，無法變更
     * 20210913 升級GP4單身增加兩個欄位，計價數量(TD076).計價單位(TD077)，同原欄位 數量(TD008).單位(TD010) 及更新連線方式改由MyClass代入
     * ,CFIPO.Quantity as TD076,CFIPO.UOM as TD077,
+    * 20230803 生管 林玲禎提出，EXCEL匯入時，檢查是否空值，忽略欄位名稱為[Sample]或[Remark]
     */
 
     public partial class fm_AUOCOPTC : Form
@@ -296,6 +297,59 @@ namespace TOYOINK_dev
             DataTable dt_訂單 = new DataTable();
             dt_訂單 = (DataTable)this.dgv_excel.DataSource;
 
+            // 20230803 檢查匯入的EXCEL是否有空值，如有空值，記錄位置
+            List<Tuple<int, string>> emptyFields = new List<Tuple<int, string>>();
+
+            for (int i = 0; i < dt_訂單.Rows.Count; i++)
+            {
+                DataRow row = dt_訂單.Rows[i];
+                for (int j = 0; j < dt_訂單.Columns.Count; j++)
+                {
+                    DataColumn col = dt_訂單.Columns[j];
+                    // 忽略欄位名稱為[Sample]或[Remark]
+                    if (col.ColumnName == "Sample" || col.ColumnName == "Remark")
+                        continue;
+
+                    // 檢查每個欄位的值是否為 DBNull.Value 或空值
+                    if (row.IsNull(col) || string.IsNullOrWhiteSpace(row[col.ColumnName].ToString()))
+                    {
+                        emptyFields.Add(new Tuple<int, string>(i, col.ColumnName));
+                    }
+                }
+            }
+
+            if (emptyFields.Count > 0)
+            {
+                // 若有空值，顯示訊息和定位
+                string errorMessage = "警告：請檢查以下欄位的空值重新上傳：" + Environment.NewLine;
+                foreach (var field in emptyFields)
+                {
+                    errorMessage += $"【來源檔案-[{field.Item2}]】在第 {field.Item1 + 1} 列" + Environment.NewLine;
+                }
+                lab_status.Text = errorMessage;
+                txt_path.Text = "";
+                MessageBox.Show("轉換失敗!!" + Environment.NewLine +
+                                errorMessage +
+                                "請先檢查相應欄位重新上傳 或 連絡MIS", "警告訊息", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+
+                txterr.Text += Environment.NewLine +
+                               DateTime.Now.ToString() + Environment.NewLine +
+                               "轉換失敗!!" + Environment.NewLine +
+                               errorMessage +
+                               "===========";
+
+                dgv_cfipo.DataSource = null;
+                tabCtl_data.SelectedIndex = 0;
+                btn_toerp.Enabled = false;
+                btn_toerp.BackColor = System.Drawing.SystemColors.Control;
+                btn_toerp.ForeColor = System.Drawing.SystemColors.ControlText;
+                dgv_excel.CurrentCell = dgv_excel.Rows[emptyFields[0].Item1].Cells[emptyFields[0].Item2];
+
+                return;
+            }
+
+
+
             this.lab_status.Text = " 轉換中，請稍後";
             this.to_ExecuteNonQuery("delete from CFIPO"); //MIS建立的暫存table
             //MyCode.sqlExecuteNonQuery("delete from CFIPO");
@@ -527,6 +581,7 @@ namespace TOYOINK_dev
 
                                 default:
                                     str_sql_value = this.get_sql_value(data_type, dt_訂單.Rows[i][str_sql_column].ToString().Trim());
+                                    
                                     break;
                             }
                             str_sql_columns = str_sql_columns + "[" + str_sql_column + "]" + ",";
@@ -1119,3 +1174,32 @@ namespace TOYOINK_dev
 
     }
 }
+/*
+ * A01A 
+ SELECT COLUMN_NAME AS 欄位名稱,
+DATA_TYPE AS 欄位型態,
+CHARACTER_MAXIMUM_LENGTH AS 長度限制,
+IS_NULLABLE AS 是否允許空值, 
+COLUMN_DEFAULT AS 預設值
+FROM INFORMATION_SCHEMA.COLUMNS 
+WHERE TABLE_NAME = N'CFIPO'
+
+ * 欄位名稱	欄位型態	長度限制	是否允許空值	預設值
+ERP_Num	int	NULL	YES	NULL
+ERP_序號	nvarchar	4	YES	NULL
+ERP_客代	nvarchar	50	YES	NULL
+ERP_客單	nvarchar	50	YES	NULL
+ERP_幣別	nvarchar	50	YES	NULL
+線別	nvarchar	50	YES	NULL
+Sample	nvarchar	50	YES	NULL
+Number	nvarchar	50	YES	NULL
+Item	nvarchar	50	YES	NULL
+Item Description	nvarchar	100	YES	NULL
+UOM	nvarchar	50	YES	NULL
+Shipment Amount	decimal	NULL	YES	NULL
+Quantity	decimal	NULL	YES	NULL
+Supplier	nvarchar	50	YES	NULL
+Currency	nvarchar	50	YES	NULL
+Need By Date	nvarchar	50	YES	NULL
+備註	nvarchar	100	YES	NULL
+ */

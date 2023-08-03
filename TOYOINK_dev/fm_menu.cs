@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace TOYOINK_dev
 {
-    /*
+	   /*
      * 使用到的TABLE
      * fm_AUOPlannedOrder: 有使用[SAP].[dbo].fm_COPTC_log、[SAP].[dbo].fm_COPTD_log，同ERP欄位 前面加入 DEL_DATE
      * 
@@ -27,7 +27,9 @@ namespace TOYOINK_dev
         TOYOINK_dev.fm_Acc_5b fm_Acc_5b = new TOYOINK_dev.fm_Acc_5b();
         TOYOINK_dev.fm_Acc_F22_1 fm_Acc_F22_1 = new TOYOINK_dev.fm_Acc_F22_1();
         TOYOINK_dev.fm_Acc_RelatedVOU fm_Acc_RelatedVOU = new TOYOINK_dev.fm_Acc_RelatedVOU();
-        TOYOINK_dev.fm_AUO_NF_COPTC fm_AUO_NF_COPTC = new TOYOINK_dev.fm_AUO_NF_COPTC(); //20210623 AUO客戶訂單北廠 生管林玲禎提出
+        //TOYOINK_dev.fm_trycode fm_trycode = new TOYOINK_dev.fm_trycode();
+        //TOYOINK_dev.fm_PC_PURTC fm_PC_PURTC = new TOYOINK_dev.fm_PC_PURTC();
+
 
         public fm_menu()
         {
@@ -111,6 +113,49 @@ namespace TOYOINK_dev
             //}
         }
 
+        private void btn_AUOPlannedOrderInput_Click(object sender, EventArgs e)
+        {
+            //    fm_AUOPlannedOrderInput fm_AUOPlannedOrderInput = new fm_AUOPlannedOrderInput(); //創建子視窗
+            //    this.Hide(); //隱藏父視窗
+            //    //fm_login.show_fmlogin_FormName("fm_AUOPlannedOrderInput");
+            //    //fm_login.Show();
+
+            //    fm_AUOPlannedOrderInput.Show();
+            //switch (fm_AUOPlannedOrderInput.ShowDialog(this))
+            //{
+            //    case DialogResult.Yes: //Form2中按下ToForm1按鈕
+            //        this.Show(); //顯示父視窗
+            //        this.fm_menu_Load(null, null);
+            //        break;
+            //    case DialogResult.No: //Form2中按下關閉鈕
+            //        this.Close();  //關閉父視窗 (同時結束應用程式)
+            //        break;
+            //    default:
+            //        break;
+            //}
+
+        }
+
+        private void btn_AUOPlannedOrderUpdate_Click(object sender, EventArgs e)
+        {
+            //this.Hide(); //隱藏父視窗
+
+            //fm_AUOPlannedOrderUpdate fm_AUOPlannedOrderUpdate = new fm_AUOPlannedOrderUpdate(); //創建子視窗
+
+            //switch (fm_AUOPlannedOrderUpdate.ShowDialog(this))
+            //{
+            //    case DialogResult.Yes: //Form2中按下ToForm1按鈕
+            //        this.Show(); //顯示父視窗
+            //        this.fm_menu_Load(null, null);
+            //        break;
+            //    case DialogResult.No: //Form2中按下關閉鈕
+            //        this.Close();  //關閉父視窗 (同時結束應用程式)
+            //        break;
+            //    default:
+            //        break;
+            //}
+        }
+
         private void btn_Package5a_Click(object sender, EventArgs e)
         {
             this.Hide(); //隱藏父視窗
@@ -151,12 +196,6 @@ namespace TOYOINK_dev
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-           
-            //fm_trycode.Show();
-            //this.Hide();
-        }
 
         private void btn_Acc_F22_1_Click(object sender, EventArgs e)
         {
@@ -192,6 +231,17 @@ namespace TOYOINK_dev
             fm_login.Show();
         }
 
+        private void btn_PC_PURTC_Click(object sender, EventArgs e)
+        {
+            this.Hide(); //隱藏父視窗
+            fm_login.show_fmlogin_FormName("fm_PC_PURTC");
+            fm_login.Show();
+
+            this.Hide(); //隱藏父視窗
+
+        }
+
+        //fm_AUO_NF_COPTC
         private void btn_AUOCOPTC_Click(object sender, EventArgs e)
         {
             this.Hide(); //隱藏父視窗

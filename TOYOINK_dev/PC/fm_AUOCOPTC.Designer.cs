@@ -483,7 +483,7 @@
             this.Margin = new System.Windows.Forms.Padding(5);
             this.Name = "fm_AUOCOPTC";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "客戶訂單匯入 For 友達 (20210913 1310)";
+            this.Text = "客戶訂單匯入 For 友達(南廠) (20230803 1500)";
             this.Load += new System.EventHandler(this.fm_AUOCOPTC_Load);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
