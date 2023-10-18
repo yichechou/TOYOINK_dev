@@ -38,6 +38,24 @@ namespace TOYOINK_dev
        2.新增[現金・普通預金・当座預金]、[定期預金]、[借入金]合計
        3.定期預金,新增換算金額(殘證)、換算金額(差額)以及合計
        NOTMA.UDF01 = '1'，改為 NOTMA.UDF01 in ('1','2')
+       
+       20231017 財務 林姿刪提出，資訊系統(開發改善)提案書(AMIS003)-2310170001
+        一、新增分頁-"明細分類帳"
+            1.EXCEL 新增 "明細分類帳"分頁，參考5a明細分類帳語法，條件為【ML009(摘要) like '%應兌現票據%' and ML006(科目代號) = '1102041'】
+
+        二、分頁-F22-1_銀行口座一覧表TAST 調整
+            1.EXCEL 新增【批准者/承認者欄位】及【作成 / 時點】日期自動寫入。
+            2.A43欄位，新增【應兌現票據欄位】，公式【=SUM(SUMIFS(明細分類帳!F:F,明細分類帳!A:A,R43))】；R43【銀行代號-1102041】。
+            3.J45.K45 欄位，修改【現金・普通預金・当座預金】，計算公式【=J26+F42(小口現金)+F43(應兌現票據)】、【=K26+G42+G43】。
+
+        三、明細帳(評價前)、明細帳(評價後)
+            1.調整分頁內主管簽核欄位位置，原本設定為C50，改為【C50-總經理：、G50-財務部部長：、K50-製表人：】。
+
+        四、EXCEL整體
+            1.日期區間格式，改為查詢日期區間【2023/09/01~2023/09/30】。
+            2.顯示比例改為80%。
+            3.字體設定為【微軟正黑體】。
+            4.調整欄位寬度。
      */
     public partial class fm_Acc_F22_1 : Form
     {
@@ -58,6 +76,7 @@ namespace TOYOINK_dev
         DataTable dt_SGL_After = new DataTable();     //銀行存款明細帳(評價後)
         DataTable dt_ADFOR = new DataTable();         //外幣存款月底重評價表
         DataTable dt_SGL_Detail = new DataTable();    //銀行存款明細帳細項
+        DataTable dt_ACTML = new DataTable();    //明細分類帳
 
 
         public fm_Acc_F22_1()
@@ -113,6 +132,8 @@ NOTMA.UDF01 in ('1','2')，
 加入【銀行月統計檔NOTLA】
 ======== 外幣存款月底重評價表 ===========
 幣別 <> 'NTD'
+======== 明細分類帳 ===========
+ML009 like '%應兌現票據%' and ML006 = '1102041'
 ");
 
         }
@@ -178,12 +199,14 @@ NOTMA.UDF01 in ('1','2')，
             dt_SGL_After.Clear();    //銀行存款明細帳(評價後)
             dt_ADFOR.Clear();        //外幣存款月底重評價表
             dt_SGL_Detail.Clear();   //銀行存款明細帳細項
+            dt_ACTML.Clear();   //明細分類帳
 
 
             dgv_SGL_Before.DataSource = null;
             dgv_SGL_After.DataSource = null;
             dgv_ADFOR.DataSource = null;
             dgv_SGL_Detail.DataSource = null;
+            dgv_ACTML.DataSource = null;
 
             BtnFalse();
         }
@@ -411,6 +434,27 @@ NOTMA.UDF01 in ('1','2')，
 
             //dt_sumtotal(dt_SGL_Before, "本幣期末餘額");
 
+            //明細分類帳
+            string sql_str_ACTML = String.Format(@"select * from (
+                                  select ML006 as 科目編號 
+                                    ,(select MA003 from ACTMA where MA001 = ACTML.ML006) as 科目名稱
+                                    ,SUBSTRING(ML002,1,6) as 傳票年月 ,ML003+'-'+ML004+' -'+ML005 as 傳票編號
+                                    ,ML009 as 摘要
+                                    ,(case ML007 when '1' then ML008 else 0 end) as 本幣借方金額
+                                    ,(case ML007 when '-1' then ML008 else 0 end)  as 本幣貸方金額 
+                                    ,(case MA007 
+	                                    when '1' then ((case ML007 when '1' then ML008 else 0 end)-(case ML007 when '-1' then ML008 else 0 end)) 
+	                                    when '-1' then ((case ML007 when '-1' then ML008 else 0 end)-(case ML007 when '1' then ML008 else 0 end)) else 0 end ) as 貸借金額
+                                    from ACTML
+	                                    left JOIN ACTMA on ACTMA.MA001 = ACTML.ML006
+                                        left JOIN ACTTB on ACTTB.TB001 = ACTML.ML003 and ACTTB.TB002 = ACTML.ML004 and ACTTB.TB003 = ACTML.ML005
+                                    where (
+	                                (ML009 like '%應兌現票據%' and ML006 = '1102041') 
+	                                )) ACTML_ALL
+                            where 傳票年月 like '{0}'
+                            order by 傳票年月,科目編號", str_date_ym_e);
+            MyCode.Sql_dgv(sql_str_ACTML, dt_ACTML, dgv_ACTML);
+
             BtnTrue();
         }
         //private DataTable dt_sumtotal(DataTable dt, string str_Total)
@@ -435,12 +479,14 @@ NOTMA.UDF01 in ('1','2')，
                     var ws3 = templateWB.Worksheet("明細帳(評價後)");
                     var ws4 = templateWB.Worksheet("評價表");
                     var ws5 = templateWB.Worksheet("明細帳細項");
+                    var ws6 = templateWB.Worksheet("明細分類帳");
 
                     ws.CopyTo(wb_F22_1_Month, "F22-1_銀行口座一覧表TAST");
                     ws2.CopyTo(wb_F22_1_Month, "明細帳(評價前)");
                     ws3.CopyTo(wb_F22_1_Month, "明細帳(評價後)");
                     ws4.CopyTo(wb_F22_1_Month, "評價表");
                     ws5.CopyTo(wb_F22_1_Month, "明細帳細項");
+                    ws6.CopyTo(wb_F22_1_Month, "明細分類帳");
                 }
 
                 var wsheet_F22_1_m = wb_F22_1_Month.Worksheet("F22-1_銀行口座一覧表TAST");
@@ -448,6 +494,7 @@ NOTMA.UDF01 in ('1','2')，
                 var wsheet_SGL_After = wb_F22_1_Month.Worksheet("明細帳(評價後)");
                 var wsheet_ADFOR = wb_F22_1_Month.Worksheet("評價表");
                 var wsheet_SGL_Detail = wb_F22_1_Month.Worksheet("明細帳細項");
+                var wsheet_ACTML = wb_F22_1_Month.Worksheet("明細分類帳");
 
                 //=== F22-1_銀行口座一覧表TAST ==========================================
                 //wsheet_F22_1_m.Cell(2, 1).Value = "月份區間:" + str_date_ym_s + "~" + str_date_ym_e; //查詢月份區間
@@ -455,10 +502,15 @@ NOTMA.UDF01 in ('1','2')，
 
                 ////== 明細帳(評價前).明細帳(評價後).評價表 =======
                 ///ERP_DTInputExcel(wsheet_8aCOPTH, dt_8aCOPTH, str_date_y_e + "01");
-                ERP_DTInputExcel(wsheet_SGL_Before, dt_SGL_Before, 5, 1, str_date_ym_s, "", "本幣期末餘額");
-                ERP_DTInputExcel(wsheet_SGL_After, dt_SGL_After, 5, 1, str_date_ym_s, "", "本幣期末餘額");
-                ERP_DTInputExcel(wsheet_ADFOR, dt_ADFOR, 5, 1, str_date_ym_s, "幣別", "原幣存款金額");
-                ERP_DTInputExcel(wsheet_SGL_Detail, dt_SGL_Detail, 5, 1, str_date_ym_s, "", "");
+            
+                wsheet_F22_1_m.Cell(1, 16).Value = DateTime.Now.ToString("yyyy/MM/dd"); //製表日期
+                wsheet_F22_1_m.Cell(2, 16).Value = DateTime.ParseExact(str_date_e, "yyyyMMdd", null).ToString("yyyy/MM/dd");
+                wsheet_F22_1_m.Cells().Style.Font.FontName = "微軟正黑體";
+                ERP_DTInputExcel(wsheet_SGL_Before, dt_SGL_Before, 5, 1, str_date_s, "", "本幣期末餘額");
+                ERP_DTInputExcel(wsheet_SGL_After, dt_SGL_After, 5, 1, str_date_s, "", "本幣期末餘額");
+                ERP_DTInputExcel(wsheet_ADFOR, dt_ADFOR, 5, 1, str_date_s, "幣別", "原幣存款金額");
+                ERP_DTInputExcel(wsheet_SGL_Detail, dt_SGL_Detail, 5, 1, str_date_s, "", "");
+                ERP_DTInputExcel(wsheet_ACTML, dt_ACTML, 5, 1, str_date_s, "", "");
                 //ERP_DTInputExcel(wsheet_ADFOR, dt_ADFOR, str_date_ym_s, "幣別", "原幣存款金額;本幣存款金額;重估本幣金額;匯兌損失;淨(損)益");
 
                 save_as_F22_1_Month = txt_path.Text.ToString().Trim() + "\\" + str_date_ym_e + @"_F22-1_銀行口座一覧表TAST_" + DateTime.Now.ToString("yyyyMMdd") + @".xlsx";
@@ -480,9 +532,15 @@ NOTMA.UDF01 in ('1','2')，
             int col_count_dt = dt.Columns.Count;
             string str_SubTotal_Name = "";
 
-            wsheet.Cell(2, 2).Value = str_date + "~" + str_date_ym_e; //查詢月份區間
+            
+
+            DateTime date_sheet_s = DateTime.ParseExact(str_date, "yyyyMMdd", null);
+            DateTime date_sheet_e = DateTime.ParseExact(str_date_e, "yyyyMMdd", null);
+
+            wsheet.Cell(2, 2).Value = date_sheet_s.ToString("yyyy/MM/dd") + "~" + date_sheet_e.ToString("yyyy/MM/dd"); //查詢月份區間
             wsheet.Cell(3, 2).Style.NumberFormat.Format = "@";
             wsheet.Cell(3, 2).Value = DateTime.Now.ToString("yyyy/MM/dd"); //製表日期
+
 
             foreach (DataRow row in dt.Rows)
             {
@@ -506,7 +564,7 @@ NOTMA.UDF01 in ('1','2')，
                         wsheet.Cell(i + i_col, 8).FormulaA1 = "=SUMIFS(H:H,$A:$A,\"" + str_SubTotal_Name + "\")";
                         wsheet.Cell(i + i_col, 9).FormulaA1 = "=SUMIFS(I:I,$A:$A,\"" + str_SubTotal_Name + "\")";
                         wsheet.Cell(i + i_col, 10).FormulaA1 = "=SUMIFS(J:J,$A:$A,\"" + str_SubTotal_Name + "\")";
-
+                        //wsheet.SheetView.ZoomScale = 80;
                         i++;
                     }
                 }
@@ -517,6 +575,8 @@ NOTMA.UDF01 in ('1','2')，
                     {
                         case "銀行帳號":
                         case "銀行代號":
+                        case "科目編號":
+                        case "傳票年月":
                             wsheet.Cell(i + i_col, j + j_row).Style.NumberFormat.Format = "@";
                             break;
                         case "本幣期初餘額":
@@ -524,6 +584,9 @@ NOTMA.UDF01 in ('1','2')，
                         case "本幣出帳金額":
                         case "本幣期末餘額":
                         case "本幣存款金額":
+                        case "本幣借方金額":
+                        case "本幣貸方金額":
+                        case "貸借金額":
                         case "重估本幣金額":
                         case "匯兌收益":
                         case "匯兌損失":
@@ -567,7 +630,7 @@ NOTMA.UDF01 in ('1','2')，
                         wsheet.Cell(i + i_col, col_count_dt - 2).Value = "小計";
                         wsheet.Cell(i + i_col, j + j_row - 1).Style.NumberFormat.Format = "#,##0_);[RED](#,##0)";
                         wsheet.Cell(i + i_col, j + j_row - 1).FormulaA1 = "=sum(L" + i_col + ":L" + (i + i_col - 1) + ")";
-                        wsheet.SheetView.ZoomScale = 80;
+                        //wsheet.SheetView.ZoomScale = 80;
 
                     }
                     //if (wsheet.ToString() == "評價表")
@@ -604,11 +667,14 @@ NOTMA.UDF01 in ('1','2')，
                         wsheet.Cell(i + i_col, 9).FormulaA1 = "=SUMIFS(I:I,$D:$D,\"小計\")";
                         wsheet.Cell(i + i_col, 10).FormulaA1 = "=SUMIFS(J:J,$D:$D,\"小計\")";
                         wsheet.Cell(i + i_col, 11).FormulaA1 = "=I" + (i + i_col) +  "-J" + (i + i_col);
+                        
 
                     }
                 }
                
                 i++;
+                wsheet.Cells().Style.Font.FontName = "微軟正黑體";
+                wsheet.SheetView.ZoomScale = 80;
             }
 
         }

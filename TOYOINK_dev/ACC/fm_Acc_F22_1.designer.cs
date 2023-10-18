@@ -57,6 +57,8 @@
             this.dgv_ADFOR = new System.Windows.Forms.DataGridView();
             this.tab_SGL_Detail = new System.Windows.Forms.TabPage();
             this.dgv_SGL_Detail = new System.Windows.Forms.DataGridView();
+            this.tab_ACTML = new System.Windows.Forms.TabPage();
+            this.dgv_ACTML = new System.Windows.Forms.DataGridView();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -68,6 +70,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgv_ADFOR)).BeginInit();
             this.tab_SGL_Detail.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_SGL_Detail)).BeginInit();
+            this.tab_ACTML.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_ACTML)).BeginInit();
             this.SuspendLayout();
             // 
             // panel2
@@ -295,6 +299,7 @@
             this.tabControl1.Controls.Add(this.tab_SGL_After);
             this.tabControl1.Controls.Add(this.tab_ADFOR);
             this.tabControl1.Controls.Add(this.tab_SGL_Detail);
+            this.tabControl1.Controls.Add(this.tab_ACTML);
             this.tabControl1.HotTrack = true;
             this.tabControl1.Location = new System.Drawing.Point(12, 190);
             this.tabControl1.Name = "tabControl1";
@@ -410,6 +415,33 @@
             this.dgv_SGL_Detail.Size = new System.Drawing.Size(1138, 536);
             this.dgv_SGL_Detail.TabIndex = 2;
             // 
+            // tab_ACTML
+            // 
+            this.tab_ACTML.Controls.Add(this.dgv_ACTML);
+            this.tab_ACTML.Location = new System.Drawing.Point(4, 34);
+            this.tab_ACTML.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tab_ACTML.Name = "tab_ACTML";
+            this.tab_ACTML.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tab_ACTML.Size = new System.Drawing.Size(1146, 546);
+            this.tab_ACTML.TabIndex = 11;
+            this.tab_ACTML.Text = "明細分類帳";
+            this.tab_ACTML.UseVisualStyleBackColor = true;
+            // 
+            // dgv_ACTML
+            // 
+            this.dgv_ACTML.AllowUserToAddRows = false;
+            this.dgv_ACTML.AllowUserToDeleteRows = false;
+            this.dgv_ACTML.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.dgv_ACTML.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_ACTML.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgv_ACTML.Location = new System.Drawing.Point(4, 5);
+            this.dgv_ACTML.Name = "dgv_ACTML";
+            this.dgv_ACTML.ReadOnly = true;
+            this.dgv_ACTML.RowHeadersWidth = 51;
+            this.dgv_ACTML.RowTemplate.Height = 27;
+            this.dgv_ACTML.Size = new System.Drawing.Size(1138, 536);
+            this.dgv_ACTML.TabIndex = 3;
+            // 
             // fm_Acc_F22_1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
@@ -421,7 +453,7 @@
             this.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.Name = "fm_Acc_F22_1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "F22-1_銀行口座一覧表TAST (20220418 0815)";
+            this.Text = "F22-1_銀行口座一覧表TAST (20231018 0920)";
             this.Load += new System.EventHandler(this.fm_Acc_F22_1_Load);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
@@ -436,6 +468,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgv_ADFOR)).EndInit();
             this.tab_SGL_Detail.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgv_SGL_Detail)).EndInit();
+            this.tab_ACTML.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_ACTML)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -470,5 +504,7 @@
         private System.Windows.Forms.DataGridView dgv_ADFOR;
         private System.Windows.Forms.TabPage tab_SGL_Detail;
         private System.Windows.Forms.DataGridView dgv_SGL_Detail;
+        private System.Windows.Forms.TabPage tab_ACTML;
+        private System.Windows.Forms.DataGridView dgv_ACTML;
     }
 }
