@@ -21,7 +21,7 @@ namespace TOYOINK_dev
     /*//20210816 須注意 有使用[SAP].[dbo].fm_COPTC_log、[SAP].[dbo].fm_COPTD_log，同ERP欄位 前面加入 DEL_DATE
      *20210913 升級GP4單身增加兩個欄位，計價數量(TD076).計價單位(TD077)，同原欄位 數量(TD008).單位(TD010)
      * ,[AMOUNT] as TD076,INVMB.MB004 as TD077,
-     * 
+     *20231030 生管 梁姿儂 C5D.C6C 已關廠，註解此段程式 LINQ
      */
     public partial class fm_AUOPlannedOrder : Form
     {
@@ -1439,13 +1439,14 @@ namespace TOYOINK_dev
                            select r;
             dt_ERPUP_C4A = Linq_C4A.CopyToDataTable();
 
+            //20231030 生管 梁姿儂 C5D.C6C 已關廠，註解此段程式
             //使用Linq進行查詢線別C5D.C6C
-            string[] Array_H11 = new string[] { "C5D", "C6C" };
+            //string[] Array_H11 = new string[] { "C5D", "C6C" };
 
-            var Linq_C5DC6C = from r in dt_ERPUPSeacrh.AsEnumerable()
-                              where Array_H11.Contains(r.Field<string>("FAB"))
-                              select r;
-            dt_ERPUP_C5DC6C = Linq_C5DC6C.CopyToDataTable();
+            //var Linq_C5DC6C = from r in dt_ERPUPSeacrh.AsEnumerable()
+            //                  where Array_H11.Contains(r.Field<string>("FAB"))
+            //                  select r;
+            //dt_ERPUP_C5DC6C = Linq_C5DC6C.CopyToDataTable();
 
             //使用Linq進行查詢線別C5E
             var Linq_C5E = from r in dt_ERPUPSeacrh.AsEnumerable()
