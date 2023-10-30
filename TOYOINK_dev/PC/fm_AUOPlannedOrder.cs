@@ -21,7 +21,7 @@ namespace TOYOINK_dev
     /*//20210816 須注意 有使用[SAP].[dbo].fm_COPTC_log、[SAP].[dbo].fm_COPTD_log，同ERP欄位 前面加入 DEL_DATE
      *20210913 升級GP4單身增加兩個欄位，計價數量(TD076).計價單位(TD077)，同原欄位 數量(TD008).單位(TD010)
      * ,[AMOUNT] as TD076,INVMB.MB004 as TD077,
-     *20231030 生管 梁姿儂 C5D.C6C 已關廠，註解此段程式 LINQ
+     *20231030 生管 梁姿儂 C5D.C6C 已關廠，加判別各線別，當LINQ為空值，給予新datatable，避免錯誤
      */
     public partial class fm_AUOPlannedOrder : Form
     {
@@ -891,25 +891,60 @@ namespace TOYOINK_dev
             //dgv_LastReport.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             dgv_Set_LastReport();
 
+            //20231030 生管 梁姿儂 C5D.C6C 已關廠，加判別各線別，當LINQ為空值，給予新datatable，避免錯誤
             //使用Linq進行查詢線別C4A
             var Linq_C4A = from r in dt_LastReport.AsEnumerable()
                            where r.Field<string>("FAB").Contains("C4A")
                            select r;
-            dt_LastReport_C4A = Linq_C4A.CopyToDataTable();
+            //dt_LastReport_C4A = Linq_C4A.CopyToDataTable();
 
+            // 檢查結果是否為空值
+            if (Linq_C4A.Any())
+            {
+                dt_LastReport_C4A = Linq_C4A.CopyToDataTable();
+            }
+            else
+            {
+                // 處理結果為空值的情況，例如給予一個預設值或執行其他相應的邏輯
+                dt_LastReport_C4A = new DataTable(); // 或其他處理方式
+            }
+
+            //
             //使用Linq進行查詢線別C5D.C6C
             string[] Array_H11 = new string[] { "C5D", "C6C" };
 
             var Linq_C5DC6C = from r in dt_LastReport.AsEnumerable()
                               where Array_H11.Contains(r.Field<string>("FAB"))
                               select r;
-            dt_LastReport_C5DC6C = Linq_C5DC6C.CopyToDataTable();
+            //dt_LastReport_C5DC6C = Linq_C5DC6C.CopyToDataTable();
+            
+            // 檢查結果是否為空值
+            if (Linq_C5DC6C.Any())
+            {
+                dt_LastReport_C5DC6C = Linq_C5DC6C.CopyToDataTable();
+            }
+            else
+            {
+                // 如果 Linq_C5DC6C 為空，為 dt_LastReport_C5DC6C 分配一個空的 DataTable
+                dt_LastReport_C5DC6C = new DataTable();
+            }
 
             //使用Linq進行查詢線別C5E
             var Linq_C5E = from r in dt_LastReport.AsEnumerable()
                            where r.Field<string>("FAB").Contains("C5E")
                            select r;
-            dt_LastReport_C5E = Linq_C5E.CopyToDataTable();
+            //dt_LastReport_C5E = Linq_C5E.CopyToDataTable();
+
+            // 檢查結果是否為空值
+            if (Linq_C5E.Any())
+            {
+                dt_LastReport_C5E = Linq_C5E.CopyToDataTable();
+            }
+            else
+            {
+                // 如果 Linq_C5E 為空，為 dt_LastReport_C5E 分配一個空的 DataTable
+                dt_LastReport_C5E = new DataTable();
+            }
 
             btn_Export_Excel.Enabled = true;
 
@@ -1433,20 +1468,42 @@ namespace TOYOINK_dev
 
             //dgv_ERPUP_Edit.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
 
+            //20231030 生管 梁姿儂 C5D.C6C 已關廠，加判別各線別，當LINQ為空值，給予新datatable，避免錯誤
             //使用Linq進行查詢線別C4A
             var Linq_C4A = from r in dt_ERPUPSeacrh.AsEnumerable()
                            where r.Field<string>("FAB").Contains("C4A")
                            select r;
-            dt_ERPUP_C4A = Linq_C4A.CopyToDataTable();
+            //dt_ERPUP_C4A = Linq_C4A.CopyToDataTable();
 
-            //20231030 生管 梁姿儂 C5D.C6C 已關廠，註解此段程式
+            // 檢查結果是否為空值
+            if (Linq_C4A.Any())
+            {
+                dt_ERPUP_C4A = Linq_C4A.CopyToDataTable();
+            }
+            else
+            {
+                // 處理結果為空值的情況，例如給予一個預設值或執行其他相應的邏輯
+                dt_ERPUP_C4A = new DataTable(); // 或其他處理方式
+            }
+
             //使用Linq進行查詢線別C5D.C6C
-            //string[] Array_H11 = new string[] { "C5D", "C6C" };
+            string[] Array_H11 = new string[] { "C5D", "C6C" };
 
-            //var Linq_C5DC6C = from r in dt_ERPUPSeacrh.AsEnumerable()
-            //                  where Array_H11.Contains(r.Field<string>("FAB"))
-            //                  select r;
+            var Linq_C5DC6C = from r in dt_ERPUPSeacrh.AsEnumerable()
+                              where Array_H11.Contains(r.Field<string>("FAB"))
+                              select r;
             //dt_ERPUP_C5DC6C = Linq_C5DC6C.CopyToDataTable();
+
+            // 檢查結果是否為空值
+            if (Linq_C5DC6C.Any())
+            {
+                dt_LastReport_C5DC6C = Linq_C5DC6C.CopyToDataTable();
+            }
+            else
+            {
+                // 處理結果為空值的情況，例如給予一個預設值或執行其他相應的邏輯
+                dt_LastReport_C5DC6C = new DataTable(); // 或其他處理方式
+            }
 
             //使用Linq進行查詢線別C5E
             var Linq_C5E = from r in dt_ERPUPSeacrh.AsEnumerable()
@@ -1454,7 +1511,20 @@ namespace TOYOINK_dev
                            select r;
             dt_ERPUP_C5E = Linq_C5E.CopyToDataTable();
 
+
+            // 檢查結果是否為空值
+            if (Linq_C5E.Any())
+            {
+                dt_ERPUP_C5E = Linq_C5E.CopyToDataTable();
+            }
+            else
+            {
+                // 處理結果為空值的情況，例如給予一個預設值或執行其他相應的邏輯
+                dt_ERPUP_C5E = new DataTable(); // 或其他處理方式
+            }
+
             dgv_ERPUP_Edit.DataSource = null;
+
             //bds_ERPUP_Edit.DataSource = dt_ERPUP_C4A;
             //dgv_ERPUP_Edit.DataSource = bds_ERPUP_Edit;
 
