@@ -23,6 +23,7 @@ namespace TOYOINK_dev
          * 20200515 更新公版路徑為\MIS自開發主檔\會計報表公版
          * 20201005 日本凸版權利金程式HKC-H4追加入1%計算，關閉 分頁跨月查詢
          * 20210401 日本凸版權利金程式 HKC-H5、CCPD 追加入1%計算
+         * 20240103 財務 林雅婷 提出 光阻 6%改為5%
          */
 
         public MyClass MyCode;
@@ -841,15 +842,15 @@ namespace TOYOINK_dev
 
                         wsheet_MPT.Range("H" + (i + 14) + ":H" + (i + 16)).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
                         wsheet_MPT.Cell(i + 14, 11).Value = "銷貨";
-                        wsheet_MPT.Cell(i + 14, 12).Value = "6%權利金";
+                        wsheet_MPT.Cell(i + 14, 12).Value = "5%權利金";
                         wsheet_MPT.Cell(i + 14, 13).Value = "10%稅金";
                         wsheet_MPT.Cell(i + 14, 14).Value = "淨額";
 
                         wsheet_MPT.Cell(i + 15, 6).Value = "Royalty";
                         wsheet_MPT.Cell(i + 15, 8).Value = "光阻";
-                        wsheet_MPT.Cell(i + 15, 10).Value = "6%";
+                        wsheet_MPT.Cell(i + 15, 10).Value = "5%";
                         wsheet_MPT.Cell(i + 15, 11).FormulaA1 = "N" + (i + 6) + "+N" + (i + 10) + "-K" + (i + 16);
-                        wsheet_MPT.Cell(i + 15, 12).FormulaA1 = "= ROUND(K" + (i + 15) + "* 0.06, 0)";
+                        wsheet_MPT.Cell(i + 15, 12).FormulaA1 = "= ROUND(K" + (i + 15) + "* 0.05, 0)";
                         wsheet_MPT.Cell(i + 15, 13).FormulaA1 = "= ROUND(L" + (i + 15) + "* 0.1, 0)";
                         wsheet_MPT.Cell(i + 15, 14).FormulaA1 = "= L" + (i + 15) + "-M" + (i + 15);
 
