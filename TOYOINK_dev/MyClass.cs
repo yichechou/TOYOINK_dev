@@ -61,9 +61,9 @@ namespace Myclass
 
         //private String strDbCon = "packet size=4096;user id=yj.chou;password=yjchou3369;data source=192.168.128.219;persist security info=False;initial catalog=Leader;";
         public String strDbConA01A = "packet size=4096;user id=pwuser;password=sqlmis003;data source=192.168.128.219;persist security info=False;initial catalog=A01A;";
-        public String strDbConLeader = "packet size=4096;user id=yj.chou;password=asdf0000;data source=192.168.128.219;persist security info=False;initial catalog=Leader;";
-		public String strDbConTemp = "packet size=4096;user id=yc.chou;password=asdf4;data source=192.168.128.219;persist security info=False;initial catalog=Temp;";
-		
+        public String strDbConLeader = "packet size=4096;user id=yc.chou;password=asdf673690;data source=192.168.128.219;persist security info=False;initial catalog=Leader;";
+        public String strDbConTemp = "packet size=4096;user id=yc.chou;password=asdf673690;data source=192.168.128.219;persist security info=False;initial catalog=Temp;";
+
         public String prefix_table_name = "S2008X64.A01A.dbo.";
         public String str_enter = ((char)13).ToString() + ((char)10).ToString();
         public String DIRNAME = Application.StartupPath + @"\Log\";
@@ -546,12 +546,21 @@ namespace Myclass
             }
             return dt;
         }
-       
+
+        //public void loginIDName(string loginID) 
+        //{
+
+        //}
+
         //public string QP_ItemKey = "", QP_ItemValue = "", QP_Value = "", QP_SQL = ""/*, str_QP_Cond = "", str_QP_Value = ""*/;
         //public Dictionary<string, string> QP_dict_Item { get; set; } = new Dictionary<string, string>();
         //public Dictionary<string, string> QP_dict_Result { get; set; } = new Dictionary<string, string>();
         //public Dictionary<string, string> QP_dict_Result_Temp { get; set; } = new Dictionary<string, string>();
-		//--------------------------------------------------------------------------
+       
+
+
+
+        //--------------------------------------------------------------------------
         // //保存成文件
         //using (XLWorkbook wb = new XLWorkbook())
         //{

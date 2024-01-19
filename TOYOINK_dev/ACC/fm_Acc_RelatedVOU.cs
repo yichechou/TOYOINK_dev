@@ -21,6 +21,13 @@ namespace TOYOINK_dev
      * 20210413 遺漏科目3218 上期損益.7108 股利收入，修改判別條件原科目名稱判別(MA003 like '%關係%' or MA003 like '%TOPPAN%')，改為關係人代號 MA012 <> ''判別
      *  科目單月條件異動，加入科目7開頭，並分為left(MN001,1) in ('1','2','3','7') and MN020 = 'N' and MA012 <> '' and MN004 <= '20210331' 與
      *  left(MN001,1) in ('4','5','6') and MN020 = 'N' and MA012 <> '' and MN004 like '202103%'，其中3.7 改為累計方式呈現
+     * 20240118 財務許秀玉提出 #115102 應收帳款-評價-關係人& #214102應付帳款-評價會被指定結案掉，
+     *  1.調整:此二會科需保留在報表中,請補充不包含"應收評價"&"應付評價",使此二者可留在報表中
+     *  cond_y 與 cond_N 【MN010 like '%評價%'】修改為【(MN010 like '%評價%' and MN001 not in ('115102' ,'214102'))】
+     *  2.並修改連線方式為 MyCode.strDbCon = MyCode.strDbConA01A;
+     *  3.明細報表扣除 科目編號 ('2166','2218', '2219')內摘要(TB010+TB012)含有'%國稅局%'字樣剔除。
+     *  cond_Month_A 與 cond_Quarter 加入【and not ((MN001 IN ('2166','2218', '2219') AND (TB010+TB012) LIKE '%國稅局%'))】
+     *  4.彙總明細表，加入 order by MN001,MN004 排序
      */
     public partial class fm_Acc_RelatedVOU : Form
     {
@@ -73,9 +80,16 @@ namespace TOYOINK_dev
         public fm_Acc_RelatedVOU()
         {
             InitializeComponent();
-            MyCode = new Myclass.MyClass();
-            MyCode.strDbCon = "packet size=4096;user id=pwuser;password=sqlmis003;data source=192.168.128.219;persist security info=False;initial catalog=A01A;";
-            //MyCode.strDbCon = "packet size=4096;user id=yj.chou;password=asdf0000;data source=192.168.128.219;persist security info=False;initial catalog=Leader;";
+            MyCode = new Myclass.MyClass();;
+
+            //MyCode.strDbCon = MyCode.strDbConLeader;
+            //this.sqlConnection1.ConnectionString = MyCode.strDbConLeader;
+
+            MyCode.strDbCon = MyCode.strDbConA01A;
+            //this.sqlConnection1.ConnectionString = MyCode.strDbConA01A;
+
+            //MyCode.strDbCon = MyCode.strDbConTemp;
+
             temp_excel_RelatedVOU = @"\\192.168.128.219\Conductor\Company\MIS自開發主檔\會計報表公版\關係人交易_temp.xlsx";
         }
 
@@ -141,18 +155,24 @@ namespace TOYOINK_dev
             txt_path.Text = filder;
 
             cond_Posting = @"TA010='Y' and TA001 not in ('915') and TA011 = 'N'";
+
+            
             cond_Cost_N = @"MN020 = 'N' and (MA003 like '%關係%' or MA003 like '%TOPPAN%') and MN010 like '%成本結轉%'";
             cond_Cost_y = @"MN020 = 'y' and (MA003 like '%關係%' or MA003 like '%TOPPAN%') and MN010 like '%成本結轉%'";
             //20210315 cond_y 與 cond_N 加入【or(MN001 in ('2218', '2219', '2166') and MN018 <> 0)】
+            //20240118 cond_y 與 cond_N 【MN010 like '%評價%'】修改為【(MN010 like '%評價%' and MN001 not in ('115102' ,'214102'))】
             cond_y = @"MN020 = 'N' and (MA003 like '%關係%' or MA003 like '%TOPPAN%')
-                          and ( MN010 like '%迴轉%' or MN010 like '%評價%' or MN010 like '%手動結案%' or MN010 like '%成本結轉%'
-                          or (MN001 in ('2218','2219','2166') and MN018 <> 0))";
+and ( MN010 like '%迴轉%' or (MN010 like '%評價%' and MN001 not in ('115102' ,'214102'))
+or MN010 like '%手動結案%' or MN010 like '%成本結轉%'
+or (MN001 in ('2218','2219','2166') and MN018 <> 0))";
             //cond_N = @"((MN010 like '%迴轉%' or MN010  like '%評價%' or MN010 like '%手動結案%' or MN010 like '%成本結轉%')
             //            or (left(MN001,1) in ('3','4','5','6'))) and MN020 = 'y' and (MA003 like '%關係%' or MA003 like '%TOPPAN%')";
             //20210315 cond_y 與 cond_N 加入【or (MN001 in ('2218','2219','2166') and MN018 <> 0)】
+            //20240118 cond_y 與 cond_N 【MN010 like '%評價%'】修改為【(MN010 like '%評價%' and MN001 not in ('115102' ,'214102'))】
             cond_N = @"MN020 = 'y' and (MA003 like '%關係%' or MA003 like '%TOPPAN%')
-                          and ( MN010 like '%迴轉%' or MN010 like '%評價%' or MN010 like '%手動結案%' or MN010 like '%成本結轉%'
-                          or (MN001 in ('2218','2219','2166') and MN018 <> 0))";
+and ( MN010 like '%迴轉%' or (MN010 like '%評價%' and MN001 not in ('115102' ,'214102')) 
+or MN010 like '%手動結案%' or MN010 like '%成本結轉%'
+or (MN001 in ('2218','2219','2166') and MN018 <> 0))";
             //20210315 sql_Details_Primary 與 sql_Quarter_Primary 更新備註欄位 從科目代號改為 依備註內單別[710T.C71T]判別
             sql_Details_Primary = @"select MN001 as 科目編號, MA003 as 科目名稱, MN003 as 立沖帳目代號
                                     , (case MA012	
@@ -184,9 +204,13 @@ namespace TOYOINK_dev
 
             //20210413 科目單月條件異動，加入科目7開頭，並分為left(MN001,1) in ('1','2','3','7') and MN020 = 'N' and MA012 <> '' and MN004 <= '20210331' 與
             //left(MN001, 1) in ('4', '5', '6') and MN020 = 'N' and MA012<> '' and MN004 like '202103%'，其中3.7 改為累計方式呈現
-            cond_Month_A = @"left(MN001,1) in ('1','2','3','7') and MN020 = 'N' and MA012 <> ''";
-            cond_Month_B = @"left(MN001,1) in ('4','5','6') and MN020 = 'N' and MA012 <> ''";
-            cond_Quarter = @"MN020 = 'N' and  MA012 <> ''";
+
+            //20240118 cond_Month_A 與 cond_Quarter 加入【and not ((MN001 IN ('2166','2218', '2219') AND (TB010+TB012) LIKE '%國稅局%'))】
+
+            cond_Month_A = @"left(MN001,1) in ('1','2','3','7') and MN020 = 'N' and MA012 <> '' and not ((MN001 IN  ('2166','2218', '2219') AND (TB010+TB012) LIKE '%國稅局%')) ";
+            cond_Month_B = @"left(MN001,1) in ('4','5','6') and MN020 = 'N' and MA012 <> '' ";
+            
+            cond_Quarter = @"MN020 = 'N' and  MA012 <> '' and not ((MN001 IN ('2166','2218', '2219') AND (TB010+TB012) LIKE '%國稅局%'))";
 
             //20210315 sql_Details_Primary 與 sql_Quarter_Primary 更新備註欄位 從科目代號改為 依備註內單別[710T.C71T]判別
             sql_Quarter_Primary = @"select MN001 as 科目編號, MA003 as 科目名稱, MN012 as 幣別
@@ -632,7 +656,7 @@ EXCEL轉出，若月份遇到03.06.09.12，將改為Q1.Q2.Q3.Q4。
 
             //TODO:報表-累計明細
             string sql_str_QuarterDetails = String.Format(@"{0}
-                            where {1} and MN004 <= '{2}'", sql_Details_Primary, cond_Quarter, str_date_e);
+                            where {1} and MN004 <= '{2}' order by MN001,MN004", sql_Details_Primary, cond_Quarter, str_date_e);
             MyCode.Sql_dgv(sql_str_QuarterDetails, dt_QuarterDetails, dgv_QuarterDetails);
 
             //TODO:報表-單月彙總
