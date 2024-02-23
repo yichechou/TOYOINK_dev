@@ -25,37 +25,39 @@ namespace Myclass
         /// 
         /// 月曆 fm_月曆;
         /// 
-        //20210303 更新
+        /*20210303 更新
 
-        //****** 範例 ******
-        // using Myclass;
-        // public partial class Premium : Form
-        // {
-        //     public MyClass MyCode;
-        //
-        //   public Premium()
-        //   {
-        //     InitializeComponent();
-        //     MyCode = new Myclass.MyClass();
-        //      MyCode.strDbCon = MyCode.strDbConLeader;
-        //      this.sqlConnection1.ConnectionString = MyCode.strDbConLeader;
+        ****** 範例 ******
+         using Myclass;
+         public partial class Premium : Form
+            {
+                public MyClass MyCode;
 
-        //      MyCode.strDbCon = MyCode.strDbConA01A;
-        //      this.sqlConnection1.ConnectionString = MyCode.strDbConA01A;
+                public Premium()
+                {
+                    InitializeComponent();
+                    MyCode = new Myclass.MyClass();
+                    MyCode.strDbCon = MyCode.strDbConLeader;
+                    this.sqlConnection1.ConnectionString = MyCode.strDbConLeader;
 
-        //     MyCode.strDbCon = "packet size=4096;user id=pwuser;password=sqlmis003;data source=192.168.128.219;persist security info=False;initial catalog=A01A;";
-        //     //MyCode.strDbCon = "packet size=4096;user id=yj.chou;password=yjchou3369;data source=192.168.128.219;persist security info=False;initial catalog=Leader;";
-        //   }
-        // }
+                    MyCode.strDbCon = MyCode.strDbConA01A;
+                    this.sqlConnection1.ConnectionString = MyCode.strDbConA01A;
 
-        //關閉程式
-        //private void fm_menu_FormClosed(object sender, FormClosedEventArgs e)
-        //{
-        //    Environment.Exit(Environment.ExitCode);
-        //}
-        //****** 範例 ******
-        //20210603 加入public String strDbConA01A 及txterr 錯誤訊息
+                    MyCode.strDbCon = "packet size=4096;user id=pwuser;password=sqlmis003;data source=192.168.128.219;persist security info=False;initial catalog=A01A;";
+                    //MyCode.strDbCon = "packet size=4096;user id=yj.chou;password=yjchou3369;data source=192.168.128.219;persist security info=False;initial catalog=Leader;";
+                }
+            }
 
+            關閉程式
+                private void fm_menu_FormClosed(object sender, FormClosedEventArgs e)
+            {
+                Environment.Exit(Environment.ExitCode);
+            }
+        ****** 範例 ******
+        * 20210603 加入public String strDbConA01A 及txterr 錯誤訊息
+        * 20240222 生管 林玲禎提出 fm_AUOCOPTC 修改
+        * 
+        */
         public string ERP_v4 = "192.168.128.253", AD2SERVER = "192.168.128.250", S2008X64 = "192.168.128.219", HRM = "192.168.128.219\\HRM,50502";
         public String strDbCon = "";
 
@@ -162,8 +164,10 @@ namespace Myclass
                     //string sql = string.Format("SELECT * FROM [{0}] WHERE [日期] is not null", firstSheetName); //查询字符串
                     switch (AppName) 
                     {
+                        //20240222 生管 林玲禎提出 fm_AUOCOPTC 修改，原格式當[Number]空白時，程式無法顯示，故調整程式
                         case "fm_AUOCOPTC":
-                            sql = string.Format("SELECT * FROM [{0}] where Number is not null and rtrim(Number) <> '' order by Number", firstSheetName); //查询字符串
+                            //sql = string.Format("SELECT * FROM [{0}] where Number is not null and rtrim(Number) <> '' order by Number", firstSheetName); //查询字符串
+                            sql = string.Format("SELECT * FROM [{0}] where {1}", firstSheetName, whereitem); //查询字符串
                             break;
                         case "fm_AUO_NF_COPTC":
                             sql = string.Format("SELECT * FROM [{0}] where [PO NO] is not null and rtrim([PO NO]) <> '' order by [PO NO]", firstSheetName); //查询字符串
@@ -235,8 +239,10 @@ namespace Myclass
                     //string sql = string.Format("SELECT * FROM [{0}] WHERE [日期] is not null", firstSheetName); //查询字符串
                     switch (AppName)
                     {
+                        //20240222 生管 林玲禎提出 fm_AUOCOPTC 修改，原格式當[Number]空白時，程式無法顯示，故調整程式
                         case "fm_AUOCOPTC":
-                            sql = string.Format("SELECT * FROM [{0}] where Number is not null and rtrim(Number) <> '' order by Number", SheetName); //查询字符串
+                            //sql = string.Format("SELECT * FROM [{0}] where Number is not null and rtrim(Number) <> '' order by Number", SheetName); //查询字符串
+                            sql = string.Format("SELECT * FROM [{0}] where {1}", SheetName, whereitem);
                             break;
                         default:
                             sql = string.Format("SELECT * FROM [{0}] where [{1}] <> ''", str_SheetName, str_HeaderName); //查询字符串

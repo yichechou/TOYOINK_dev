@@ -20,6 +20,8 @@ namespace TOYOINK_dev
     * 20210913 升級GP4單身增加兩個欄位，計價數量(TD076).計價單位(TD077)，同原欄位 數量(TD008).單位(TD010) 及更新連線方式改由MyClass代入
     * ,CFIPO.Quantity as TD076,CFIPO.UOM as TD077,
     * 20230803 生管 林玲禎提出，EXCEL匯入時，檢查是否空值，忽略欄位名稱為[Sample]或[Remark]
+    * 20240222 生管 林玲禎提出，1.EXCEL匯入時，僅檢查欄位名稱為線別,Number,Item,Item Description,UOM,Quantity,Currency,Need By Date 是否空值，
+    * 2.轉換格式時，檢查EXCEL單價是否與ERP相符但不卡控[轉換ERP格式]僅[緊示]；3.新增[不轉換EXCEL客戶單號]選項。
     */
 
     public partial class fm_AUOCOPTC : Form
@@ -294,29 +296,63 @@ namespace TOYOINK_dev
 
             dgv_excel.DataSource = MyClass.ReadExcelToTable("fm_AUOCOPTC",txt_path.Text.ToString(),"1=1");
 
-            DataTable dt_訂單 = new DataTable();
-            dt_訂單 = (DataTable)this.dgv_excel.DataSource;
+            DataTable dt_Excel訂單 = new DataTable();
+            dt_Excel訂單 = (DataTable)this.dgv_excel.DataSource;
 
             // 20230803 檢查匯入的EXCEL是否有空值，如有空值，記錄位置
             List<Tuple<int, string>> emptyFields = new List<Tuple<int, string>>();
 
-            for (int i = 0; i < dt_訂單.Rows.Count; i++)
-            {
-                DataRow row = dt_訂單.Rows[i];
-                for (int j = 0; j < dt_訂單.Columns.Count; j++)
-                {
-                    DataColumn col = dt_訂單.Columns[j];
-                    // 忽略欄位名稱為[Sample]或[Remark]
-                    if (col.ColumnName == "Sample" || col.ColumnName == "Remark")
-                        continue;
+            //for (int i = 0; i < dt_訂單.Rows.Count; i++)
+            //{
+            //    DataRow row = dt_訂單.Rows[i];
+            //    for (int j = 0; j < dt_訂單.Columns.Count; j++)
+            //    {
+            //        DataColumn col = dt_訂單.Columns[j];
+            //        // 忽略欄位名稱為[Sample]或[Remark]
+            //        if (col.ColumnName == "Sample" || col.ColumnName == "Remark")
+            //            continue;
 
-                    // 檢查每個欄位的值是否為 DBNull.Value 或空值
-                    if (row.IsNull(col) || string.IsNullOrWhiteSpace(row[col.ColumnName].ToString()))
+
+            //        // 檢查每個欄位的值是否為 DBNull.Value 或空值
+            //        if (row.IsNull(col) || string.IsNullOrWhiteSpace(row[col.ColumnName].ToString()))
+            //        {
+            //            emptyFields.Add(new Tuple<int, string>(i, col.ColumnName));
+            //        }
+            //    }
+            //}
+
+            //20240222 生管 林玲禎提出 僅檢查以下欄位是否為空值
+            var checkColumns = new HashSet<string>
+            {
+                "線別",
+                "Number",
+                "Item",
+                "Item Description",
+                "UOM",
+                "Quantity",
+                "Currency",
+                "Need By Date"
+            };
+
+            for (int i = 0; i < dt_Excel訂單.Rows.Count; i++)
+            {
+                DataRow row = dt_Excel訂單.Rows[i];
+                for (int j = 0; j < dt_Excel訂單.Columns.Count; j++)
+                {
+                    DataColumn col = dt_Excel訂單.Columns[j];
+                    // 僅對指定欄位進行檢查
+                    if (checkColumns.Contains(col.ColumnName))
                     {
-                        emptyFields.Add(new Tuple<int, string>(i, col.ColumnName));
+                        // 檢查指定欄位的值是否為 DBNull.Value 或空值
+                        if (row.IsNull(col) || string.IsNullOrWhiteSpace(row[col.ColumnName].ToString()))
+                        {
+                            emptyFields.Add(new Tuple<int, string>(i, col.ColumnName));
+                        }
                     }
+                    // 其他欄位不進行空值檢查，所以這裡不需要做任何操作
                 }
             }
+
 
             if (emptyFields.Count > 0)
             {
@@ -348,7 +384,14 @@ namespace TOYOINK_dev
                 return;
             }
 
-
+            //20240222 依客戶單號排序，再轉換
+            // 假設 dt_訂單 是您的 DataTable 對象
+            // 使用 DefaultView 來排序並建立新的 DataView
+            DataView dv = dt_Excel訂單.DefaultView;
+            // 根據 Number 欄位進行排序
+            dv.Sort = "Number ASC"; // ASC 代表升序，DESC 代表降序
+                                    // 將排序後的結果放回 DataTable
+            DataTable dt_訂單 = dv.ToTable();
 
             this.lab_status.Text = " 轉換中，請稍後";
             this.to_ExecuteNonQuery("delete from CFIPO"); //MIS建立的暫存table
@@ -431,16 +474,24 @@ namespace TOYOINK_dev
                                     }
                                     break;
 
+                                //20240222 生管 林玲禎提出 不轉換EXCEL客戶單號判別
                                 //ERP 客戶單號
                                 case 3:
-                                    if ((dt_訂單.Rows[i][0].ToString().Trim()) == "C5E")
+                                    if (chkNoTranNum.Checked == false)
                                     {
-                                        //[線別]+'-'+[Number]+'-HC' 
-                                        str_sql_value = this.get_sql_value(data_type, (dt_訂單.Rows[i][0].ToString().Trim() + '-' + dt_訂單.Rows[i][2].ToString().Trim() + "-HC"));
+                                        if ((dt_訂單.Rows[i][0].ToString().Trim()) == "C5E")
+                                        {
+                                            //[線別]+'-'+[Number]+'-HC' 
+                                            str_sql_value = this.get_sql_value(data_type, (dt_訂單.Rows[i][0].ToString().Trim() + '-' + dt_訂單.Rows[i][2].ToString().Trim() + "-HC"));
+                                        }
+                                        else
+                                        {
+                                            str_sql_value = this.get_sql_value(data_type, (dt_訂單.Rows[i][0].ToString().Trim() + '-' + dt_訂單.Rows[i][2].ToString().Trim() + "-LT"));
+                                        }
                                     }
                                     else
                                     {
-                                        str_sql_value = this.get_sql_value(data_type, (dt_訂單.Rows[i][0].ToString().Trim() + '-' + dt_訂單.Rows[i][2].ToString().Trim() + "-LT"));
+                                        str_sql_value = this.get_sql_value(data_type, (dt_訂單.Rows[i][2].ToString().Trim()));
                                     }
 
                                     //判別 客戶單號有沒有重複
@@ -517,9 +568,16 @@ namespace TOYOINK_dev
 
                                 //線別
                                 case 5:
-                                    str_sql_value = this.get_sql_value(data_type, dt_訂單.Rows[i][0].ToString().Trim());
+                                    str_sql_value = this.get_sql_value(data_type, dt_訂單.Rows[i][str_sql_column].ToString().Trim());
                                     break;
 
+                                //客戶單價 Shipment Amount
+                                case 11:
+                                    // 假設 str_sql_column 和 data_type 已經定義並初始化
+                                    string rawValue = dt_訂單.Rows[i][str_sql_column].ToString().Trim();
+                                    str_sql_value = string.IsNullOrEmpty(rawValue) ? "'0'" :
+                                                    this.get_sql_value(data_type, rawValue);
+                                    break;
                                 //客戶需求日期
                                 case 15:
                                     str_sql_value = Convert.ToDateTime(dt_訂單.Rows[i][str_sql_column]).ToString("yyyyMMdd");//格式转换
@@ -618,6 +676,7 @@ namespace TOYOINK_dev
                                     DateTime.Now.ToString() + Environment.NewLine +
                                    ">> 匯入 整理格式 完成" + Environment.NewLine +
                                    "===========";
+
                 }
 
                 catch (Exception ex)
@@ -651,6 +710,71 @@ namespace TOYOINK_dev
                 finally
                 {
                     this.sqlConnection1.Close();
+                }
+            }
+
+            //20240222 生管林玲禎提出 轉換格式時，檢查EXCEL單價是否與ERP相符但不卡控[轉換ERP格式]僅[緊示]
+            //TODO: 取得 COPTC.COPTD 客戶訂單單頭單身資料檔的欄位資料型態
+            DataTable dt_CheckCFIPO_ShipmentAmount = new DataTable();
+
+            string str_CheckCFIPO_ShipmentAmount = @"
+    SELECT 
+        CFIPO.[Number] as 'Number',
+        CFIPO.Item as 'Item',
+        INVMB.MB001 as 'TD004',
+        COPMB.MB008 as 'TD011',
+        CFIPO.[Shipment Amount] as 'Shipment Amount'
+    FROM 
+        CFIPO
+    LEFT JOIN 
+        INVMB ON (SELECT MG002 FROM COPMG WHERE MG003 = CFIPO.Item AND MG001 = CFIPO.ERP_客代) = INVMB.MB001
+    LEFT JOIN 
+        (SELECT MB001, MB002, MB003, MB004, MB008, MB017 FROM COPMB a WHERE MB017 = (SELECT MAX(MB017) FROM COPMB WHERE MB002 = a.MB002 AND MB001 = a.MB001)) COPMB
+    ON 
+        (SELECT MG002 FROM COPMG WHERE MG003 = CFIPO.Item AND MG001 = CFIPO.ERP_客代) = COPMB.MB002 
+        AND CFIPO.ERP_客代 = COPMB.MB001 
+        AND CFIPO.UOM = COPMB.MB003 
+        AND CFIPO.ERP_幣別 = COPMB.MB004";
+            this.sqlDataAdapter1.SelectCommand.CommandText = str_CheckCFIPO_ShipmentAmount;
+            this.sqlDataAdapter1.Fill(dt_CheckCFIPO_ShipmentAmount);
+
+            // 假設 dt_CheckCFIPO_ShipmentAmount 是 DataTable 對象
+            List<string> mismatchedRows = new List<string>();
+
+            foreach (DataRow row in dt_CheckCFIPO_ShipmentAmount.Rows)
+            {
+                decimal shipmentAmount = Convert.ToDecimal(row["Shipment Amount"]);
+                decimal td011 = Convert.ToDecimal(row["TD011"]);
+
+                if (shipmentAmount != td011)
+                {
+                    // 如果值不同，收集信息
+                    string message = $"Number: {row["Number"].ToString().Trim()}, " + Environment.NewLine +
+                                     $"Item: {row["Item"].ToString().Trim()}, " + Environment.NewLine +
+                                     $"ERP品號: {row["TD004"].ToString().Trim()}, " + Environment.NewLine +
+                                     $"ERP單價: {Convert.ToInt32(row["TD011"]).ToString().Trim()}, " + Environment.NewLine +
+                                     $"Shipment Amount: {row["Shipment Amount"].ToString().Trim()}";
+                    mismatchedRows.Add(message);
+                }
+            }
+
+            // 顯示所有不匹配的行信息
+            if (mismatchedRows.Count > 0)
+            {
+                // 顯示警示
+                MessageBox.Show("部分品項ERP單價與來源不符，共"+ mismatchedRows.Count.ToString() + "筆，請查看警示訊息", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txterr.Text += Environment.NewLine +
+                          DateTime.Now.ToString() + Environment.NewLine +
+                          "部分品項ERP單價與來源不符，共" + mismatchedRows.Count.ToString() + "筆，請查看警示訊息" + Environment.NewLine +
+                          "===========";
+
+                // 在 txterr 文本框中一起顯示
+                foreach (string message in mismatchedRows)
+                {
+                    txterr.Text += Environment.NewLine +
+                           DateTime.Now.ToString() + Environment.NewLine +
+                           message + Environment.NewLine +
+                           "===========";
                 }
             }
 

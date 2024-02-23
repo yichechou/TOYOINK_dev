@@ -41,6 +41,7 @@
             this.txterr = new System.Windows.Forms.TextBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.chkNoTranNum = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.txt_path = new System.Windows.Forms.TextBox();
@@ -78,14 +79,11 @@
             // 
             // lab_Nowdate
             // 
-            this.lab_Nowdate.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.lab_Nowdate.BackColor = System.Drawing.Color.Gainsboro;
             this.lab_Nowdate.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.lab_Nowdate.Location = new System.Drawing.Point(349, 99);
+            this.lab_Nowdate.Location = new System.Drawing.Point(350, 110);
             this.lab_Nowdate.Name = "lab_Nowdate";
-            this.lab_Nowdate.Size = new System.Drawing.Size(112, 33);
+            this.lab_Nowdate.Size = new System.Drawing.Size(112, 37);
             this.lab_Nowdate.TabIndex = 26;
             this.lab_Nowdate.Text = "20190101";
             this.lab_Nowdate.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -94,7 +92,7 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label6.Location = new System.Drawing.Point(256, 102);
+            this.label6.Location = new System.Drawing.Point(257, 113);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(92, 25);
             this.label6.TabIndex = 25;
@@ -105,7 +103,7 @@
             this.lab_status.BackColor = System.Drawing.SystemColors.Info;
             this.lab_status.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.lab_status.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.lab_status.Location = new System.Drawing.Point(478, 99);
+            this.lab_status.Location = new System.Drawing.Point(479, 110);
             this.lab_status.Name = "lab_status";
             this.lab_status.Size = new System.Drawing.Size(285, 45);
             this.lab_status.TabIndex = 20;
@@ -116,7 +114,7 @@
             // 
             this.cob_建立者.Enabled = false;
             this.cob_建立者.FormattingEnabled = true;
-            this.cob_建立者.Location = new System.Drawing.Point(96, 99);
+            this.cob_建立者.Location = new System.Drawing.Point(97, 110);
             this.cob_建立者.Name = "cob_建立者";
             this.cob_建立者.Size = new System.Drawing.Size(154, 37);
             this.cob_建立者.TabIndex = 24;
@@ -126,7 +124,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label2.Location = new System.Drawing.Point(4, 102);
+            this.label2.Location = new System.Drawing.Point(5, 113);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(92, 25);
             this.label2.TabIndex = 23;
@@ -134,14 +132,12 @@
             // 
             // lab_num2
             // 
-            this.lab_num2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lab_num2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lab_num2.BackColor = System.Drawing.Color.Turquoise;
             this.lab_num2.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.lab_num2.Location = new System.Drawing.Point(415, 12);
             this.lab_num2.Name = "lab_num2";
-            this.lab_num2.Size = new System.Drawing.Size(96, 32);
+            this.lab_num2.Size = new System.Drawing.Size(96, 31);
             this.lab_num2.TabIndex = 22;
             this.lab_num2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -178,24 +174,25 @@
             // txterr
             // 
             this.txterr.Font = new System.Drawing.Font("微軟正黑體", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.txterr.Location = new System.Drawing.Point(3, 0);
+            this.txterr.Location = new System.Drawing.Point(3, 5);
             this.txterr.Multiline = true;
             this.txterr.Name = "txterr";
             this.txterr.ReadOnly = true;
             this.txterr.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txterr.Size = new System.Drawing.Size(232, 143);
+            this.txterr.Size = new System.Drawing.Size(232, 153);
             this.txterr.TabIndex = 0;
             // 
             // panel2
             // 
             this.panel2.Controls.Add(this.txterr);
-            this.panel2.Location = new System.Drawing.Point(923, 7);
+            this.panel2.Location = new System.Drawing.Point(927, 10);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(238, 146);
+            this.panel2.Size = new System.Drawing.Size(238, 161);
             this.panel2.TabIndex = 27;
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.chkNoTranNum);
             this.panel1.Controls.Add(this.panel2);
             this.panel1.Controls.Add(this.lab_Nowdate);
             this.panel1.Controls.Add(this.label6);
@@ -216,8 +213,19 @@
             this.panel1.Controls.Add(this.label5);
             this.panel1.Location = new System.Drawing.Point(12, 12);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1169, 162);
+            this.panel1.Size = new System.Drawing.Size(1169, 181);
             this.panel1.TabIndex = 17;
+            // 
+            // chkNoTranNum
+            // 
+            this.chkNoTranNum.AutoSize = true;
+            this.chkNoTranNum.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.chkNoTranNum.Location = new System.Drawing.Point(532, 14);
+            this.chkNoTranNum.Name = "chkNoTranNum";
+            this.chkNoTranNum.Size = new System.Drawing.Size(232, 29);
+            this.chkNoTranNum.TabIndex = 29;
+            this.chkNoTranNum.Text = "不轉換EXCEL客戶單號";
+            this.chkNoTranNum.UseVisualStyleBackColor = true;
             // 
             // label3
             // 
@@ -241,17 +249,17 @@
             // 
             // txt_path
             // 
-            this.txt_path.Location = new System.Drawing.Point(95, 52);
+            this.txt_path.Location = new System.Drawing.Point(97, 60);
             this.txt_path.Name = "txt_path";
             this.txt_path.ReadOnly = true;
-            this.txt_path.Size = new System.Drawing.Size(492, 38);
+            this.txt_path.Size = new System.Drawing.Size(533, 38);
             this.txt_path.TabIndex = 1;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label1.Location = new System.Drawing.Point(3, 57);
+            this.label1.Location = new System.Drawing.Point(5, 65);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(92, 25);
             this.label1.TabIndex = 0;
@@ -259,9 +267,9 @@
             // 
             // btn_file
             // 
-            this.btn_file.Location = new System.Drawing.Point(593, 51);
+            this.btn_file.Location = new System.Drawing.Point(636, 59);
             this.btn_file.Name = "btn_file";
-            this.btn_file.Size = new System.Drawing.Size(128, 37);
+            this.btn_file.Size = new System.Drawing.Size(128, 39);
             this.btn_file.TabIndex = 2;
             this.btn_file.Text = "選擇檔案";
             this.btn_file.UseVisualStyleBackColor = true;
@@ -273,9 +281,9 @@
             this.btn_toerp.Enabled = false;
             this.btn_toerp.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.btn_toerp.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.btn_toerp.Location = new System.Drawing.Point(775, 6);
+            this.btn_toerp.Location = new System.Drawing.Point(775, 15);
             this.btn_toerp.Name = "btn_toerp";
-            this.btn_toerp.Size = new System.Drawing.Size(137, 72);
+            this.btn_toerp.Size = new System.Drawing.Size(137, 75);
             this.btn_toerp.TabIndex = 7;
             this.btn_toerp.Text = "轉為ERP格式";
             this.btn_toerp.UseVisualStyleBackColor = false;
@@ -299,9 +307,9 @@
             this.btn_erpup.Enabled = false;
             this.btn_erpup.Font = new System.Drawing.Font("微軟正黑體", 13.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.btn_erpup.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.btn_erpup.Location = new System.Drawing.Point(775, 82);
+            this.btn_erpup.Location = new System.Drawing.Point(775, 92);
             this.btn_erpup.Name = "btn_erpup";
-            this.btn_erpup.Size = new System.Drawing.Size(137, 72);
+            this.btn_erpup.Size = new System.Drawing.Size(137, 79);
             this.btn_erpup.TabIndex = 6;
             this.btn_erpup.Text = "上傳至ERP";
             this.btn_erpup.UseVisualStyleBackColor = false;
@@ -375,7 +383,7 @@
             this.dgv_excel.ReadOnly = true;
             this.dgv_excel.RowHeadersWidth = 51;
             this.dgv_excel.RowTemplate.Height = 27;
-            this.dgv_excel.Size = new System.Drawing.Size(1161, 534);
+            this.dgv_excel.Size = new System.Drawing.Size(1161, 515);
             this.dgv_excel.TabIndex = 4;
             // 
             // tabCtl_data
@@ -384,10 +392,10 @@
             this.tabCtl_data.Controls.Add(this.tabPage_CFIPO);
             this.tabCtl_data.Controls.Add(this.tabPage_tc);
             this.tabCtl_data.Controls.Add(this.tabPage_td);
-            this.tabCtl_data.Location = new System.Drawing.Point(12, 180);
+            this.tabCtl_data.Location = new System.Drawing.Point(12, 199);
             this.tabCtl_data.Name = "tabCtl_data";
             this.tabCtl_data.SelectedIndex = 0;
-            this.tabCtl_data.Size = new System.Drawing.Size(1169, 576);
+            this.tabCtl_data.Size = new System.Drawing.Size(1169, 557);
             this.tabCtl_data.TabIndex = 16;
             // 
             // tabPage_excel
@@ -395,7 +403,7 @@
             this.tabPage_excel.Controls.Add(this.dgv_excel);
             this.tabPage_excel.Location = new System.Drawing.Point(4, 38);
             this.tabPage_excel.Name = "tabPage_excel";
-            this.tabPage_excel.Size = new System.Drawing.Size(1161, 534);
+            this.tabPage_excel.Size = new System.Drawing.Size(1161, 515);
             this.tabPage_excel.TabIndex = 0;
             this.tabPage_excel.Text = "來源Excel";
             this.tabPage_excel.UseVisualStyleBackColor = true;
@@ -405,7 +413,7 @@
             this.tabPage_CFIPO.Controls.Add(this.dgv_cfipo);
             this.tabPage_CFIPO.Location = new System.Drawing.Point(4, 38);
             this.tabPage_CFIPO.Name = "tabPage_CFIPO";
-            this.tabPage_CFIPO.Size = new System.Drawing.Size(1161, 534);
+            this.tabPage_CFIPO.Size = new System.Drawing.Size(1161, 515);
             this.tabPage_CFIPO.TabIndex = 3;
             this.tabPage_CFIPO.Text = "整理結果";
             this.tabPage_CFIPO.UseVisualStyleBackColor = true;
@@ -421,7 +429,7 @@
             this.dgv_cfipo.ReadOnly = true;
             this.dgv_cfipo.RowHeadersWidth = 51;
             this.dgv_cfipo.RowTemplate.Height = 27;
-            this.dgv_cfipo.Size = new System.Drawing.Size(1161, 534);
+            this.dgv_cfipo.Size = new System.Drawing.Size(1161, 515);
             this.dgv_cfipo.TabIndex = 0;
             // 
             // tabPage_tc
@@ -429,7 +437,7 @@
             this.tabPage_tc.Controls.Add(this.dgv_tc);
             this.tabPage_tc.Location = new System.Drawing.Point(4, 38);
             this.tabPage_tc.Name = "tabPage_tc";
-            this.tabPage_tc.Size = new System.Drawing.Size(1161, 534);
+            this.tabPage_tc.Size = new System.Drawing.Size(1161, 515);
             this.tabPage_tc.TabIndex = 1;
             this.tabPage_tc.Text = "單頭 COPTC";
             this.tabPage_tc.UseVisualStyleBackColor = true;
@@ -445,7 +453,7 @@
             this.dgv_tc.ReadOnly = true;
             this.dgv_tc.RowHeadersWidth = 51;
             this.dgv_tc.RowTemplate.Height = 27;
-            this.dgv_tc.Size = new System.Drawing.Size(1161, 534);
+            this.dgv_tc.Size = new System.Drawing.Size(1161, 515);
             this.dgv_tc.TabIndex = 4;
             // 
             // tabPage_td
@@ -453,7 +461,7 @@
             this.tabPage_td.Controls.Add(this.dgv_td);
             this.tabPage_td.Location = new System.Drawing.Point(4, 38);
             this.tabPage_td.Name = "tabPage_td";
-            this.tabPage_td.Size = new System.Drawing.Size(1161, 534);
+            this.tabPage_td.Size = new System.Drawing.Size(1161, 515);
             this.tabPage_td.TabIndex = 2;
             this.tabPage_td.Text = "單身 COPTD";
             this.tabPage_td.UseVisualStyleBackColor = true;
@@ -469,7 +477,7 @@
             this.dgv_td.ReadOnly = true;
             this.dgv_td.RowHeadersWidth = 51;
             this.dgv_td.RowTemplate.Height = 27;
-            this.dgv_td.Size = new System.Drawing.Size(1161, 534);
+            this.dgv_td.Size = new System.Drawing.Size(1161, 515);
             this.dgv_td.TabIndex = 5;
             // 
             // fm_AUOCOPTC
@@ -483,7 +491,7 @@
             this.Margin = new System.Windows.Forms.Padding(5);
             this.Name = "fm_AUOCOPTC";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "客戶訂單匯入 For 友達(南廠) (20230803 1500)";
+            this.Text = "客戶訂單匯入 For 友達(南廠) (20240222 1246)";
             this.Load += new System.EventHandler(this.fm_AUOCOPTC_Load);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
@@ -538,5 +546,6 @@
         private System.Windows.Forms.DataGridView dgv_tc;
         private System.Windows.Forms.TabPage tabPage_td;
         private System.Windows.Forms.DataGridView dgv_td;
+        private System.Windows.Forms.CheckBox chkNoTranNum;
     }
 }
