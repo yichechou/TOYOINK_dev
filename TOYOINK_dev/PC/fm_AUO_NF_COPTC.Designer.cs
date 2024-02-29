@@ -99,7 +99,7 @@
             this.label6.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label6.Location = new System.Drawing.Point(256, 102);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(92, 25);
+            this.label6.Size = new System.Drawing.Size(73, 20);
             this.label6.TabIndex = 25;
             this.label6.Text = "建立日期";
             // 
@@ -121,7 +121,7 @@
             this.cob_建立者.FormattingEnabled = true;
             this.cob_建立者.Location = new System.Drawing.Point(96, 99);
             this.cob_建立者.Name = "cob_建立者";
-            this.cob_建立者.Size = new System.Drawing.Size(154, 37);
+            this.cob_建立者.Size = new System.Drawing.Size(154, 31);
             this.cob_建立者.TabIndex = 24;
             this.cob_建立者.SelectedIndexChanged += new System.EventHandler(this.cob_建立者_SelectedIndexChanged);
             // 
@@ -131,7 +131,7 @@
             this.label2.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label2.Location = new System.Drawing.Point(4, 102);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(92, 25);
+            this.label2.Size = new System.Drawing.Size(73, 20);
             this.label2.TabIndex = 23;
             this.label2.Text = "建  立  者";
             // 
@@ -174,7 +174,7 @@
             this.label5.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label5.Location = new System.Drawing.Point(5, 15);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(92, 25);
+            this.label5.Size = new System.Drawing.Size(73, 20);
             this.label5.TabIndex = 15;
             this.label5.Text = "單據日期";
             // 
@@ -243,7 +243,7 @@
             this.txt_NeedDate.Location = new System.Drawing.Point(607, 11);
             this.txt_NeedDate.Name = "txt_NeedDate";
             this.txt_NeedDate.ReadOnly = true;
-            this.txt_NeedDate.Size = new System.Drawing.Size(114, 34);
+            this.txt_NeedDate.Size = new System.Drawing.Size(114, 29);
             this.txt_NeedDate.TabIndex = 30;
             // 
             // label7
@@ -252,7 +252,7 @@
             this.label7.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label7.Location = new System.Drawing.Point(516, 16);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(92, 25);
+            this.label7.Size = new System.Drawing.Size(73, 20);
             this.label7.TabIndex = 28;
             this.label7.Text = "需求日期";
             // 
@@ -262,7 +262,7 @@
             this.label3.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label3.Location = new System.Drawing.Point(257, 15);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(52, 25);
+            this.label3.Size = new System.Drawing.Size(41, 20);
             this.label3.TabIndex = 11;
             this.label3.Text = "單別";
             // 
@@ -272,7 +272,7 @@
             this.label4.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label4.Location = new System.Drawing.Point(362, 15);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(52, 25);
+            this.label4.Size = new System.Drawing.Size(41, 20);
             this.label4.TabIndex = 12;
             this.label4.Text = "單號";
             // 
@@ -281,7 +281,7 @@
             this.txt_path.Location = new System.Drawing.Point(95, 52);
             this.txt_path.Name = "txt_path";
             this.txt_path.ReadOnly = true;
-            this.txt_path.Size = new System.Drawing.Size(492, 38);
+            this.txt_path.Size = new System.Drawing.Size(492, 32);
             this.txt_path.TabIndex = 1;
             // 
             // label1
@@ -290,7 +290,7 @@
             this.label1.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label1.Location = new System.Drawing.Point(3, 57);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(92, 25);
+            this.label1.Size = new System.Drawing.Size(73, 20);
             this.label1.TabIndex = 0;
             this.label1.Text = "檔案路徑";
             // 
@@ -326,7 +326,7 @@
             this.textBox_單據日期.Location = new System.Drawing.Point(96, 10);
             this.textBox_單據日期.Name = "textBox_單據日期";
             this.textBox_單據日期.ReadOnly = true;
-            this.textBox_單據日期.Size = new System.Drawing.Size(114, 34);
+            this.textBox_單據日期.Size = new System.Drawing.Size(114, 29);
             this.textBox_單據日期.TabIndex = 19;
             this.textBox_單據日期.TextChanged += new System.EventHandler(this.textBox_單據日期_TextChanged);
             // 
@@ -412,7 +412,7 @@
             this.dgv_excel.ReadOnly = true;
             this.dgv_excel.RowHeadersWidth = 51;
             this.dgv_excel.RowTemplate.Height = 27;
-            this.dgv_excel.Size = new System.Drawing.Size(1161, 534);
+            this.dgv_excel.Size = new System.Drawing.Size(1161, 540);
             this.dgv_excel.TabIndex = 4;
             // 
             // tabCtl_data
@@ -430,9 +430,9 @@
             // tabPage_excel
             // 
             this.tabPage_excel.Controls.Add(this.dgv_excel);
-            this.tabPage_excel.Location = new System.Drawing.Point(4, 38);
+            this.tabPage_excel.Location = new System.Drawing.Point(4, 32);
             this.tabPage_excel.Name = "tabPage_excel";
-            this.tabPage_excel.Size = new System.Drawing.Size(1161, 534);
+            this.tabPage_excel.Size = new System.Drawing.Size(1161, 540);
             this.tabPage_excel.TabIndex = 0;
             this.tabPage_excel.Text = "來源Excel";
             this.tabPage_excel.UseVisualStyleBackColor = true;
@@ -440,9 +440,9 @@
             // tabPage_CFIPO
             // 
             this.tabPage_CFIPO.Controls.Add(this.dgv_cfipo);
-            this.tabPage_CFIPO.Location = new System.Drawing.Point(4, 38);
+            this.tabPage_CFIPO.Location = new System.Drawing.Point(4, 32);
             this.tabPage_CFIPO.Name = "tabPage_CFIPO";
-            this.tabPage_CFIPO.Size = new System.Drawing.Size(1161, 534);
+            this.tabPage_CFIPO.Size = new System.Drawing.Size(1161, 540);
             this.tabPage_CFIPO.TabIndex = 3;
             this.tabPage_CFIPO.Text = "整理結果";
             this.tabPage_CFIPO.UseVisualStyleBackColor = true;
@@ -458,15 +458,15 @@
             this.dgv_cfipo.ReadOnly = true;
             this.dgv_cfipo.RowHeadersWidth = 51;
             this.dgv_cfipo.RowTemplate.Height = 27;
-            this.dgv_cfipo.Size = new System.Drawing.Size(1161, 534);
+            this.dgv_cfipo.Size = new System.Drawing.Size(1161, 540);
             this.dgv_cfipo.TabIndex = 0;
             // 
             // tabPage_tc
             // 
             this.tabPage_tc.Controls.Add(this.dgv_tc);
-            this.tabPage_tc.Location = new System.Drawing.Point(4, 38);
+            this.tabPage_tc.Location = new System.Drawing.Point(4, 32);
             this.tabPage_tc.Name = "tabPage_tc";
-            this.tabPage_tc.Size = new System.Drawing.Size(1161, 534);
+            this.tabPage_tc.Size = new System.Drawing.Size(1161, 540);
             this.tabPage_tc.TabIndex = 1;
             this.tabPage_tc.Text = "單頭 COPTC";
             this.tabPage_tc.UseVisualStyleBackColor = true;
@@ -482,15 +482,15 @@
             this.dgv_tc.ReadOnly = true;
             this.dgv_tc.RowHeadersWidth = 51;
             this.dgv_tc.RowTemplate.Height = 27;
-            this.dgv_tc.Size = new System.Drawing.Size(1161, 534);
+            this.dgv_tc.Size = new System.Drawing.Size(1161, 540);
             this.dgv_tc.TabIndex = 4;
             // 
             // tabPage_td
             // 
             this.tabPage_td.Controls.Add(this.dgv_td);
-            this.tabPage_td.Location = new System.Drawing.Point(4, 38);
+            this.tabPage_td.Location = new System.Drawing.Point(4, 32);
             this.tabPage_td.Name = "tabPage_td";
-            this.tabPage_td.Size = new System.Drawing.Size(1161, 534);
+            this.tabPage_td.Size = new System.Drawing.Size(1161, 540);
             this.tabPage_td.TabIndex = 2;
             this.tabPage_td.Text = "單身 COPTD";
             this.tabPage_td.UseVisualStyleBackColor = true;
@@ -506,12 +506,12 @@
             this.dgv_td.ReadOnly = true;
             this.dgv_td.RowHeadersWidth = 51;
             this.dgv_td.RowTemplate.Height = 27;
-            this.dgv_td.Size = new System.Drawing.Size(1161, 534);
+            this.dgv_td.Size = new System.Drawing.Size(1161, 540);
             this.dgv_td.TabIndex = 5;
             // 
             // fm_AUO_NF_COPTC
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(14F, 29F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1195, 770);
             this.Controls.Add(this.panel1);
@@ -520,7 +520,7 @@
             this.Margin = new System.Windows.Forms.Padding(5);
             this.Name = "fm_AUO_NF_COPTC";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "客戶訂單匯入 For 友達北廠 (20230803 1510)";
+            this.Text = "客戶訂單匯入 For 友達北廠 (202340229 1555)";
             this.Load += new System.EventHandler(this.fm_AUO_NF_COPTC_Load);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();

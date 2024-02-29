@@ -14,14 +14,15 @@ using Myclass;
 namespace TOYOINK_dev
 {
     /*20210111 CONVERT(varchar(6) 改為 CONVERT(varchar(7)
-    * ", REPLICATE('0', (7 - LEN(CONVERT(varchar(6), (CFIPO.ERP_Num + " + str_key_客訂單號 + "))))) +CONVERT(varchar(6), (CFIPO.ERP_Num + " + str_key_客訂單號 + ")) as TD002" + str_enter +
+    *  ", REPLICATE('0', (7 - LEN(CONVERT(varchar(6), (CFIPO.ERP_Num + " + str_key_客訂單號 + "))))) +CONVERT(varchar(6), (CFIPO.ERP_Num + " + str_key_客訂單號 + ")) as TD002" + str_enter +
     * 20210401 ,COPMA.MA024 as TC063 欄位值錯誤，改為,COPMA.MA025 as TC063 發票地址(一)
     * 20210623 將建立者欄位改為鎖定，無法變更
     * 20210913 升級GP4單身增加兩個欄位，計價數量(TD076).計價單位(TD077)，同原欄位 數量(TD008).單位(TD010) 及更新連線方式改由MyClass代入
-    * ,CFIPO.Quantity as TD076,CFIPO.UOM as TD077,
+    *  ,CFIPO.Quantity as TD076,CFIPO.UOM as TD077,
     * 20230803 生管 林玲禎提出，EXCEL匯入時，檢查是否空值，忽略欄位名稱為[Sample]或[Remark]
     * 20240222 生管 林玲禎提出，1.EXCEL匯入時，僅檢查欄位名稱為線別,Number,Item,Item Description,UOM,Quantity,Currency,Need By Date 是否空值，
-    * 2.轉換格式時，檢查EXCEL單價是否與ERP相符但不卡控[轉換ERP格式]僅[緊示]；3.新增[不轉換EXCEL客戶單號]選項。
+    *  2.轉換格式時，檢查EXCEL單價是否與ERP相符但不卡控[轉換ERP格式]僅[緊示]；3.新增[不轉換EXCEL客戶單號]選項
+    * 20240229 生管 林玲禎提出，財務聯絡因財務報表製作時需要［部門別］資訊 COPMA.MA015對應訂單單頭COPTC.TC005
     */
 
     public partial class fm_AUOCOPTC : Form
@@ -1000,13 +1001,14 @@ namespace TOYOINK_dev
                         //TODO:判別 單身單號與下一筆不同 則新增 單頭
                         //20210111 CONVERT(varchar(6) 改為 CONVERT(varchar(7)
                         // ", REPLICATE('0', (7 - LEN(CONVERT(varchar(6), (CFIPO.ERP_Num + " + str_key_客訂單號 + "))))) +CONVERT(varchar(6), (CFIPO.ERP_Num + " + str_key_客訂單號 + ")) as TC002" + str_enter +
+                        //20240229 生管 林玲禎提出，財務聯絡因財務報表製作時需要［部門別］資訊 COPMA.MA015對應訂單單頭COPTC.TC005
                         if ((i != dt.Rows.Count - 1 && (dt.Rows[i]["TD002"].ToString() != dt.Rows[i + 1]["TD002"].ToString())) || i == dt.Rows.Count - 1)
                         {
                             DataTable dt_單頭 = new DataTable();
                             string str_sql_tc =
                             "select * from (select'220' as TC001" + str_enter +
                             ", REPLICATE('0', (7 - LEN(CONVERT(varchar(7), (CFIPO.ERP_Num + " + str_key_客訂單號 + "))))) +CONVERT(varchar(7), (CFIPO.ERP_Num + " + str_key_客訂單號 + ")) as TC002" + str_enter +
-                            ",'" + textBox_單據日期.Text.ToString().Trim() + "' as TC003 ,CFIPO.ERP_客代 as TC004,'' as TC005" + str_enter +
+                            ",'" + textBox_單據日期.Text.ToString().Trim() + "' as TC003 ,CFIPO.ERP_客代 as TC004,COPMA.MA015 as TC005" + str_enter +
                             ",CFIPO.線別 as TC006,'002' as TC007,COPMA.MA014 as TC008 " + str_enter +
                             ",(select MG004 from CMSMG where MG001 = COPMA.MA014 and MG002 = (select MAX(MG002) from CMSMG where MG001 = COPMA.MA014))  as TC009" + str_enter +
                             ",(COPMA.MA080 + ' ' +COPMA.MA027) as TC010,COPMA.MA064 as TC011,CFIPO.ERP_客單 as TC012,COPMA.MA030 as TC013,COPMA.MA031 as TC014" + str_enter +
