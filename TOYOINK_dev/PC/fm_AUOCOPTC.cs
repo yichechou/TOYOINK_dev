@@ -21,8 +21,10 @@ namespace TOYOINK_dev
     *  ,CFIPO.Quantity as TD076,CFIPO.UOM as TD077,
     * 20230803 生管 林玲禎提出，EXCEL匯入時，檢查是否空值，忽略欄位名稱為[Sample]或[Remark]
     * 20240222 生管 林玲禎提出，1.EXCEL匯入時，僅檢查欄位名稱為線別,Number,Item,Item Description,UOM,Quantity,Currency,Need By Date 是否空值，
-    *  2.轉換格式時，檢查EXCEL單價是否與ERP相符但不卡控[轉換ERP格式]僅[緊示]；3.新增[不轉換EXCEL客戶單號]選項
+    *  2.檢查EXCEL金額[Shipment Amount]是否與ERP相符但不卡控[轉換ERP格式]僅[緊示]；3.新增[不轉換EXCEL客戶單號]選項
     * 20240229 生管 林玲禎提出，財務聯絡因財務報表製作時需要［部門別］資訊 COPMA.MA015對應訂單單頭COPTC.TC005
+    * 20240305 生管 林玲禎提出 單價欄位比對錯誤(單價-TD011)，正確為金額[TD012]，(COPMB.MB008 * CFIPO.Quantity) as TD012
+    * 
     */
 
     public partial class fm_AUOCOPTC : Form
@@ -714,7 +716,8 @@ namespace TOYOINK_dev
                 }
             }
 
-            //20240222 生管林玲禎提出 轉換格式時，檢查EXCEL單價是否與ERP相符但不卡控[轉換ERP格式]僅[緊示]
+            //20240222 生管林玲禎 提出 轉換格式時，檢查EXCEL金額[Shipment Amount]是否與ERP相符但不卡控[轉換ERP格式]僅[緊示]
+            //20240305 生管林玲禎 提出 欄位比對錯誤(單價-TD011)，正確為金額[TD012]，(COPMB.MB008 * CFIPO.Quantity) as TD012
             //TODO: 取得 COPTC.COPTD 客戶訂單單頭單身資料檔的欄位資料型態
             DataTable dt_CheckCFIPO_ShipmentAmount = new DataTable();
 
@@ -723,7 +726,7 @@ namespace TOYOINK_dev
         CFIPO.[Number] as 'Number',
         CFIPO.Item as 'Item',
         INVMB.MB001 as 'TD004',
-        COPMB.MB008 as 'TD011',
+        (COPMB.MB008 * CFIPO.Quantity) as 'TD012',
         CFIPO.[Shipment Amount] as 'Shipment Amount'
     FROM 
         CFIPO
@@ -745,15 +748,15 @@ namespace TOYOINK_dev
             foreach (DataRow row in dt_CheckCFIPO_ShipmentAmount.Rows)
             {
                 decimal shipmentAmount = Convert.ToDecimal(row["Shipment Amount"]);
-                decimal td011 = Convert.ToDecimal(row["TD011"]);
+                decimal td012 = Convert.ToDecimal(row["TD012"]);
 
-                if (shipmentAmount != td011)
+                if (shipmentAmount != td012)
                 {
                     // 如果值不同，收集信息
                     string message = $"Number: {row["Number"].ToString().Trim()}, " + Environment.NewLine +
                                      $"Item: {row["Item"].ToString().Trim()}, " + Environment.NewLine +
                                      $"ERP品號: {row["TD004"].ToString().Trim()}, " + Environment.NewLine +
-                                     $"ERP單價: {Convert.ToInt32(row["TD011"]).ToString().Trim()}, " + Environment.NewLine +
+                                     $"ERP單價: {Convert.ToInt32(row["TD012"]).ToString().Trim()}, " + Environment.NewLine +
                                      $"Shipment Amount: {row["Shipment Amount"].ToString().Trim()}";
                     mismatchedRows.Add(message);
                 }
