@@ -22,6 +22,7 @@ namespace TOYOINK_dev
      *20210913 升級GP4單身增加兩個欄位，計價數量(TD076).計價單位(TD077)，同原欄位 數量(TD008).單位(TD010)
      * ,[AMOUNT] as TD076,INVMB.MB004 as TD077,
      *20231030 生管 梁姿儂 C5D.C6C 已關廠，加判別各線別，當LINQ為空值，給予新datatable，避免錯誤
+     *20240314 生管 梁姿儂提出 前回差報表的部分，調整成依照FAB,ERPNO,MATERIAL_TYPE 排序
      */
     public partial class fm_AUOPlannedOrder : Form
     {
@@ -869,6 +870,7 @@ namespace TOYOINK_dev
             dgv_ImportSearch.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
 
             tctl_Import.SelectedIndex = 1;
+            //20240314 生管 梁姿儂提出 前回差報表的部分，調整成依照FAB,ERPNO,MATERIAL_TYPE 排序
             ////前回差報表查詢
             string sql_LastReport = String.Format(@"select NowR.[ERPNO],NowR.[FAB]
 	                                    ,MAX(case NowR.[R_MONTH] when '{0}' then NowR.[AMOUNT] end) as '{0}'
@@ -884,7 +886,7 @@ namespace TOYOINK_dev
                                     on NowR.[FAB] = LastR.[FAB] and NowR.[MATERIAL_TYPE] = LastR.[MATERIAL_TYPE] and NowR.[R_MONTH] = LastR.[R_MONTH] and LastR.[R_DATE] = '{4}'
                                     where NowR.[R_DATE] = '{5}'
                                     group by NowR.[R_DATE] ,NowR.[MATERIAL_TYPE],NowR.[ERPNO],NowR.[FAB]
-                                    order by NowR.[FAB],NowR.[MATERIAL_TYPE]"
+                                    order by NowR.[FAB],NowR.[ERPNO],NowR.[MATERIAL_TYPE]"
                     , ArrayLastReport_Month[0], ArrayLastReport_Month[1], ArrayLastReport_Month[2], ArrayLastReport_Month[3], cbo_LastDate.Text.ToString(), cbo_OrderLogDate.Text.ToString());
 
             MyCode.Sql_dgv(sql_LastReport, dt_LastReport, dgv_LastReport);

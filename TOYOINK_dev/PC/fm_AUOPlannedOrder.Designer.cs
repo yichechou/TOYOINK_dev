@@ -1463,7 +1463,7 @@
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "fm_AUOPlannedOrder";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "客戶計劃訂單匯入(20231030 1035)";
+            this.Text = "客戶計劃訂單匯入(20240314 1335)";
             this.Load += new System.EventHandler(this.fm_AUOPlannedOrder_Load);
             this.tabControl2.ResumeLayout(false);
             this.tabPage8.ResumeLayout(false);
