@@ -14,6 +14,7 @@ namespace TOYOINK_dev
   * 使用到的TABLE
   * fm_AUOPlannedOrder: 有使用[SAP].[dbo].fm_COPTC_log、[SAP].[dbo].fm_COPTD_log，同ERP欄位 前面加入 DEL_DATE
   * 20240314 生管 梁姿儂提出 fm_AUOPlannedOrder 前回差報表的部分，調整成依照FAB,ERPNO,MATERIAL_TYPE 排序
+  * 20240401 生管 梁姿儂提出 fm_AUOPlannedOrder 上傳ERP排序，加入[ERPNO]，[FAB],[ERPNO],[MATERIAL_TYPE]]
   * 
   * 
   */

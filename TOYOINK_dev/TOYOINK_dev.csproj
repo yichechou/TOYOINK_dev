@@ -25,7 +25,7 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ProductName>系統開發相關程式</ProductName>
     <PublisherName>TOYOINK MIS</PublisherName>
-    <ApplicationRevision>96</ApplicationRevision>
+    <ApplicationRevision>98</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -64,10 +64,10 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>66A7050788444B5DC7EE69C661653C928199F797</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>68BEADA12B6865AFD0EDBEFAB551E08B90E923CC</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>TOYOINK_dev_1_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>TOYOINK_dev_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>MIS自開發.ico</ApplicationIcon>
@@ -262,7 +262,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="TOYOINK_dev_1_TemporaryKey.pfx" />
     <None Include="TOYOINK_dev_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>

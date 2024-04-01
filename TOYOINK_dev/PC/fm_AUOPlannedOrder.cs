@@ -23,6 +23,7 @@ namespace TOYOINK_dev
      * ,[AMOUNT] as TD076,INVMB.MB004 as TD077,
      *20231030 生管 梁姿儂 C5D.C6C 已關廠，加判別各線別，當LINQ為空值，給予新datatable，避免錯誤
      *20240314 生管 梁姿儂提出 前回差報表的部分，調整成依照FAB,ERPNO,MATERIAL_TYPE 排序
+     *20240401 生管 梁姿儂提出 上傳ERP排序，加入[ERPNO]，[FAB],[ERPNO],[MATERIAL_TYPE]
      */
     public partial class fm_AUOPlannedOrder : Form
     {
@@ -1435,7 +1436,7 @@ namespace TOYOINK_dev
                 i++;
             }
 
-
+            //20240401 生管 梁姿儂提出 上傳ERP排序，加入[ERPNO]，[FAB],[ERPNO],[MATERIAL_TYPE]
             //查詢結果
             DataTable dt_ERPUPSeacrh = new DataTable();
             string sql_ERPUPSearch = String.Format(@"select Row_Number() OVER(Partition by [LINENAME] order by [LINENAME]) AS [SNNO],[ERPNO],[FAB]
@@ -1463,7 +1464,7 @@ namespace TOYOINK_dev
                                 ) as a
                                 where [R_DATE] = '{3}'
                                 group by [R_DATE] ,[MATERIAL_TYPE],[ERPNO],[FAB],[LINENAME]
-                                order by [FAB],[MATERIAL_TYPE]"
+                                order by [FAB],[ERPNO],[MATERIAL_TYPE]"
                     , ArrayLastReport_Month[0], ArrayLastReport_Month[1], ArrayLastReport_Month[2], cbo_ERPUP_OrderLogDate.Text.ToString());
 
             MyCode.Sql_dt(sql_ERPUPSearch, dt_ERPUPSeacrh);
