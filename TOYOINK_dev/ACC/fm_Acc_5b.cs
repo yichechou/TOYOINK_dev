@@ -766,7 +766,7 @@ namespace TOYOINK_dev
                     }
                     //20240513 更新NuGet套件後出現錯誤，修改程式碼加入【(ClosedXML.Excel.XLCellValue)】；再次修改，刪除前面修改，結尾加入【.ToString()】
                     //wsheet.Cell(i, j).Value = row[row_num];
-                    wsheet.Cell(i, j).Value = row[row_num].ToString;
+                    wsheet.Cell(i, j).Value = row[row_num].ToString();
                     row_num++;
                     j++;
                 }
