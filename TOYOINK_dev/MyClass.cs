@@ -56,6 +56,7 @@ namespace Myclass
         ****** 範例 ******
         * 20210603 加入public String strDbConA01A 及txterr 錯誤訊息
         * 20240222 生管 林玲禎提出 fm_AUOCOPTC 修改
+        * 20240513 更新NuGet套件後出現錯誤，修改程式碼
         * 
         */
         public string ERP_v4 = "192.168.128.253", AD2SERVER = "192.168.128.250", S2008X64 = "192.168.128.219", HRM = "192.168.128.219\\HRM,50502";
@@ -942,7 +943,8 @@ namespace Myclass
                         default:
                             break;
                     }
-                    wsheet.Cell(i_col, j_row).Value = row[row_num];
+                    //20240513 更新NuGet套件後出現錯誤，修改程式碼
+                    wsheet.Cell(i_col, j_row).Value = (ClosedXML.Excel.XLCellValue)row[row_num];
                     row_num++;
                     j_row++;
                 }

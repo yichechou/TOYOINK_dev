@@ -24,6 +24,7 @@ namespace TOYOINK_dev
      *20231030 生管 梁姿儂 C5D.C6C 已關廠，加判別各線別，當LINQ為空值，給予新datatable，避免錯誤
      *20240314 生管 梁姿儂提出 前回差報表的部分，調整成依照FAB,ERPNO,MATERIAL_TYPE 排序
      *20240401 生管 梁姿儂提出 上傳ERP排序，加入[ERPNO]，[FAB],[ERPNO],[MATERIAL_TYPE]
+     *20240513 更新NuGet套件後出現錯誤，修改程式碼
      */
     public partial class fm_AUOPlannedOrder : Form
     {
@@ -2824,7 +2825,8 @@ VALUES({1})", str_sql_columns_d, str_sql_values_d);
                 int j = 0;
                 foreach (DataColumn Column in dt_ToExcel.Columns)
                 {
-                    wsheet.Cell(i + 3, j + 1).Value = row[j];
+                    //20240513 更新NuGet套件後出現錯誤，修改程式碼
+                    wsheet.Cell(i + 3, j + 1).Value = (ClosedXML.Excel.XLCellValue)row[j];
                     //如果是專用料，加註淺藍色底色
                     if (dict_SPECIAL.ContainsKey(row[j].ToString()) == true ) 
                     {
