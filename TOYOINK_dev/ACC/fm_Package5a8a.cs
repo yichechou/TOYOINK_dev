@@ -49,7 +49,7 @@ namespace TOYOINK_dev
         2.[項目.成本]，通常以會計科目指定"名稱"，[產品別]，通常以摘要內#字標示
         or (ML009 like '%存貨評價%' and ML006 新增 '510601','510603','510604','510605'，同'510602'
         or (ML009 like '%報廢估列%' and ML006 新增 '510704','510705','510706'，同'510702'
-      * 20240513 更新NuGet套件後出現錯誤，修改程式碼
+      * 20240513 更新NuGet套件後出現錯誤，修改程式碼加入【(ClosedXML.Excel.XLCellValue)】；再次修改，刪除前面修改，結尾加入【.ToString()】
 * 
 ************************/
     public partial class fm_Package5a8a : Form
@@ -800,8 +800,8 @@ namespace TOYOINK_dev
                         default:
                             break;
                     }
-                    //20240513 更新NuGet套件後出現錯誤，修改程式碼
-                    wsheet.Cell(i + 5, j + 1).Value = (ClosedXML.Excel.XLCellValue)row[j];
+                    //20240513 更新NuGet套件後出現錯誤，修改程式碼加入【(ClosedXML.Excel.XLCellValue)】；再次修改，刪除前面修改，結尾加入【.ToString()】
+                    wsheet.Cell(i + 5, j + 1).Value = row[j].ToString();
                     j++;
                 }
                 i++;

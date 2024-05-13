@@ -15,7 +15,7 @@ using System.IO;
 namespace TOYOINK_dev
 {
     //20200923 在途查詢加入取整數 ROUND((TF010 * (select top 1 MG006 from CMSMG where MG001 = TC005 and MG002 < TF015 ORDER BY MG002 DESC)),0) as 新本幣金額
-    //20240513 更新NuGet套件後出現錯誤，修改程式碼
+    //20240513 更新NuGet套件後出現錯誤，修改程式碼加入【(ClosedXML.Excel.XLCellValue)】；再次修改，刪除前面修改，結尾加入【.ToString()】
     public partial class fm_Package7b : Form
     {
         public MyClass MyCode;
@@ -395,40 +395,40 @@ namespace TOYOINK_dev
                         x = y + 1;
                         y++;
                     }
-                    //20240513 更新NuGet套件後出現錯誤，修改程式碼
+                    //20240513 更新NuGet套件後出現錯誤，修改程式碼加入【(ClosedXML.Excel.XLCellValue)】；再次修改，刪除前面修改，結尾加入【.ToString()】
                     wsheet_IPS.Cell(y, 1).Style.NumberFormat.Format = "@";
-                    wsheet_IPS.Cell(y, 1).Value = (ClosedXML.Excel.XLCellValue)row[0]; //SI單據日期
+                    wsheet_IPS.Cell(y, 1).Value = row[0].ToString(); //SI單據日期
                     wsheet_IPS.Cell(y, 2).Style.NumberFormat.Format = "@";
-                    wsheet_IPS.Cell(y, 2).Value = (ClosedXML.Excel.XLCellValue)row[1]; //SI單號
+                    wsheet_IPS.Cell(y, 2).Value = row[1].ToString(); //SI單號
                     wsheet_IPS.Cell(y, 3).Style.NumberFormat.Format = "@";
-                    wsheet_IPS.Cell(y, 3).Value = (ClosedXML.Excel.XLCellValue)row[2]; //關係人代號
+                    wsheet_IPS.Cell(y, 3).Value = row[2].ToString(); //關係人代號
                     wsheet_IPS.Cell(y, 4).Style.NumberFormat.Format = "@";
-                    wsheet_IPS.Cell(y, 4).Value = (ClosedXML.Excel.XLCellValue)row[3]; //供應商代號
-                    wsheet_IPS.Cell(y, 5).Value = (ClosedXML.Excel.XLCellValue)row[4]; //供應商簡稱
+                    wsheet_IPS.Cell(y, 4).Value = row[3].ToString(); //供應商代號
+                    wsheet_IPS.Cell(y, 5).Value = row[4].ToString(); //供應商簡稱
                     wsheet_IPS.Cell(y, 6).Style.NumberFormat.Format = "@";
-                    wsheet_IPS.Cell(y, 6).Value = (ClosedXML.Excel.XLCellValue)row[5]; //存貨科目
-                    wsheet_IPS.Cell(y, 7).Value = (ClosedXML.Excel.XLCellValue)row[6]; //品號
-                    wsheet_IPS.Cell(y, 8).Value = (ClosedXML.Excel.XLCellValue)row[7]; //品名
+                    wsheet_IPS.Cell(y, 6).Value = row[5].ToString(); //存貨科目
+                    wsheet_IPS.Cell(y, 7).Value = row[6].ToString(); //品號
+                    wsheet_IPS.Cell(y, 8).Value = row[7].ToString(); //品名
                     wsheet_IPS.Cell(y, 9).Style.NumberFormat.Format = "#,##0.00";
-                    wsheet_IPS.Cell(y, 9).Value = (ClosedXML.Excel.XLCellValue)row[8]; //原幣金額
-                    wsheet_IPS.Cell(y, 10).Value = (ClosedXML.Excel.XLCellValue)row[9]; //確認交貨日
+                    wsheet_IPS.Cell(y, 9).Value = row[8].ToString(); //原幣金額
+                    wsheet_IPS.Cell(y, 10).Value = row[9].ToString(); //確認交貨日
                     wsheet_IPS.Cell(y, 11).Style.NumberFormat.Format = "#,##0.0000";
-                    wsheet_IPS.Cell(y, 11).Value = (ClosedXML.Excel.XLCellValue)row[10]; //新匯率
+                    wsheet_IPS.Cell(y, 11).Value = row[10].ToString(); //新匯率
                     wsheet_IPS.Cell(y, 12).Style.NumberFormat.Format = "#,##0";
-                    wsheet_IPS.Cell(y, 12).Value = (ClosedXML.Excel.XLCellValue)row[11]; //新本幣金額
-                    wsheet_IPS.Cell(y, 13).Value = (ClosedXML.Excel.XLCellValue)row[12]; //單位
-                    wsheet_IPS.Cell(y, 14).Value = (ClosedXML.Excel.XLCellValue)row[13]; //幣別
+                    wsheet_IPS.Cell(y, 12).Value = row[11].ToString(); //新本幣金額
+                    wsheet_IPS.Cell(y, 13).Value = row[12].ToString(); //單位
+                    wsheet_IPS.Cell(y, 14).Value = row[13].ToString(); //幣別
                     wsheet_IPS.Cell(y, 15).Style.NumberFormat.Format = "@";
-                    wsheet_IPS.Cell(y, 15).Value = (ClosedXML.Excel.XLCellValue)row[14]; //產品別原代號
-                    wsheet_IPS.Cell(y, 16).Value = (ClosedXML.Excel.XLCellValue)row[15]; //產品別名稱
+                    wsheet_IPS.Cell(y, 15).Value = row[14].ToString(); //產品別原代號
+                    wsheet_IPS.Cell(y, 16).Value = row[15].ToString(); //產品別名稱
                     wsheet_IPS.Cell(y, 17).Style.NumberFormat.Format = "@";
-                    wsheet_IPS.Cell(y, 17).Value = (ClosedXML.Excel.XLCellValue)row[16]; //採購單別
+                    wsheet_IPS.Cell(y, 17).Value = row[16].ToString(); //採購單別
                     wsheet_IPS.Cell(y, 18).Style.NumberFormat.Format = "@";
-                    wsheet_IPS.Cell(y, 18).Value = (ClosedXML.Excel.XLCellValue)row[17]; //採購單號
+                    wsheet_IPS.Cell(y, 18).Value = row[17].ToString(); //採購單號
                     wsheet_IPS.Cell(y, 19).Style.NumberFormat.Format = "@";
-                    wsheet_IPS.Cell(y, 19).Value = (ClosedXML.Excel.XLCellValue)row[18]; //採購序號
+                    wsheet_IPS.Cell(y, 19).Value = row[18].ToString(); //採購序號
                     wsheet_IPS.Cell(y, 20).Style.NumberFormat.Format = "@";
-                    wsheet_IPS.Cell(y, 20).Value = (ClosedXML.Excel.XLCellValue)row[19]; //庫別
+                    wsheet_IPS.Cell(y, 20).Value = row[19].ToString(); //庫別
 
                     num_IPS = row[1].ToString().Trim();
 
@@ -608,40 +608,40 @@ namespace TOYOINK_dev
                         x = y + 1;
                         y++;
                     }
-                    //20240513 更新NuGet套件後出現錯誤，修改程式碼
+                    //20240513 更新NuGet套件後出現錯誤，修改程式碼加入【(ClosedXML.Excel.XLCellValue)】；再次修改，刪除前面修改，結尾加入【.ToString()】
                     wsheet_IPS.Cell(y, 1).Style.NumberFormat.Format = "@";
-                    wsheet_IPS.Cell(y, 1).Value = (ClosedXML.Excel.XLCellValue)row[0]; //SI單據日期
+                    wsheet_IPS.Cell(y, 1).Value = row[0].ToString(); //SI單據日期
                     wsheet_IPS.Cell(y, 2).Style.NumberFormat.Format = "@";
-                    wsheet_IPS.Cell(y, 2).Value = (ClosedXML.Excel.XLCellValue)row[1]; //SI單號
+                    wsheet_IPS.Cell(y, 2).Value = row[1].ToString(); //SI單號
                     wsheet_IPS.Cell(y, 3).Style.NumberFormat.Format = "@";
-                    wsheet_IPS.Cell(y, 3).Value = (ClosedXML.Excel.XLCellValue)row[2]; //關係人代號
+                    wsheet_IPS.Cell(y, 3).Value = row[2].ToString(); //關係人代號
                     wsheet_IPS.Cell(y, 4).Style.NumberFormat.Format = "@";
-                    wsheet_IPS.Cell(y, 4).Value = (ClosedXML.Excel.XLCellValue)row[3]; //供應商代號
-                    wsheet_IPS.Cell(y, 5).Value = (ClosedXML.Excel.XLCellValue)row[4]; //供應商簡稱
+                    wsheet_IPS.Cell(y, 4).Value = row[3].ToString(); //供應商代號
+                    wsheet_IPS.Cell(y, 5).Value = row[4].ToString(); //供應商簡稱
                     wsheet_IPS.Cell(y, 6).Style.NumberFormat.Format = "@";
-                    wsheet_IPS.Cell(y, 6).Value = (ClosedXML.Excel.XLCellValue)row[5]; //存貨科目
-                    wsheet_IPS.Cell(y, 7).Value = (ClosedXML.Excel.XLCellValue)row[6]; //品號
-                    wsheet_IPS.Cell(y, 8).Value = (ClosedXML.Excel.XLCellValue)row[7]; //品名
+                    wsheet_IPS.Cell(y, 6).Value = row[5].ToString(); //存貨科目
+                    wsheet_IPS.Cell(y, 7).Value = row[6].ToString(); //品號
+                    wsheet_IPS.Cell(y, 8).Value = row[7].ToString(); //品名
                     wsheet_IPS.Cell(y, 9).Style.NumberFormat.Format = "#,##0.00";
-                    wsheet_IPS.Cell(y, 9).Value = (ClosedXML.Excel.XLCellValue)row[8]; //原幣金額
-                    wsheet_IPS.Cell(y, 10).Value = (ClosedXML.Excel.XLCellValue)row[9]; //確認交貨日
+                    wsheet_IPS.Cell(y, 9).Value = row[8].ToString(); //原幣金額
+                    wsheet_IPS.Cell(y, 10).Value = row[9].ToString(); //確認交貨日
                     wsheet_IPS.Cell(y, 11).Style.NumberFormat.Format = "#,##0.0000";
-                    wsheet_IPS.Cell(y, 11).Value = (ClosedXML.Excel.XLCellValue)row[10]; //新匯率
+                    wsheet_IPS.Cell(y, 11).Value = row[10].ToString(); //新匯率
                     wsheet_IPS.Cell(y, 12).Style.NumberFormat.Format = "#,##0";
-                    wsheet_IPS.Cell(y, 12).Value = (ClosedXML.Excel.XLCellValue)row[11]; //新本幣金額
-                    wsheet_IPS.Cell(y, 13).Value = (ClosedXML.Excel.XLCellValue)row[12]; //單位
-                    wsheet_IPS.Cell(y, 14).Value = (ClosedXML.Excel.XLCellValue)row[13]; //幣別
+                    wsheet_IPS.Cell(y, 12).Value = row[11].ToString(); //新本幣金額
+                    wsheet_IPS.Cell(y, 13).Value = row[12].ToString(); //單位
+                    wsheet_IPS.Cell(y, 14).Value = row[13].ToString(); //幣別
                     wsheet_IPS.Cell(y, 15).Style.NumberFormat.Format = "@";
-                    wsheet_IPS.Cell(y, 15).Value = (ClosedXML.Excel.XLCellValue)row[14]; //產品別原代號
-                    wsheet_IPS.Cell(y, 16).Value = (ClosedXML.Excel.XLCellValue)row[15]; //產品別名稱
+                    wsheet_IPS.Cell(y, 15).Value = row[14].ToString(); //產品別原代號
+                    wsheet_IPS.Cell(y, 16).Value = row[15].ToString(); //產品別名稱
                     wsheet_IPS.Cell(y, 17).Style.NumberFormat.Format = "@";
-                    wsheet_IPS.Cell(y, 17).Value = (ClosedXML.Excel.XLCellValue)row[16]; //採購單別
+                    wsheet_IPS.Cell(y, 17).Value = row[16].ToString(); //採購單別
                     wsheet_IPS.Cell(y, 18).Style.NumberFormat.Format = "@";
-                    wsheet_IPS.Cell(y, 18).Value = (ClosedXML.Excel.XLCellValue)row[17]; //採購單號
+                    wsheet_IPS.Cell(y, 18).Value = row[17].ToString(); //採購單號
                     wsheet_IPS.Cell(y, 19).Style.NumberFormat.Format = "@";
-                    wsheet_IPS.Cell(y, 19).Value = (ClosedXML.Excel.XLCellValue)row[18]; //採購序號
+                    wsheet_IPS.Cell(y, 19).Value = row[18].ToString(); //採購序號
                     wsheet_IPS.Cell(y, 20).Style.NumberFormat.Format = "@";
-                    wsheet_IPS.Cell(y, 20).Value = (ClosedXML.Excel.XLCellValue)row[19]; //庫別
+                    wsheet_IPS.Cell(y, 20).Value = row[19].ToString(); //庫別
 
                     num_IPS = row[1].ToString().Trim();
 

@@ -2825,8 +2825,8 @@ VALUES({1})", str_sql_columns_d, str_sql_values_d);
                 int j = 0;
                 foreach (DataColumn Column in dt_ToExcel.Columns)
                 {
-                    //20240513 更新NuGet套件後出現錯誤，修改程式碼
-                    wsheet.Cell(i + 3, j + 1).Value = (ClosedXML.Excel.XLCellValue)row[j];
+                    //20240513 更新NuGet套件後出現錯誤，修改程式碼加入【(ClosedXML.Excel.XLCellValue)】；再次修改，刪除前面修改，結尾加入【.ToString()】
+                    wsheet.Cell(i + 3, j + 1).Value = row[j].ToString();
                     //如果是專用料，加註淺藍色底色
                     if (dict_SPECIAL.ContainsKey(row[j].ToString()) == true ) 
                     {

@@ -19,7 +19,7 @@ namespace TOYOINK_dev
         //20200604 開發完成 建立者：周怡甄 需求者：鄭玉菁
         //20210118 財務林姿刪提出，去除347單別
         //20210720 財務林姿刪提出，去除進退貨條件式【(case when PURTG.TG005 = N'TVS' AND PURTG.TG007 = N'JPY' then 0 else 1 end=1)】
-        //20240513 更新NuGet套件後出現錯誤，修改程式碼
+        //20240513 更新NuGet套件後出現錯誤，修改程式碼加入【(ClosedXML.Excel.XLCellValue)】；再次修改，刪除前面修改，結尾加入【.ToString()】
         public MyClass MyCode;
         月曆 fm_月曆;
 
@@ -764,9 +764,9 @@ namespace TOYOINK_dev
                         default:
                             break;
                     }
-                    //20240513 更新NuGet套件後出現錯誤，修改程式碼
+                    //20240513 更新NuGet套件後出現錯誤，修改程式碼加入【(ClosedXML.Excel.XLCellValue)】；再次修改，刪除前面修改，結尾加入【.ToString()】
                     //wsheet.Cell(i, j).Value = row[row_num];
-                    wsheet.Cell(i, j).Value = (ClosedXML.Excel.XLCellValue)row[row_num];
+                    wsheet.Cell(i, j).Value = row[row_num].ToString;
                     row_num++;
                     j++;
                 }
