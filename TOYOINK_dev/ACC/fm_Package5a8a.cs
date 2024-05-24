@@ -50,6 +50,7 @@ namespace TOYOINK_dev
         or (ML009 like '%存貨評價%' and ML006 新增 '510601','510603','510604','510605'，同'510602'
         or (ML009 like '%報廢估列%' and ML006 新增 '510704','510705','510706'，同'510702'
       * 20240513 更新NuGet套件後出現錯誤，修改程式碼加入【(ClosedXML.Excel.XLCellValue)】；再次修改，刪除前面修改，結尾加入【.ToString()】
+      * 20240524 因轉出數值為文字，再次修改程式，改為數值
 * 
 ************************/
     public partial class fm_Package5a8a : Form
@@ -801,7 +802,17 @@ namespace TOYOINK_dev
                             break;
                     }
                     //20240513 更新NuGet套件後出現錯誤，修改程式碼加入【(ClosedXML.Excel.XLCellValue)】；再次修改，刪除前面修改，結尾加入【.ToString()】
-                    wsheet.Cell(i + 5, j + 1).Value = row[j].ToString();
+                    //20240524 因轉出數值為文字，再次修改程式，改為數值
+                    //wsheet.Cell(i + 5, j + 1).Value = row[j];
+
+                    if (double.TryParse(row[j].ToString(), out double numericValue))
+                    {
+                        wsheet.Cell(i + 5, j + 1).Value = numericValue;
+                    }
+                    else
+                    {
+                        wsheet.Cell(i + 5, j + 1).Value = row[j].ToString();
+                    }
                     j++;
                 }
                 i++;

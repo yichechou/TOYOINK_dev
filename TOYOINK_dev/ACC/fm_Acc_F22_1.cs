@@ -57,6 +57,7 @@ namespace TOYOINK_dev
             3.字體設定為【微軟正黑體】。
             4.調整欄位寬度。
       * 20240513 更新NuGet套件後出現錯誤，修改程式碼加入【(ClosedXML.Excel.XLCellValue)】；再次修改，刪除前面修改，結尾加入【.ToString()】
+      * 20240524 因轉出數值為文字，再次修改程式，改為數值
      */
     public partial class fm_Acc_F22_1 : Form
     {
@@ -612,7 +613,18 @@ ML009 like '%應兌現票據%' and ML006 = '1102041'
                     }
                     //20240513 更新NuGet套件後出現錯誤，修改程式碼加入【(ClosedXML.Excel.XLCellValue)】；再次修改，刪除前面修改，結尾加入【.ToString()】
                     //wsheet.Cell(i + i_col, j + j_row).Value = row[j];
-                    wsheet.Cell(i + i_col, j + j_row).Value = row[j].ToString();
+                    //wsheet.Cell(i + i_col, j + j_row).Value = row[j].ToString();
+                    //20240524 因轉出數值為文字，再次修改程式，改為數值
+
+                    if (double.TryParse(row[j].ToString(), out double numericValue))
+                    {
+                        wsheet.Cell(i + i_col, j + j_row).Value = numericValue;
+                    }
+                    else
+                    {
+                        wsheet.Cell(i + i_col, j + j_row).Value = row[j].ToString();
+                    }
+
                     j++;
                 }
 

@@ -57,7 +57,7 @@ namespace Myclass
         * 20210603 加入public String strDbConA01A 及txterr 錯誤訊息
         * 20240222 生管 林玲禎提出 fm_AUOCOPTC 修改
         * 20240513 更新NuGet套件後出現錯誤，修改程式碼加入【(ClosedXML.Excel.XLCellValue)】；再次修改，刪除前面修改，結尾加入【.ToString()】
-        * 
+        * 20240524 因轉出數值為文字，再次修改程式，改為數值
         */
         public string ERP_v4 = "192.168.128.253", AD2SERVER = "192.168.128.250", S2008X64 = "192.168.128.219", HRM = "192.168.128.219\\HRM,50502";
         public String strDbCon = "";
@@ -944,7 +944,18 @@ namespace Myclass
                             break;
                     }
                     //20240513 更新NuGet套件後出現錯誤，修改程式碼加入【(ClosedXML.Excel.XLCellValue)】；再次修改，刪除前面修改，結尾加入【.ToString()】
-                    wsheet.Cell(i_col, j_row).Value = row[row_num].ToString();
+                    //wsheet.Cell(i_col, j_row).Value = row[row_num].ToString();
+                    //20240524 因轉出數值為文字，再次修改程式，改為數值
+
+                    if (double.TryParse(row[row_num].ToString(), out double numericValue))
+                    {
+                        wsheet.Cell(i_col, j_row).Value = numericValue;
+                    }
+                    else
+                    {
+                        wsheet.Cell(i_col, j_row).Value = row[row_num].ToString();
+                    }
+
                     row_num++;
                     j_row++;
                 }

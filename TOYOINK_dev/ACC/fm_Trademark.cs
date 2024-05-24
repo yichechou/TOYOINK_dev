@@ -28,6 +28,7 @@ namespace TOYOINK_dev
          * and left(TA003,6) >= '{1}' and left(TA003,6) <= '{2}'
          * 20220705 財務部邱鈺婷提出，結帳單_東洋集團關係人 報表 TA032[申報年月]欄位名稱改為[結帳年月]，取結帳日期的年月
          * 20240513 更新NuGet套件後出現錯誤，修改程式碼加入【(ClosedXML.Excel.XLCellValue)】；再次修改，刪除前面修改，結尾加入【.ToString()】
+         * 20240524 因轉出數值為文字，再次修改程式，改為數值
              * */
         public MyClass MyCode;
         string str_enter = ((char)13).ToString() + ((char)10).ToString();
@@ -424,6 +425,24 @@ namespace TOYOINK_dev
             }
         }
 
+        //20240524 因轉出數值為文字，再次修改程式，改為數值
+        // 定義 SetCellValueAndFormat 方法
+        void SetCellValueAndFormat(IXLWorksheet sheet, int rowIndex, int colIndex, object value, string format = null)
+        {
+            if (format != null)
+            {
+                sheet.Cell(rowIndex, colIndex).Style.NumberFormat.Format = format;
+            }
+
+            if (double.TryParse(value.ToString(), out double numericValue))
+            {
+                sheet.Cell(rowIndex, colIndex).Value = numericValue;
+            }
+            else
+            {
+                sheet.Cell(rowIndex, colIndex).Value = value.ToString();
+            }
+        }
         private void Btn_acc_Click(object sender, EventArgs e)
         {
             string colorM;
@@ -505,17 +524,29 @@ namespace TOYOINK_dev
                 foreach (DataRow row in dt_Income.Rows)
                 {
                     //20240513 更新NuGet套件後出現錯誤，修改程式碼加入【(ClosedXML.Excel.XLCellValue)】；再次修改，刪除前面修改，結尾加入【.ToString()】
-                    wsheet_Income.Cell(i + 5, 1).Value = row[0].ToString(); //科目編號
-                    wsheet_Income.Cell(i + 5, 2).Value = row[1].ToString(); //科目名稱
-                    wsheet_Income.Cell(i + 5, 3).Value = row[2].ToString(); //科目層級1
-                    wsheet_Income.Cell(i + 5, 4).Value = row[3].ToString(); //科目層級2
-                    wsheet_Income.Cell(i + 5, 5).Value = row[4].ToString(); //科目層級3
-                    wsheet_Income.Cell(i + 5, 6).Value = row[5].ToString(); //會計年度
-                    wsheet_Income.Cell(i + 5, 7).Style.NumberFormat.Format = "@";
-                    wsheet_Income.Cell(i + 5, 7).Value = row[6].ToString(); //期別
-                    wsheet_Income.Cell(i + 5, 8).Value = row[7].ToString(); //年度
-                    wsheet_Income.Cell(i + 5, 9).Style.NumberFormat.Format = "#,##0_);[RED](#,##0)";
-                    wsheet_Income.Cell(i + 5, 9).Value = row[8].ToString(); //借貸金額
+                    //wsheet_Income.Cell(i + 5, 1).Value = row[0].ToString(); //科目編號
+                    //wsheet_Income.Cell(i + 5, 2).Value = row[1].ToString(); //科目名稱
+                    //wsheet_Income.Cell(i + 5, 3).Value = row[2].ToString(); //科目層級1
+                    //wsheet_Income.Cell(i + 5, 4).Value = row[3].ToString(); //科目層級2
+                    //wsheet_Income.Cell(i + 5, 5).Value = row[4].ToString(); //科目層級3
+                    //wsheet_Income.Cell(i + 5, 6).Value = row[5].ToString(); //會計年度
+                    //wsheet_Income.Cell(i + 5, 7).Style.NumberFormat.Format = "@";
+                    //wsheet_Income.Cell(i + 5, 7).Value = row[6].ToString(); //期別
+                    //wsheet_Income.Cell(i + 5, 8).Value = row[7].ToString(); //年度
+                    //wsheet_Income.Cell(i + 5, 9).Style.NumberFormat.Format = "#,##0_);[RED](#,##0)";
+                    //wsheet_Income.Cell(i + 5, 9).Value = row[8].ToString(); //借貸金額
+
+                    //20240524 因轉出數值為文字，再次修改程式，改為數值
+                    // 填入excel欄位值
+                    SetCellValueAndFormat(wsheet_Income, i + 5, 1, row[0]); // 科目編號
+                    SetCellValueAndFormat(wsheet_Income, i + 5, 2, row[1]); // 科目名稱
+                    SetCellValueAndFormat(wsheet_Income, i + 5, 3, row[2]); // 科目層級1
+                    SetCellValueAndFormat(wsheet_Income, i + 5, 4, row[3]); // 科目層級2
+                    SetCellValueAndFormat(wsheet_Income, i + 5, 5, row[4]); // 科目層級3
+                    SetCellValueAndFormat(wsheet_Income, i + 5, 6, row[5]); // 會計年度
+                    SetCellValueAndFormat(wsheet_Income, i + 5, 7, row[6], "@"); // 期別
+                    SetCellValueAndFormat(wsheet_Income, i + 5, 8, row[7]); // 年度
+                    SetCellValueAndFormat(wsheet_Income, i + 5, 9, row[8], "#,##0_);[RED](#,##0)"); // 借貸金額
 
                     i++;
                 }
@@ -549,26 +580,42 @@ namespace TOYOINK_dev
 
                     Soldj = row[0].ToString();
                     //20240513 更新NuGet套件後出現錯誤，修改程式碼加入【(ClosedXML.Excel.XLCellValue)】；再次修改，刪除前面修改，結尾加入【.ToString()】
-                    wsheet_Statement.Cell(j + 5, 1).Value = row[0].ToString(); //申報年月 20220705 改結帳年月
-                    wsheet_Statement.Cell(j + 5, 2).Value = row[1].ToString(); //客戶代號
-                    wsheet_Statement.Cell(j + 5, 3).Value = row[2].ToString(); //客戶全名
-                    wsheet_Statement.Cell(j + 5, 4).Style.NumberFormat.Format = "@";
-                    wsheet_Statement.Cell(j + 5, 4).Value = row[3].ToString(); //結帳單別
-                    wsheet_Statement.Cell(j + 5, 5).Value = row[4].ToString(); //單據名稱
-                    wsheet_Statement.Cell(j + 5, 6).Value = row[5].ToString(); //結帳日期
-                    wsheet_Statement.Cell(j + 5, 7).Style.NumberFormat.Format = "@";
-                    wsheet_Statement.Cell(j + 5, 7).Value = row[6].ToString(); //結帳單號
-                    wsheet_Statement.Cell(j + 5, 8).Style.NumberFormat.Format = "@";
-                    wsheet_Statement.Cell(j + 5, 8).Value = row[7].ToString(); //結帳序號
-                    wsheet_Statement.Cell(j + 5, 9).Value = row[8].ToString(); //來源
-                    wsheet_Statement.Cell(j + 5, 10).Value = row[9].ToString(); //會計科目
-                    wsheet_Statement.Cell(j + 5, 11).Style.NumberFormat.Format = "#,##0_);[RED](#,##0)";
-                    wsheet_Statement.Cell(j + 5, 11).Value = row[10].ToString(); //本幣未稅金額
-                    wsheet_Statement.Cell(j + 5, 12).Style.NumberFormat.Format = "@";
-                    wsheet_Statement.Cell(j + 5, 12).Value = row[11].ToString(); //銷貨單別
-                    wsheet_Statement.Cell(j + 5, 13).Value = row[12].ToString(); //銷貨單據日期
-                    wsheet_Statement.Cell(j + 5, 14).Style.NumberFormat.Format = "@";
-                    wsheet_Statement.Cell(j + 5, 14).Value = row[13].ToString(); //銷貨單號
+                    //wsheet_Statement.Cell(j + 5, 1).Value = row[0].ToString(); //申報年月 20220705 改結帳年月
+                    //wsheet_Statement.Cell(j + 5, 2).Value = row[1].ToString(); //客戶代號
+                    //wsheet_Statement.Cell(j + 5, 3).Value = row[2].ToString(); //客戶全名
+                    //wsheet_Statement.Cell(j + 5, 4).Style.NumberFormat.Format = "@";
+                    //wsheet_Statement.Cell(j + 5, 4).Value = row[3].ToString(); //結帳單別
+                    //wsheet_Statement.Cell(j + 5, 5).Value = row[4].ToString(); //單據名稱
+                    //wsheet_Statement.Cell(j + 5, 6).Value = row[5].ToString(); //結帳日期
+                    //wsheet_Statement.Cell(j + 5, 7).Style.NumberFormat.Format = "@";
+                    //wsheet_Statement.Cell(j + 5, 7).Value = row[6].ToString(); //結帳單號
+                    //wsheet_Statement.Cell(j + 5, 8).Style.NumberFormat.Format = "@";
+                    //wsheet_Statement.Cell(j + 5, 8).Value = row[7].ToString(); //結帳序號
+                    //wsheet_Statement.Cell(j + 5, 9).Value = row[8].ToString(); //來源
+                    //wsheet_Statement.Cell(j + 5, 10).Value = row[9].ToString(); //會計科目
+                    //wsheet_Statement.Cell(j + 5, 11).Style.NumberFormat.Format = "#,##0_);[RED](#,##0)";
+                    //wsheet_Statement.Cell(j + 5, 11).Value = row[10].ToString(); //本幣未稅金額
+                    //wsheet_Statement.Cell(j + 5, 12).Style.NumberFormat.Format = "@";
+                    //wsheet_Statement.Cell(j + 5, 12).Value = row[11].ToString(); //銷貨單別
+                    //wsheet_Statement.Cell(j + 5, 13).Value = row[12].ToString(); //銷貨單據日期
+                    //wsheet_Statement.Cell(j + 5, 14).Style.NumberFormat.Format = "@";
+                    //wsheet_Statement.Cell(j + 5, 14).Value = row[13].ToString(); //銷貨單號
+
+                    //20240524 因轉出數值為文字，再次修改程式，改為數值
+                    SetCellValueAndFormat(wsheet_Statement, j + 5, 1, row[0]); // 申報年月 20220705 改結帳年月
+                    SetCellValueAndFormat(wsheet_Statement, j + 5, 2, row[1]); // 客戶代號
+                    SetCellValueAndFormat(wsheet_Statement, j + 5, 3, row[2]); // 客戶全名
+                    SetCellValueAndFormat(wsheet_Statement, j + 5, 4, row[3]); // 結帳單別
+                    SetCellValueAndFormat(wsheet_Statement, j + 5, 5, row[4]); // 單據名稱
+                    SetCellValueAndFormat(wsheet_Statement, j + 5, 6, row[5]); // 結帳日期
+                    SetCellValueAndFormat(wsheet_Statement, j + 5, 7, row[6]); // 結帳單號
+                    SetCellValueAndFormat(wsheet_Statement, j + 5, 8, row[7]); // 結帳序號
+                    SetCellValueAndFormat(wsheet_Statement, j + 5, 9, row[8]); // 來源
+                    SetCellValueAndFormat(wsheet_Statement, j + 5, 10, row[9]); // 會計科目
+                    SetCellValueAndFormat(wsheet_Statement, j + 5, 11, row[10], "#,##0_);[RED](#,##0)"); // 本幣未稅金額
+                    SetCellValueAndFormat(wsheet_Statement, j + 5, 12, row[11]); // 銷貨單別
+                    SetCellValueAndFormat(wsheet_Statement, j + 5, 13, row[12]); // 銷貨單據日期
+                    SetCellValueAndFormat(wsheet_Statement, j + 5, 14, row[13]); // 銷貨單號
 
                     if ((rows_count_Statement - 1) == dt_Statement.Rows.IndexOf(row)) //資料列結尾運算
                     {
@@ -609,10 +656,15 @@ namespace TOYOINK_dev
                 foreach (DataRow row in dt_OrderList.Rows)
                 {
                     //20240513 更新NuGet套件後出現錯誤，修改程式碼加入【(ClosedXML.Excel.XLCellValue)】；再次修改，刪除前面修改，結尾加入【.ToString()】
-                    wsheet_OrderList.Cell(n + 3, 1).Style.NumberFormat.Format = "@";
-                    wsheet_OrderList.Cell(n + 3, 1).Value = row[0].ToString(); //品種別
-                    wsheet_OrderList.Cell(n + 3, 2).Value = row[1].ToString(); //類別
-                    wsheet_OrderList.Cell(n + 3, 3).Value = row[2].ToString(); //客戶簡稱
+                    //wsheet_OrderList.Cell(n + 3, 1).Style.NumberFormat.Format = "@";
+                    //wsheet_OrderList.Cell(n + 3, 1).Value = row[0].ToString(); //品種別
+                    //wsheet_OrderList.Cell(n + 3, 2).Value = row[1].ToString(); //類別
+                    //wsheet_OrderList.Cell(n + 3, 3).Value = row[2].ToString(); //客戶簡稱
+
+                    //20240524 因轉出數值為文字，再次修改程式，改為數值
+                    SetCellValueAndFormat(wsheet_OrderList, n + 3, 1, row[0], "@"); // 品種別
+                    SetCellValueAndFormat(wsheet_OrderList, n + 3, 2, row[1]); // 類別
+                    SetCellValueAndFormat(wsheet_OrderList, n + 3, 3, row[2]); // 客戶簡稱
                     wsheet_OrderList.Range("D" + (n + 3) + ":P" + (n + 3)).Style.NumberFormat.Format = "#,##0_);[RED](#,##0)";
                     
                     wsheet_OrderList.Cell(n + 3, 4).FormulaA1 = "=SUMIFS('銷貨單_勞務收入(佣金)關係人'!N:N,'銷貨單_勞務收入(佣金)關係人'!$B:$B,D$2,'銷貨單_勞務收入(佣金)關係人'!$C:$C,\"" + row[3] + "\",'銷貨單_勞務收入(佣金)關係人'!$I:$I,$A" + (n + 3) + ")"; //01月
@@ -668,18 +720,28 @@ namespace TOYOINK_dev
                 foreach (DataRow row in dt_Subsidiary.Rows)
                 {
                     //20240513 更新NuGet套件後出現錯誤，修改程式碼加入【(ClosedXML.Excel.XLCellValue)】；再次修改，刪除前面修改，結尾加入【.ToString()】
-                    wsheet_Subsidiary.Cell(k + 5, 1).Value = row[0].ToString(); //科目編號
-                    wsheet_Subsidiary.Cell(k + 5, 2).Value = row[1].ToString(); //科目名稱
-                    wsheet_Subsidiary.Cell(k + 5, 3).Value = row[2].ToString(); //傳票日期
-                    wsheet_Subsidiary.Cell(k + 5, 4).Value = row[3].ToString(); //傳票編號
-                    wsheet_Subsidiary.Cell(k + 5, 5).Style.NumberFormat.Format = "@";
-                    wsheet_Subsidiary.Cell(k + 5, 5).Value = row[4].ToString(); //摘要
-                    wsheet_Subsidiary.Cell(k + 5, 6).Style.NumberFormat.Format = "@";
-                    wsheet_Subsidiary.Cell(k + 5, 6).Value = row[5].ToString(); //備註
-                    wsheet_Subsidiary.Cell(k + 5, 7).Style.NumberFormat.Format = "#,##0_);[RED](#,##0)";
-                    wsheet_Subsidiary.Cell(k + 5, 7).Value = row[6].ToString(); //本幣借方金額
-                    wsheet_Subsidiary.Cell(k + 5, 8).Style.NumberFormat.Format = "#,##0_);[RED](#,##0)";
-                    wsheet_Subsidiary.Cell(k + 5, 8).Value = row[7].ToString(); //本幣貸方金額
+                    //wsheet_Subsidiary.Cell(k + 5, 1).Value = row[0].ToString(); //科目編號
+                    //wsheet_Subsidiary.Cell(k + 5, 2).Value = row[1].ToString(); //科目名稱
+                    //wsheet_Subsidiary.Cell(k + 5, 3).Value = row[2].ToString(); //傳票日期
+                    //wsheet_Subsidiary.Cell(k + 5, 4).Value = row[3].ToString(); //傳票編號
+                    //wsheet_Subsidiary.Cell(k + 5, 5).Style.NumberFormat.Format = "@";
+                    //wsheet_Subsidiary.Cell(k + 5, 5).Value = row[4].ToString(); //摘要
+                    //wsheet_Subsidiary.Cell(k + 5, 6).Style.NumberFormat.Format = "@";
+                    //wsheet_Subsidiary.Cell(k + 5, 6).Value = row[5].ToString(); //備註
+                    //wsheet_Subsidiary.Cell(k + 5, 7).Style.NumberFormat.Format = "#,##0_);[RED](#,##0)";
+                    //wsheet_Subsidiary.Cell(k + 5, 7).Value = row[6].ToString(); //本幣借方金額
+                    //wsheet_Subsidiary.Cell(k + 5, 8).Style.NumberFormat.Format = "#,##0_);[RED](#,##0)";
+                    //wsheet_Subsidiary.Cell(k + 5, 8).Value = row[7].ToString(); //本幣貸方金額
+
+                    //20240524 因轉出數值為文字，再次修改程式，改為數值
+                    SetCellValueAndFormat(wsheet_Subsidiary, k + 5, 1, row[0]); // 科目編號
+                    SetCellValueAndFormat(wsheet_Subsidiary, k + 5, 2, row[1]); // 科目名稱
+                    SetCellValueAndFormat(wsheet_Subsidiary, k + 5, 3, row[2]); // 傳票日期
+                    SetCellValueAndFormat(wsheet_Subsidiary, k + 5, 4, row[3]); // 傳票編號
+                    SetCellValueAndFormat(wsheet_Subsidiary, k + 5, 5, row[4], "@"); // 摘要
+                    SetCellValueAndFormat(wsheet_Subsidiary, k + 5, 6, row[5], "@"); // 備註
+                    SetCellValueAndFormat(wsheet_Subsidiary, k + 5, 7, row[6], "#,##0_);[RED](#,##0)"); // 本幣借方金額
+                    SetCellValueAndFormat(wsheet_Subsidiary, k + 5, 8, row[7], "#,##0_);[RED](#,##0)"); // 本幣貸方金額
 
                     if ((rows_count_Subsidiary - 1) == dt_Subsidiary.Rows.IndexOf(row)) //資料列結尾運算
                     {
@@ -705,28 +767,43 @@ namespace TOYOINK_dev
                 foreach (DataRow row in dt_Order.Rows)
                 {
                     //20240513 更新NuGet套件後出現錯誤，修改程式碼加入【(ClosedXML.Excel.XLCellValue)】；再次修改，刪除前面修改，結尾加入【.ToString()】
-                    wsheet_Order.Cell(m + 5, 1).Value = row[0].ToString(); //單據日期
-                    wsheet_Order.Cell(m + 5, 2).Value = row[1].ToString(); //單據年月
-                    wsheet_Order.Cell(m + 5, 3).Value = row[2].ToString(); //客戶代號
-                    wsheet_Order.Cell(m + 5, 4).Value = row[3].ToString(); //客戶簡稱
-                    wsheet_Order.Cell(m + 5, 5).Style.NumberFormat.Format = "@";
-                    wsheet_Order.Cell(m + 5, 5).Value = row[4].ToString(); //銷貨單別
-                    wsheet_Order.Cell(m + 5, 6).Value = row[5].ToString(); //單據名稱
-                    wsheet_Order.Cell(m + 5, 7).Style.NumberFormat.Format = "@";
-                    wsheet_Order.Cell(m + 5, 7).Value = row[6].ToString(); //銷貨單號
-                    wsheet_Order.Cell(m + 5, 8).Value = row[7].ToString(); //來源
-                    wsheet_Order.Cell(m + 5, 9).Style.NumberFormat.Format = "@";
-                    wsheet_Order.Cell(m + 5, 9).Value = row[8].ToString(); //品種別
-                    wsheet_Order.Cell(m + 5, 10).Value = row[9].ToString(); //品號
-                    wsheet_Order.Cell(m + 5, 11).Style.NumberFormat.Format = "@";
-                    wsheet_Order.Cell(m + 5, 11).Value = row[10].ToString(); //結帳單別
-                    wsheet_Order.Cell(m + 5, 12).Style.NumberFormat.Format = "@";
-                    wsheet_Order.Cell(m + 5, 12).Value = row[11].ToString(); //結帳單號
-                    wsheet_Order.Cell(m + 5, 13).Style.NumberFormat.Format = "@";
-                    wsheet_Order.Cell(m + 5, 13).Value = row[12].ToString(); //結帳序號
-                    wsheet_Order.Cell(m + 5, 14).Style.NumberFormat.Format = "#,##0_);[RED](#,##0)";
-                    wsheet_Order.Cell(m + 5, 14).Value = row[13].ToString(); //本幣未稅金額
+                    //wsheet_Order.Cell(m + 5, 1).Value = row[0].ToString(); //單據日期
+                    //wsheet_Order.Cell(m + 5, 2).Value = row[1].ToString(); //單據年月
+                    //wsheet_Order.Cell(m + 5, 3).Value = row[2].ToString(); //客戶代號
+                    //wsheet_Order.Cell(m + 5, 4).Value = row[3].ToString(); //客戶簡稱
+                    //wsheet_Order.Cell(m + 5, 5).Style.NumberFormat.Format = "@";
+                    //wsheet_Order.Cell(m + 5, 5).Value = row[4].ToString(); //銷貨單別
+                    //wsheet_Order.Cell(m + 5, 6).Value = row[5].ToString(); //單據名稱
+                    //wsheet_Order.Cell(m + 5, 7).Style.NumberFormat.Format = "@";
+                    //wsheet_Order.Cell(m + 5, 7).Value = row[6].ToString(); //銷貨單號
+                    //wsheet_Order.Cell(m + 5, 8).Value = row[7].ToString(); //來源
+                    //wsheet_Order.Cell(m + 5, 9).Style.NumberFormat.Format = "@";
+                    //wsheet_Order.Cell(m + 5, 9).Value = row[8].ToString(); //品種別
+                    //wsheet_Order.Cell(m + 5, 10).Value = row[9].ToString(); //品號
+                    //wsheet_Order.Cell(m + 5, 11).Style.NumberFormat.Format = "@";
+                    //wsheet_Order.Cell(m + 5, 11).Value = row[10].ToString(); //結帳單別
+                    //wsheet_Order.Cell(m + 5, 12).Style.NumberFormat.Format = "@";
+                    //wsheet_Order.Cell(m + 5, 12).Value = row[11].ToString(); //結帳單號
+                    //wsheet_Order.Cell(m + 5, 13).Style.NumberFormat.Format = "@";
+                    //wsheet_Order.Cell(m + 5, 13).Value = row[12].ToString(); //結帳序號
+                    //wsheet_Order.Cell(m + 5, 14).Style.NumberFormat.Format = "#,##0_);[RED](#,##0)";
+                    //wsheet_Order.Cell(m + 5, 14).Value = row[13].ToString(); //本幣未稅金額
 
+                    //20240524 因轉出數值為文字，再次修改程式，改為數值
+                    SetCellValueAndFormat(wsheet_Order, m + 5, 1, row[0]); // 單據日期
+                    SetCellValueAndFormat(wsheet_Order, m + 5, 2, row[1]); // 單據年月
+                    SetCellValueAndFormat(wsheet_Order, m + 5, 3, row[2]); // 客戶代號
+                    SetCellValueAndFormat(wsheet_Order, m + 5, 4, row[3]); // 客戶簡稱
+                    SetCellValueAndFormat(wsheet_Order, m + 5, 5, row[4], "@"); // 銷貨單別
+                    SetCellValueAndFormat(wsheet_Order, m + 5, 6, row[5]); // 單據名稱
+                    SetCellValueAndFormat(wsheet_Order, m + 5, 7, row[6], "@"); // 銷貨單號
+                    SetCellValueAndFormat(wsheet_Order, m + 5, 8, row[7]); // 來源
+                    SetCellValueAndFormat(wsheet_Order, m + 5, 9, row[8], "@"); // 品種別
+                    SetCellValueAndFormat(wsheet_Order, m + 5, 10, row[9]); // 品號
+                    SetCellValueAndFormat(wsheet_Order, m + 5, 11, row[10], "@"); // 結帳單別
+                    SetCellValueAndFormat(wsheet_Order, m + 5, 12, row[11], "@"); // 結帳單號
+                    SetCellValueAndFormat(wsheet_Order, m + 5, 13, row[12], "@"); // 結帳序號
+                    SetCellValueAndFormat(wsheet_Order, m + 5, 14, row[13], "#,##0_);[RED](#,##0)"); // 本幣未稅金額
 
                     if ((rows_count_Order - 1) == dt_Order.Rows.IndexOf(row)) //資料列結尾運算
                     {
@@ -757,11 +834,18 @@ namespace TOYOINK_dev
                 foreach (DataRow row in dt_CustOrderList.Rows)
                 {
                     //20240513 更新NuGet套件後出現錯誤，修改程式碼加入【(ClosedXML.Excel.XLCellValue)】；再次修改，刪除前面修改，結尾加入【.ToString()】
-                    wsheet_CustOrderList.Cell(p + 7, 1).Value = row[0].ToString(); //客戶代號
-                    wsheet_CustOrderList.Cell(p + 7, 2).Value = row[1].ToString(); //客戶簡稱
-                    wsheet_CustOrderList.Cell(p + 7, 3).Value = row[2].ToString(); //關係人代號 20210729提出增加欄位
-                    wsheet_CustOrderList.Cell(p + 7, 4).Style.NumberFormat.Format = "@";
-                    wsheet_CustOrderList.Cell(p + 7, 4).Value = row[3].ToString(); //品種別
+                    //wsheet_CustOrderList.Cell(p + 7, 1).Value = row[0].ToString(); //客戶代號
+                    //wsheet_CustOrderList.Cell(p + 7, 2).Value = row[1].ToString(); //客戶簡稱
+                    //wsheet_CustOrderList.Cell(p + 7, 3).Value = row[2].ToString(); //關係人代號 20210729提出增加欄位
+                    //wsheet_CustOrderList.Cell(p + 7, 4).Style.NumberFormat.Format = "@";
+                    //wsheet_CustOrderList.Cell(p + 7, 4).Value = row[3].ToString(); //品種別
+
+                    //20240524 因轉出數值為文字，再次修改程式，改為數值
+                    SetCellValueAndFormat(wsheet_CustOrderList, p + 7, 1, row[0]); // 客戶代號
+                    SetCellValueAndFormat(wsheet_CustOrderList, p + 7, 2, row[1]); // 客戶簡稱
+                    SetCellValueAndFormat(wsheet_CustOrderList, p + 7, 3, row[2]); // 關係人代號
+                    SetCellValueAndFormat(wsheet_CustOrderList, p + 7, 4, row[3], "@"); // 品種別
+
                     wsheet_CustOrderList.Cell(p + 7, 5).Style.NumberFormat.Format = "#,##0_);[RED](#,##0)";
                     wsheet_CustOrderList.Cell(p + 7, 5).FormulaA1 = "=SUMIFS(年度客戶別銷售金額統計表!AF:AF,年度客戶別銷售金額統計表!$A:$A,$A" + (p + 7) + ",年度客戶別銷售金額統計表!$D:$D,$D" + (p + 7) + ")";
                     wsheet_CustOrderList.Cell(p + 7, 6).Style.NumberFormat.Format = "#,##0_);[RED](#,##0)";
@@ -837,42 +921,77 @@ namespace TOYOINK_dev
 
                     Soldq = row[0].ToString();
                     //20240513 更新NuGet套件後出現錯誤，修改程式碼加入【(ClosedXML.Excel.XLCellValue)】；再次修改，刪除前面修改，結尾加入【.ToString()】
-                    wsheet_CustOrder.Cell(q + 6, 1).Value = row[0].ToString(); //客戶代號
-                    wsheet_CustOrder.Cell(q + 6, 2).Value = row[1].ToString(); //客戶簡稱
-                    wsheet_CustOrder.Cell(q + 6, 3).Value = row[2].ToString(); //關係人代號
-                    wsheet_CustOrder.Cell(q + 6, 4).Style.NumberFormat.Format = "@";
-                    wsheet_CustOrder.Cell(q + 6, 4).Value = row[3].ToString(); //品種別
-                    wsheet_CustOrder.Cell(q + 6, 5).Value = row[4].ToString(); //品號
-                    wsheet_CustOrder.Cell(q + 6, 6).Value = row[5].ToString(); //品名
-                    wsheet_CustOrder.Cell(q + 6, 7).Value = row[6].ToString(); //單位
-                    wsheet_CustOrder.Range("H" + (q + 6) + ":AG" + (q + 6)).Style.NumberFormat.Format = "#,##0_);[RED](#,##0)";
-                    wsheet_CustOrder.Cell(q + 6, 8).Value = row[7].ToString(); //01銷貨量
-                    wsheet_CustOrder.Cell(q + 6, 9).Value = row[8].ToString(); //01金額
-                    wsheet_CustOrder.Cell(q + 6, 10).Value = row[9].ToString(); //02銷貨量
-                    wsheet_CustOrder.Cell(q + 6, 11).Value = row[10].ToString(); //02金額
-                    wsheet_CustOrder.Cell(q + 6, 12).Value = row[11].ToString(); //03銷貨量
-                    wsheet_CustOrder.Cell(q + 6, 13).Value = row[12].ToString(); //03金額
-                    wsheet_CustOrder.Cell(q + 6, 14).Value = row[13].ToString(); //04銷貨量
-                    wsheet_CustOrder.Cell(q + 6, 15).Value = row[14].ToString(); //04金額
-                    wsheet_CustOrder.Cell(q + 6, 16).Value = row[15].ToString(); //05銷貨量
-                    wsheet_CustOrder.Cell(q + 6, 17).Value = row[16].ToString(); //05金額
-                    wsheet_CustOrder.Cell(q + 6, 18).Value = row[17].ToString(); //06銷貨量
-                    wsheet_CustOrder.Cell(q + 6, 19).Value = row[18].ToString(); //06金額
-                    wsheet_CustOrder.Cell(q + 6, 20).Value = row[19].ToString(); //07銷貨量
-                    wsheet_CustOrder.Cell(q + 6, 21).Value = row[20].ToString(); //07金額
-                    wsheet_CustOrder.Cell(q + 6, 22).Value = row[21].ToString(); //08銷貨量
-                    wsheet_CustOrder.Cell(q + 6, 23).Value = row[22].ToString(); //08金額
-                    wsheet_CustOrder.Cell(q + 6, 24).Value = row[23].ToString(); //09銷貨量
-                    wsheet_CustOrder.Cell(q + 6, 25).Value = row[24].ToString(); //09金額
-                    wsheet_CustOrder.Cell(q + 6, 26).Value = row[25].ToString(); //10銷貨量
-                    wsheet_CustOrder.Cell(q + 6, 27).Value = row[26].ToString(); //10金額
-                    wsheet_CustOrder.Cell(q + 6, 28).Value = row[27].ToString(); //11銷貨量
-                    wsheet_CustOrder.Cell(q + 6, 29).Value = row[28].ToString(); //11金額
-                    wsheet_CustOrder.Cell(q + 6, 30).Value = row[29].ToString(); //12銷貨量
-                    wsheet_CustOrder.Cell(q + 6, 31).Value = row[30].ToString(); //12金額
-                    wsheet_CustOrder.Cell(q + 6, 32).Value = row[31].ToString(); //全期銷貨量
-                    wsheet_CustOrder.Cell(q + 6, 33).Value = row[32].ToString(); //全期金額
+                    //wsheet_CustOrder.Cell(q + 6, 1).Value = row[0].ToString(); //客戶代號
+                    //wsheet_CustOrder.Cell(q + 6, 2).Value = row[1].ToString(); //客戶簡稱
+                    //wsheet_CustOrder.Cell(q + 6, 3).Value = row[2].ToString(); //關係人代號
+                    //wsheet_CustOrder.Cell(q + 6, 4).Style.NumberFormat.Format = "@";
+                    //wsheet_CustOrder.Cell(q + 6, 4).Value = row[3].ToString(); //品種別
+                    //wsheet_CustOrder.Cell(q + 6, 5).Value = row[4].ToString(); //品號
+                    //wsheet_CustOrder.Cell(q + 6, 6).Value = row[5].ToString(); //品名
+                    //wsheet_CustOrder.Cell(q + 6, 7).Value = row[6].ToString(); //單位
+                    //wsheet_CustOrder.Range("H" + (q + 6) + ":AG" + (q + 6)).Style.NumberFormat.Format = "#,##0_);[RED](#,##0)";
+                    //wsheet_CustOrder.Cell(q + 6, 8).Value = row[7].ToString(); //01銷貨量
+                    //wsheet_CustOrder.Cell(q + 6, 9).Value = row[8].ToString(); //01金額
+                    //wsheet_CustOrder.Cell(q + 6, 10).Value = row[9].ToString(); //02銷貨量
+                    //wsheet_CustOrder.Cell(q + 6, 11).Value = row[10].ToString(); //02金額
+                    //wsheet_CustOrder.Cell(q + 6, 12).Value = row[11].ToString(); //03銷貨量
+                    //wsheet_CustOrder.Cell(q + 6, 13).Value = row[12].ToString(); //03金額
+                    //wsheet_CustOrder.Cell(q + 6, 14).Value = row[13].ToString(); //04銷貨量
+                    //wsheet_CustOrder.Cell(q + 6, 15).Value = row[14].ToString(); //04金額
+                    //wsheet_CustOrder.Cell(q + 6, 16).Value = row[15].ToString(); //05銷貨量
+                    //wsheet_CustOrder.Cell(q + 6, 17).Value = row[16].ToString(); //05金額
+                    //wsheet_CustOrder.Cell(q + 6, 18).Value = row[17].ToString(); //06銷貨量
+                    //wsheet_CustOrder.Cell(q + 6, 19).Value = row[18].ToString(); //06金額
+                    //wsheet_CustOrder.Cell(q + 6, 20).Value = row[19].ToString(); //07銷貨量
+                    //wsheet_CustOrder.Cell(q + 6, 21).Value = row[20].ToString(); //07金額
+                    //wsheet_CustOrder.Cell(q + 6, 22).Value = row[21].ToString(); //08銷貨量
+                    //wsheet_CustOrder.Cell(q + 6, 23).Value = row[22].ToString(); //08金額
+                    //wsheet_CustOrder.Cell(q + 6, 24).Value = row[23].ToString(); //09銷貨量
+                    //wsheet_CustOrder.Cell(q + 6, 25).Value = row[24].ToString(); //09金額
+                    //wsheet_CustOrder.Cell(q + 6, 26).Value = row[25].ToString(); //10銷貨量
+                    //wsheet_CustOrder.Cell(q + 6, 27).Value = row[26].ToString(); //10金額
+                    //wsheet_CustOrder.Cell(q + 6, 28).Value = row[27].ToString(); //11銷貨量
+                    //wsheet_CustOrder.Cell(q + 6, 29).Value = row[28].ToString(); //11金額
+                    //wsheet_CustOrder.Cell(q + 6, 30).Value = row[29].ToString(); //12銷貨量
+                    //wsheet_CustOrder.Cell(q + 6, 31).Value = row[30].ToString(); //12金額
+                    //wsheet_CustOrder.Cell(q + 6, 32).Value = row[31].ToString(); //全期銷貨量
+                    //wsheet_CustOrder.Cell(q + 6, 33).Value = row[32].ToString(); //全期金額
 
+                    //20240524 因轉出數值為文字，再次修改程式，改為數值
+                    SetCellValueAndFormat(wsheet_CustOrder, q + 6, 1, row[0]); // 客戶代號
+                    SetCellValueAndFormat(wsheet_CustOrder, q + 6, 2, row[1]); // 客戶簡稱
+                    SetCellValueAndFormat(wsheet_CustOrder, q + 6, 3, row[2]); // 關係人代號
+                    SetCellValueAndFormat(wsheet_CustOrder, q + 6, 4, row[3], "@"); // 品種別
+                    SetCellValueAndFormat(wsheet_CustOrder, q + 6, 5, row[4]); // 品號
+                    SetCellValueAndFormat(wsheet_CustOrder, q + 6, 6, row[5]); // 品名
+                    SetCellValueAndFormat(wsheet_CustOrder, q + 6, 7, row[6]); // 單位
+
+                    SetCellValueAndFormat(wsheet_CustOrder, q + 6, 8, row[7]); // 01銷貨量
+                    SetCellValueAndFormat(wsheet_CustOrder, q + 6, 9, row[8]); // 01金額
+                    SetCellValueAndFormat(wsheet_CustOrder, q + 6, 10, row[9]); // 02銷貨量
+                    SetCellValueAndFormat(wsheet_CustOrder, q + 6, 11, row[10]); // 02金額
+                    SetCellValueAndFormat(wsheet_CustOrder, q + 6, 12, row[11]); // 03銷貨量
+                    SetCellValueAndFormat(wsheet_CustOrder, q + 6, 13, row[12]); // 03金額
+                    SetCellValueAndFormat(wsheet_CustOrder, q + 6, 14, row[13]); // 04銷貨量
+                    SetCellValueAndFormat(wsheet_CustOrder, q + 6, 15, row[14]); // 04金額
+                    SetCellValueAndFormat(wsheet_CustOrder, q + 6, 16, row[15]); // 05銷貨量
+                    SetCellValueAndFormat(wsheet_CustOrder, q + 6, 17, row[16]); // 05金額
+                    SetCellValueAndFormat(wsheet_CustOrder, q + 6, 18, row[17]); // 06銷貨量
+                    SetCellValueAndFormat(wsheet_CustOrder, q + 6, 19, row[18]); // 06金額
+                    SetCellValueAndFormat(wsheet_CustOrder, q + 6, 20, row[19]); // 07銷貨量
+                    SetCellValueAndFormat(wsheet_CustOrder, q + 6, 21, row[20]); // 07金額
+                    SetCellValueAndFormat(wsheet_CustOrder, q + 6, 22, row[21]); // 08銷貨量
+                    SetCellValueAndFormat(wsheet_CustOrder, q + 6, 23, row[22]); // 08金額
+                    SetCellValueAndFormat(wsheet_CustOrder, q + 6, 24, row[23]); // 09銷貨量
+                    SetCellValueAndFormat(wsheet_CustOrder, q + 6, 25, row[24]); // 09金額
+                    SetCellValueAndFormat(wsheet_CustOrder, q + 6, 26, row[25]); // 10銷貨量
+                    SetCellValueAndFormat(wsheet_CustOrder, q + 6, 27, row[26]); // 10金額
+                    SetCellValueAndFormat(wsheet_CustOrder, q + 6, 28, row[27]); // 11銷貨量
+                    SetCellValueAndFormat(wsheet_CustOrder, q + 6, 29, row[28]); // 11金額
+                    SetCellValueAndFormat(wsheet_CustOrder, q + 6, 30, row[29]); // 12銷貨量
+                    SetCellValueAndFormat(wsheet_CustOrder, q + 6, 31, row[30]); // 12金額
+                    SetCellValueAndFormat(wsheet_CustOrder, q + 6, 32, row[31]); // 全期銷貨量
+                    SetCellValueAndFormat(wsheet_CustOrder, q + 6, 33, row[32]); // 全期金額
 
                     if ((rows_count_CustOrder - 1) == dt_CustOrder.Rows.IndexOf(row)) //資料列結尾運算
                     {

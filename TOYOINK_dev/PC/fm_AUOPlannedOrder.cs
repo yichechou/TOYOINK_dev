@@ -25,6 +25,7 @@ namespace TOYOINK_dev
      *20240314 生管 梁姿儂提出 前回差報表的部分，調整成依照FAB,ERPNO,MATERIAL_TYPE 排序
      *20240401 生管 梁姿儂提出 上傳ERP排序，加入[ERPNO]，[FAB],[ERPNO],[MATERIAL_TYPE]
      *20240513 更新NuGet套件後出現錯誤，修改程式碼
+     *20240524 因轉出數值為文字，再次修改程式，改為數值
      */
     public partial class fm_AUOPlannedOrder : Form
     {
@@ -2736,7 +2737,29 @@ VALUES({1})", str_sql_columns_d, str_sql_values_d);
             prc.StartInfo.FileName = txt_path.Text.ToString();
             prc.Start();
         }
+        //20240524 因轉出數值為文字，再次修改程式，改為數值
+        void SetCellValueAndFormat(IXLWorksheet sheet, int rowIndex, int colIndex, object value, string format = null, XLColor backgroundColor = null)
+        {
+            if (format != null)
+            {
+                sheet.Cell(rowIndex, colIndex).Style.NumberFormat.Format = format;
+            }
 
+            double numericValue;
+            if (double.TryParse(value.ToString(), out numericValue))
+            {
+                sheet.Cell(rowIndex, colIndex).Value = numericValue;
+            }
+            else
+            {
+                sheet.Cell(rowIndex, colIndex).Value = value.ToString();
+            }
+
+            if (backgroundColor != null)
+            {
+                sheet.Cell(rowIndex, colIndex).Style.Fill.BackgroundColor = backgroundColor;
+            }
+        }
         private void Custom_DTInputExcel(ClosedXML.Excel.IXLWorksheet wsheet, DataTable dt,string Line_Name)
         {
             //前回差20200814
@@ -2826,12 +2849,22 @@ VALUES({1})", str_sql_columns_d, str_sql_values_d);
                 foreach (DataColumn Column in dt_ToExcel.Columns)
                 {
                     //20240513 更新NuGet套件後出現錯誤，修改程式碼加入【(ClosedXML.Excel.XLCellValue)】；再次修改，刪除前面修改，結尾加入【.ToString()】
-                    wsheet.Cell(i + 3, j + 1).Value = row[j].ToString();
-                    //如果是專用料，加註淺藍色底色
-                    if (dict_SPECIAL.ContainsKey(row[j].ToString()) == true ) 
+                    //wsheet.Cell(i + 3, j + 1).Value = row[j].ToString();
+                    ////如果是專用料，加註淺藍色底色
+                    //if (dict_SPECIAL.ContainsKey(row[j].ToString()) == true ) 
+                    //{
+                    //    wsheet.Cell(i + 3, j + 1).Style.Fill.BackgroundColor = XLColor.FromHtml("#00ccff");
+                    //}
+
+                    //20240524 因轉出數值為文字，再次修改程式，改為數值
+                    SetCellValueAndFormat(wsheet, i + 3, j + 1, row[j]);
+
+                    // 检查是否为专用料，如果是，设置浅蓝色背景色
+                    if (dict_SPECIAL.ContainsKey(row[j].ToString()))
                     {
-                        wsheet.Cell(i + 3, j + 1).Style.Fill.BackgroundColor = XLColor.FromHtml("#00ccff");
+                        SetCellValueAndFormat(wsheet, i + 3, j + 1, row[j], null, XLColor.FromHtml("#00ccff"));
                     }
+               
                     j++;
                 }
                 i++;
@@ -2859,6 +2892,7 @@ VALUES({1})", str_sql_columns_d, str_sql_values_d);
                     .Border.SetRightBorder(XLBorderStyleValues.Thin);
             //凍結視窗
             wsheet.SheetView.Freeze(2, 1);
+
         }
 
 
