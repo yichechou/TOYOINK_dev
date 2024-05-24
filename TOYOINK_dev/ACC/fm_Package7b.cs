@@ -297,6 +297,23 @@ namespace TOYOINK_dev
             }
         }*/
         //TODO:7B轉出
+        //20240524 因轉出數值為文字，再次修改程式，改為數值
+        void SetCellValueAndFormat(IXLWorksheet sheet, int rowIndex, int colIndex, object value, string format = null)
+        {
+            if (format != null)
+            {
+                sheet.Cell(rowIndex, colIndex).Style.NumberFormat.Format = format;
+            }
+
+            if (double.TryParse(value.ToString(), out double numericValue))
+            {
+                sheet.Cell(rowIndex, colIndex).Value = numericValue;
+            }
+            else
+            {
+                sheet.Cell(rowIndex, colIndex).Value = value.ToString();
+            }
+        }
         private void btn_7B_Click(object sender, EventArgs e)
         {
             // MyCode.ClosedXMLExportExcel(dgv_7B, txt_path.Text.ToString().Trim(), "關聯方期末存貨Package7B_" + str_date_e_ym + "_" + DateTime.Now.ToString("yyyyMMdd") + ".xlsx");
@@ -433,42 +450,26 @@ namespace TOYOINK_dev
 
                     //num_IPS = row[1].ToString().Trim();
                     //20240524 因轉出數值為文字，再次修改程式，改為數值
-                    for (int j = 0; j < 20; j++)
-                    {
-                        // 設置數值格式或文字格式
-                        if (j == 8 || j == 10 || j == 11) // 需要特殊數字格式的欄位
-                        {
-                            if (double.TryParse(row[j].ToString(), out double numericValue))
-                            {
-                                if (j == 8) // 原幣金額
-                                {
-                                    wsheet_IPS.Cell(y, j + 1).Style.NumberFormat.Format = "#,##0.00";
-                                }
-                                else if (j == 10) // 新匯率
-                                {
-                                    wsheet_IPS.Cell(y, j + 1).Style.NumberFormat.Format = "#,##0.0000";
-                                }
-                                else if (j == 11) // 新本幣金額
-                                {
-                                    wsheet_IPS.Cell(y, j + 1).Style.NumberFormat.Format = "#,##0";
-                                }
-                                wsheet_IPS.Cell(y, j + 1).Value = numericValue;
-                            }
-                            else
-                            {
-                                wsheet_IPS.Cell(y, j + 1).Value = row[j].ToString();
-                            }
-                        }
-                        else if (j == 0 || j == 1 || j == 2 || j == 3 || j == 5 || j == 15 || j == 17 || j == 18 || j == 19 || j == 20) // 文字格式的欄位
-                        {
-                            wsheet_IPS.Cell(y, j + 1).Style.NumberFormat.Format = "@";
-                            wsheet_IPS.Cell(y, j + 1).Value = row[j].ToString();
-                        }
-                        else // 其他欄位
-                        {
-                            wsheet_IPS.Cell(y, j + 1).Value = row[j].ToString();
-                        }
-                    }
+                    SetCellValueAndFormat(wsheet_IPS, y, 1, row[0].ToString(), "@"); // SI單據日期
+                    SetCellValueAndFormat(wsheet_IPS, y, 2, row[1].ToString(), "@"); // SI單號
+                    SetCellValueAndFormat(wsheet_IPS, y, 3, row[2].ToString(), "@"); // 關係人代號
+                    SetCellValueAndFormat(wsheet_IPS, y, 4, row[3].ToString(), "@"); // 供應商代號
+                    SetCellValueAndFormat(wsheet_IPS, y, 5, row[4].ToString()); // 供應商簡稱
+                    SetCellValueAndFormat(wsheet_IPS, y, 6, row[5].ToString(), "@"); // 存貨科目
+                    SetCellValueAndFormat(wsheet_IPS, y, 7, row[6].ToString()); // 品號
+                    SetCellValueAndFormat(wsheet_IPS, y, 8, row[7].ToString()); // 品名
+                    SetCellValueAndFormat(wsheet_IPS, y, 9, row[8].ToString(), "#,##0.00"); // 原幣金額
+                    SetCellValueAndFormat(wsheet_IPS, y, 10, row[9].ToString()); // 確認交貨日
+                    SetCellValueAndFormat(wsheet_IPS, y, 11, row[10].ToString(), "#,##0.0000"); // 新匯率
+                    SetCellValueAndFormat(wsheet_IPS, y, 12, row[11].ToString(), "#,##0"); // 新本幣金額
+                    SetCellValueAndFormat(wsheet_IPS, y, 13, row[12].ToString()); // 單位
+                    SetCellValueAndFormat(wsheet_IPS, y, 14, row[13].ToString()); // 幣別
+                    SetCellValueAndFormat(wsheet_IPS, y, 15, row[14].ToString(), "@"); // 產品別原代號
+                    SetCellValueAndFormat(wsheet_IPS, y, 16, row[15].ToString()); // 產品別名稱
+                    SetCellValueAndFormat(wsheet_IPS, y, 17, row[16].ToString(), "@"); // 採購單別
+                    SetCellValueAndFormat(wsheet_IPS, y, 18, row[17].ToString(), "@"); // 採購單號
+                    SetCellValueAndFormat(wsheet_IPS, y, 19, row[18].ToString(), "@"); // 採購序號
+                    SetCellValueAndFormat(wsheet_IPS, y, 20, row[19].ToString(), "@"); // 庫別
 
                     // 特定欄位的數值轉換示例
                     num_IPS = row[1].ToString().Trim();
