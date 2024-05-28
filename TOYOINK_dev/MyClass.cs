@@ -563,7 +563,7 @@ namespace Myclass
         //public Dictionary<string, string> QP_dict_Item { get; set; } = new Dictionary<string, string>();
         //public Dictionary<string, string> QP_dict_Result { get; set; } = new Dictionary<string, string>();
         //public Dictionary<string, string> QP_dict_Result_Temp { get; set; } = new Dictionary<string, string>();
-       
+
 
 
 
@@ -782,6 +782,32 @@ namespace Myclass
                 //打开文件
                 System.Diagnostics.Process.Start(save_as_Trademark);
             }*/
+
+        void SetCellValueAndFormat(IXLWorksheet sheet, int rowIndex, int colIndex, object value, string format = null)
+        {
+            // 檢查是否有指定格式
+            if (format != null)
+            {
+                sheet.Cell(rowIndex, colIndex).Style.NumberFormat.Format = format;
+            }
+
+            // 判斷 value 是否為數字，並且是否需要保留前導零
+            if (value is string strValue && strValue.StartsWith("0") && double.TryParse(strValue, out _))
+            {
+                // 如果 value 是以 "0" 開頭的字符串且可以解析為數字，則保留字符串形式
+                sheet.Cell(rowIndex, colIndex).Value = strValue;
+            }
+            else if (double.TryParse(value.ToString(), out double numericValue))
+            {
+                // 如果 value 可以解析為數字，則設置為數字值
+                sheet.Cell(rowIndex, colIndex).Value = numericValue;
+            }
+            else
+            {
+                // 否則，設置為字符串值
+                sheet.Cell(rowIndex, colIndex).Value = value.ToString();
+            }
+        }
         public void ERP_DTInputExcel(ClosedXML.Excel.IXLWorksheet wsheet, DataTable dt, int i_col, int j_row, string str_date_s, string str_date_e)
         {
 
@@ -841,6 +867,8 @@ namespace Myclass
                 int row_num = 0;
                 foreach (DataColumn Column in dt.Columns)
                 {
+                    //20240528 再次調整，0開頭或關係人代號...等改為文字欄位
+                    string format = null;
                     switch (Column.ColumnName.ToString())
                     {
                         case "銷貨年月":
@@ -946,16 +974,17 @@ namespace Myclass
                     //20240513 更新NuGet套件後出現錯誤，修改程式碼加入【(ClosedXML.Excel.XLCellValue)】；再次修改，刪除前面修改，結尾加入【.ToString()】
                     //wsheet.Cell(i_col, j_row).Value = row[row_num].ToString();
                     //20240524 因轉出數值為文字，再次修改程式，改為數值
+                    //20240528 再次調整，0開頭或關係人代號...等改為文字欄位
+                    //if (double.TryParse(row[row_num].ToString(), out double numericValue))
+                    //{
+                    //    wsheet.Cell(i_col, j_row).Value = numericValue;
+                    //}
+                    //else
+                    //{
+                    //    wsheet.Cell(i_col, j_row).Value = row[row_num].ToString();
+                    //}
 
-                    if (double.TryParse(row[row_num].ToString(), out double numericValue))
-                    {
-                        wsheet.Cell(i_col, j_row).Value = numericValue;
-                    }
-                    else
-                    {
-                        wsheet.Cell(i_col, j_row).Value = row[row_num].ToString();
-                    }
-
+                    SetCellValueAndFormat(wsheet, i_col, j_row, row[row_num], format);
                     row_num++;
                     j_row++;
                 }
@@ -965,6 +994,9 @@ namespace Myclass
 
     }
 }
+
+
+
 /* F22-1使用
  * CT_F22_1_SGLDT_After_Temp 自訂明細暫存表
 資料行名稱	資料類型	允許NULL

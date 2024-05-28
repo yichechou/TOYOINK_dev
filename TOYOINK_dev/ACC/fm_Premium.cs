@@ -26,6 +26,9 @@ namespace TOYOINK_dev
          * 20240103 財務 林雅婷 提出 光阻 6%改為5%
          * 20240513 更新NuGet套件後出現錯誤，修改程式碼加入【(ClosedXML.Excel.XLCellValue)】；再次修改，刪除前面修改，結尾加入【.ToString()】
          * 20240524 因轉出數值為文字，再次修改程式，改為數值
+         * 20240527 財務 林雅婷 提出，權利金-日本凸版【匯款手續費-1%】格式需呈現負數為紅字括弧，增加範圍；
+         *          客戶單號數值呈現[科學記數方式]，增加判別式
+         * 20240528 再次調整，0開頭或關係人代號...等改為文字欄位
          */
 
         public MyClass MyCode;
@@ -584,23 +587,42 @@ namespace TOYOINK_dev
             }
         }
         //20240524 因轉出數值為文字，再次修改程式，改為數值
+        //20240528 再次調整，0開頭或關係人代號...等改為文字欄位
         // 設置儲存格值和格式
         void SetCellValueAndFormat(IXLWorksheet sheet, int rowIndex, int colIndex, object value, string format = null)
         {
+            // 檢查是否有指定格式
             if (format != null)
             {
                 sheet.Cell(rowIndex, colIndex).Style.NumberFormat.Format = format;
             }
 
-            if (double.TryParse(value.ToString(), out double numericValue))
+            // 判斷 value 是否為數字，並且是否需要保留前導零
+            if (value is string strValue && strValue.StartsWith("0") && double.TryParse(strValue, out _))
             {
-                sheet.Cell(rowIndex, colIndex).Value = numericValue;
+                // 如果 value 是以 "0" 開頭的字符串且可以解析為數字，則保留字符串形式
+                sheet.Cell(rowIndex, colIndex).Value = strValue;
+            }
+            else if (double.TryParse(value.ToString(), out double numericValue))
+            {
+                // 如果 value 可以解析為數字，且大於 1e10，則設置為字符串值
+                if (numericValue > 1e10)
+                {
+                    sheet.Cell(rowIndex, colIndex).Value = value.ToString();
+                }
+                else
+                {
+                    // 否則，設置為數字值
+                    sheet.Cell(rowIndex, colIndex).Value = numericValue;
+                }
             }
             else
             {
+                // 否則，設置為字符串值
                 sheet.Cell(rowIndex, colIndex).Value = value.ToString();
             }
         }
+
         private void Btn_acc_Click(object sender, EventArgs e)
         {
             if (dgv_p_MPT.DataSource is null)
@@ -1477,7 +1499,9 @@ namespace TOYOINK_dev
                         wsheet_JP.Cell(i + 6, 15).FormulaA1 = "=SUMIF(C:C,\"小計\",O:O)";
                         wsheet_JP.Cell(i + 6, 16).FormulaA1 = "=SUMIF(C:C,\"小計\",P:P)";
 
-                        wsheet_JP.Range("N" + (i + 10) + ":N" + (i + 22)).Style.NumberFormat.Format = "#,##0_);[RED](#,##0)";
+                        //20240527 財務 林雅婷提出，權利金-日本凸版【匯款手續費-1%】格式需呈現負數為紅字括弧，增加範圍
+                        //wsheet_JP.Range("N" + (i + 10) + ":N" + (i + 22)).Style.NumberFormat.Format = "#,##0_);[RED](#,##0)";
+                        wsheet_JP.Range("N" + (i + 10) + ":N" + (i + 25)).Style.NumberFormat.Format = "#,##0_);[RED](#,##0)";
                         wsheet_JP.Cell(i + 10, 13).Value = "AU(AU-C5E)";
                         wsheet_JP.Cell(i + 10, 14).FormulaA1 = "=-SUMIFS(N:N,A:A,\"AU\",C:C,\"小計\")";
                         sumrow_pJP[1] = i + 10;

@@ -670,7 +670,7 @@
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "fm_Trademark";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "商標權報表(20240524 1500)";
+            this.Text = "商標權報表(20240528 1400)";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.fm_Trademark_FormClosed);
             this.Load += new System.EventHandler(this.fm_Trademark_Load);
             this.panel1.ResumeLayout(false);

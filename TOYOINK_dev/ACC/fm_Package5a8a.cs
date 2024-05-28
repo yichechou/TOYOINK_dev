@@ -51,6 +51,7 @@ namespace TOYOINK_dev
         or (ML009 like '%報廢估列%' and ML006 新增 '510704','510705','510706'，同'510702'
       * 20240513 更新NuGet套件後出現錯誤，修改程式碼加入【(ClosedXML.Excel.XLCellValue)】；再次修改，刪除前面修改，結尾加入【.ToString()】
       * 20240524 因轉出數值為文字，再次修改程式，改為數值
+      * 20240528 再次調整，0開頭或關係人代號...等改為文字欄位
 * 
 ************************/
     public partial class fm_Package5a8a : Form
@@ -724,6 +725,9 @@ namespace TOYOINK_dev
                 int j = 0;
                 foreach (DataColumn Column in dt.Columns)
                 {
+                    //20240528 再次調整，0開頭或關係人代號...等改為文字欄位
+                    string format = null;
+
                     switch (Column.ColumnName.ToString())
                     {
                         case "銷貨年月":
@@ -805,17 +809,48 @@ namespace TOYOINK_dev
                     //20240524 因轉出數值為文字，再次修改程式，改為數值
                     //wsheet.Cell(i + 5, j + 1).Value = row[j];
 
-                    if (double.TryParse(row[j].ToString(), out double numericValue))
-                    {
-                        wsheet.Cell(i + 5, j + 1).Value = numericValue;
-                    }
-                    else
-                    {
-                        wsheet.Cell(i + 5, j + 1).Value = row[j].ToString();
-                    }
+                    //if (double.TryParse(row[j].ToString(), out double numericValue))
+                    //{
+                    //    wsheet.Cell(i + 5, j + 1).Value = numericValue;
+                    //}
+                    //else
+                    //{
+                    //    wsheet.Cell(i + 5, j + 1).Value = row[j].ToString();
+                    //}
+
+                    //20240528 再次調整，0開頭或關係人代號...等改為文字欄位
+                    // 設置單元格的值和格式
+                    SetCellValueAndFormat(wsheet, i + 5, j + 1, row[j], format);
                     j++;
                 }
                 i++;
+            }
+        }
+
+        //20240528 再次調整，0開頭或關係人代號...等改為文字欄位
+        void SetCellValueAndFormat(IXLWorksheet sheet, int rowIndex, int colIndex, object value, string format = null)
+        {
+            // 檢查是否有指定格式
+            if (format != null)
+            {
+                sheet.Cell(rowIndex, colIndex).Style.NumberFormat.Format = format;
+            }
+
+            // 判斷 value 是否為數字，並且是否需要保留前導零
+            if (value is string strValue && strValue.StartsWith("0") && double.TryParse(strValue, out _))
+            {
+                // 如果 value 是以 "0" 開頭的字符串且可以解析為數字，則保留字符串形式
+                sheet.Cell(rowIndex, colIndex).Value = strValue;
+            }
+            else if (double.TryParse(value.ToString(), out double numericValue))
+            {
+                // 如果 value 可以解析為數字，則設置為數字值
+                sheet.Cell(rowIndex, colIndex).Value = numericValue;
+            }
+            else
+            {
+                // 否則，設置為字符串值
+                sheet.Cell(rowIndex, colIndex).Value = value.ToString();
             }
         }
 

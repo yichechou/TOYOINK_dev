@@ -11,6 +11,7 @@ using Myclass;
 using ClosedXML.Excel;
 using System.Globalization;
 using System.IO;
+using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace TOYOINK_dev
 {
@@ -58,6 +59,8 @@ namespace TOYOINK_dev
             4.調整欄位寬度。
       * 20240513 更新NuGet套件後出現錯誤，修改程式碼加入【(ClosedXML.Excel.XLCellValue)】；再次修改，刪除前面修改，結尾加入【.ToString()】
       * 20240524 因轉出數值為文字，再次修改程式，改為數值
+      * 20240527 財務 余若玫 提出，銀行帳號數值呈現[科學記數方式]，增加判別式
+      * 20240528 再次調整，0開頭或關係人代號...等改為文字欄位
      */
     public partial class fm_Acc_F22_1 : Form
     {
@@ -573,6 +576,8 @@ ML009 like '%應兌現票據%' and ML006 = '1102041'
 
                 foreach (DataColumn Column in dt.Columns)
                 {
+                    string format = null;
+
                     switch (Column.ColumnName.ToString())
                     {
                         case "銀行帳號":
@@ -615,16 +620,10 @@ ML009 like '%應兌現票據%' and ML006 = '1102041'
                     //wsheet.Cell(i + i_col, j + j_row).Value = row[j];
                     //wsheet.Cell(i + i_col, j + j_row).Value = row[j].ToString();
                     //20240524 因轉出數值為文字，再次修改程式，改為數值
-
-                    if (double.TryParse(row[j].ToString(), out double numericValue))
-                    {
-                        wsheet.Cell(i + i_col, j + j_row).Value = numericValue;
-                    }
-                    else
-                    {
-                        wsheet.Cell(i + i_col, j + j_row).Value = row[j].ToString();
-                    }
-
+                    //20240527 財務 余若玫 提出，銀行帳號數值呈現[科學記數方式]，增加判別式
+                    //20240528 再次調整，0開頭或關係人代號...等改為文字欄位
+                    // 設置單元格的值和格式
+                    SetCellValueAndFormat(wsheet, i + i_col, j + j_row, row[j], format);
                     j++;
                 }
 
@@ -693,6 +692,41 @@ ML009 like '%應兌現票據%' and ML006 = '1102041'
             }
 
         }
+        //20240528 再次調整，0開頭或關係人代號...等改為文字欄位
+        void SetCellValueAndFormat(IXLWorksheet sheet, int rowIndex, int colIndex, object value, string format = null)
+        {
+            // 檢查是否有指定格式
+            if (format != null)
+            {
+                sheet.Cell(rowIndex, colIndex).Style.NumberFormat.Format = format;
+            }
+
+            // 判斷 value 是否為數字，並且是否需要保留前導零
+            if (value is string strValue && strValue.StartsWith("0") && double.TryParse(strValue, out _))
+            {
+                // 如果 value 是以 "0" 開頭的字符串且可以解析為數字，則保留字符串形式
+                sheet.Cell(rowIndex, colIndex).Value = strValue;
+            }
+            else if (double.TryParse(value.ToString(), out double numericValue))
+            {
+                // 如果 value 可以解析為數字，且大於 1e10，則設置為字符串值
+                if (numericValue > 1e10)
+                {
+                    sheet.Cell(rowIndex, colIndex).Value = value.ToString();
+                }
+                else
+                {
+                    // 否則，設置為數字值
+                    sheet.Cell(rowIndex, colIndex).Value = numericValue;
+                }
+            }
+            else
+            {
+                // 否則，設置為字符串值
+                sheet.Cell(rowIndex, colIndex).Value = value.ToString();
+            }
+        }
+
 
         bool IsToForm1 = false; //紀錄是否要回到Form1
         protected override void OnClosing(CancelEventArgs e) //在視窗關閉時觸發

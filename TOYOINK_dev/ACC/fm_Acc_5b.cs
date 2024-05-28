@@ -21,6 +21,8 @@ namespace TOYOINK_dev
         //20210720 財務林姿刪提出，去除進退貨條件式【(case when PURTG.TG005 = N'TVS' AND PURTG.TG007 = N'JPY' then 0 else 1 end=1)】
         //20240513 更新NuGet套件後出現錯誤，修改程式碼加入【(ClosedXML.Excel.XLCellValue)】；再次修改，刪除前面修改，結尾加入【.ToString()】
         //20240524 因轉出數值為文字，再次修改程式，改為數值
+        //20240528 再次調整，0開頭或關係人代號...等改為文字欄位
+
         public MyClass MyCode;
         月曆 fm_月曆;
 
@@ -51,8 +53,13 @@ namespace TOYOINK_dev
         {
             InitializeComponent();
             MyCode = new Myclass.MyClass();
-            MyCode.strDbCon = "packet size=4096;user id=pwuser;password=sqlmis003;data source=192.168.128.219;persist security info=False;initial catalog=A01A;";
-            //MyCode.strDbCon = "packet size=4096;user id=yj.chou;password=yjchou3369;data source=192.168.128.219;persist security info=False;initial catalog=Leader;";
+
+            //MyCode.strDbCon = MyCode.strDbConLeader;
+            //this.sqlConnection1.ConnectionString = MyCode.strDbConLeader;
+
+            MyCode.strDbCon = MyCode.strDbConA01A;
+            //this.sqlConnection1.ConnectionString = MyCode.strDbConA01A;
+            
             temp_excel_5b = @"\\192.168.128.219\Conductor\Company\MIS自開發主檔\會計報表公版\關聯方進貨淨額明細5b_temp.xlsx";
         }
 
@@ -667,6 +674,9 @@ namespace TOYOINK_dev
                 int row_num = 0;
                 foreach (DataColumn Column in dt.Columns)
                 {
+                    //20240528 再次調整，0開頭或關係人代號...等改為文字欄位
+                    string format = null;
+
                     switch (Column.ColumnName.ToString())
                     {
                         case "銷貨年月":
@@ -769,14 +779,18 @@ namespace TOYOINK_dev
                     //wsheet.Cell(i, j).Value = row[row_num];
                     //wsheet.Cell(i, j).Value = row[row_num].ToString();
                     //20240524 因轉出數值為文字，再次修改程式，改為數值
-                    if (double.TryParse(row[row_num].ToString(), out double numericValue))
-                    {
-                        wsheet.Cell(i, j).Value = numericValue;
-                    }
-                    else
-                    {
-                        wsheet.Cell(i, j).Value = row[row_num].ToString();
-                    }
+                    //if (double.TryParse(row[row_num].ToString(), out double numericValue))
+                    //{
+                    //    wsheet.Cell(i, j).Value = numericValue;
+                    //}
+                    //else
+                    //{
+                    //    wsheet.Cell(i, j).Value = row[row_num].ToString();
+                    //}
+
+                    //20240528 再次調整，0開頭或關係人代號...等改為文字欄位
+                    // 設置單元格的值和格式
+                    SetCellValueAndFormat(wsheet, i, j, row[Column], format);
 
                     row_num++;
                     j++;
@@ -784,6 +798,41 @@ namespace TOYOINK_dev
                 i++;
             }
         }
+        //20240528 再次調整，0開頭或關係人代號...等改為文字欄位
+        void SetCellValueAndFormat(IXLWorksheet sheet, int rowIndex, int colIndex, object value, string format = null)
+        {
+            // 檢查是否有指定格式
+            if (format != null)
+            {
+                sheet.Cell(rowIndex, colIndex).Style.NumberFormat.Format = format;
+            }
+
+            // 判斷 value 是否為數字，並且是否需要保留前導零
+            if (value is string strValue && strValue.StartsWith("0") && double.TryParse(strValue, out _))
+            {
+                // 如果 value 是以 "0" 開頭的字符串且可以解析為數字，則保留字符串形式
+                sheet.Cell(rowIndex, colIndex).Value = strValue;
+            }
+            else if (double.TryParse(value.ToString(), out double numericValue))
+            {
+                // 如果 value 可以解析為數字，且大於 1e10，則設置為字符串值
+                if (numericValue > 1e10)
+                {
+                    sheet.Cell(rowIndex, colIndex).Value = value.ToString();
+                }
+                else
+                {
+                    // 否則，設置為數字值
+                    sheet.Cell(rowIndex, colIndex).Value = numericValue;
+                }
+            }
+            else
+            {
+                // 否則，設置為字符串值
+                sheet.Cell(rowIndex, colIndex).Value = value.ToString();
+            }
+        }
+
 
         bool IsToForm1 = false; //紀錄是否要回到Form1
         protected override void OnClosing(CancelEventArgs e) //在視窗關閉時觸發

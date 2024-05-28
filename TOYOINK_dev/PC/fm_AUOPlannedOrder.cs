@@ -26,6 +26,7 @@ namespace TOYOINK_dev
      *20240401 生管 梁姿儂提出 上傳ERP排序，加入[ERPNO]，[FAB],[ERPNO],[MATERIAL_TYPE]
      *20240513 更新NuGet套件後出現錯誤，修改程式碼
      *20240524 因轉出數值為文字，再次修改程式，改為數值
+     *20240528 再次調整，0開頭或關係人代號...等改為文字欄位
      */
     public partial class fm_AUOPlannedOrder : Form
     {
@@ -2738,20 +2739,37 @@ VALUES({1})", str_sql_columns_d, str_sql_values_d);
             prc.Start();
         }
         //20240524 因轉出數值為文字，再次修改程式，改為數值
+        //20240528 再次調整，0開頭或關係人代號...等改為文字欄位
         void SetCellValueAndFormat(IXLWorksheet sheet, int rowIndex, int colIndex, object value, string format = null, XLColor backgroundColor = null)
         {
+            // 檢查是否有指定格式
             if (format != null)
             {
                 sheet.Cell(rowIndex, colIndex).Style.NumberFormat.Format = format;
             }
 
-            double numericValue;
-            if (double.TryParse(value.ToString(), out numericValue))
+            // 判斷 value 是否為數字，並且是否需要保留前導零
+            if (value is string strValue && strValue.StartsWith("0") && double.TryParse(strValue, out _))
             {
-                sheet.Cell(rowIndex, colIndex).Value = numericValue;
+                // 如果 value 是以 "0" 開頭的字符串且可以解析為數字，則保留字符串形式
+                sheet.Cell(rowIndex, colIndex).Value = strValue;
+            }
+            else if (double.TryParse(value.ToString(), out double numericValue))
+            {
+                // 如果 value 可以解析為數字，且大於 1e10，則設置為字符串值
+                if (numericValue > 1e10)
+                {
+                    sheet.Cell(rowIndex, colIndex).Value = value.ToString();
+                }
+                else
+                {
+                    // 否則，設置為數字值
+                    sheet.Cell(rowIndex, colIndex).Value = numericValue;
+                }
             }
             else
             {
+                // 否則，設置為字符串值
                 sheet.Cell(rowIndex, colIndex).Value = value.ToString();
             }
 
