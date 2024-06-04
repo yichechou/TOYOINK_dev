@@ -52,6 +52,7 @@ namespace TOYOINK_dev
       * 20240513 更新NuGet套件後出現錯誤，修改程式碼加入【(ClosedXML.Excel.XLCellValue)】；再次修改，刪除前面修改，結尾加入【.ToString()】
       * 20240524 因轉出數值為文字，再次修改程式，改為數值
       * 20240528 再次調整，0開頭或關係人代號...等改為文字欄位
+      * 20240604 加入 format宣告
 * 
 ************************/
     public partial class fm_Package5a8a : Form
@@ -726,6 +727,7 @@ namespace TOYOINK_dev
                 foreach (DataColumn Column in dt.Columns)
                 {
                     //20240528 再次調整，0開頭或關係人代號...等改為文字欄位
+                    //20240604 加入 format宣告
                     string format = null;
 
                     switch (Column.ColumnName.ToString())
@@ -764,6 +766,7 @@ namespace TOYOINK_dev
                         case "部門代號":
                         case "部門名稱":
                             wsheet.Cell(i + 5, j + 1).Style.NumberFormat.Format = "@";
+                            format = "@";
                             break;
                         case "總原價":
                         case "材料":
@@ -788,11 +791,13 @@ namespace TOYOINK_dev
                         case "利潤":
                         case "罐數":
                             wsheet.Cell(i + 5, j + 1).Style.NumberFormat.Format = "#,##0_);[RED](#,##0)";
+                            format = "#,##0_);[RED](#,##0)";
                             break;
                         case "銷貨數量":
                         case "銷貨數":
                         case "銷退數":
                             wsheet.Cell(i + 5, j + 1).Style.NumberFormat.Format = "#,##0.000";
+                            format = "#,##0.000";
                             break;
                         case "平均單價":
                         case "利潤比率":
@@ -801,6 +806,7 @@ namespace TOYOINK_dev
                         case "單位人工成本":
                         case "單位製費成本":
                             wsheet.Cell(i + 5, j + 1).Style.NumberFormat.Format = "#,##0.00";
+                            format = "#,##0.000";
                             break;
                         default:
                             break;
@@ -830,13 +836,13 @@ namespace TOYOINK_dev
         //20240528 再次調整，0開頭或關係人代號...等改為文字欄位
         void SetCellValueAndFormat(IXLWorksheet sheet, int rowIndex, int colIndex, object value, string format = null)
         {
+
+            // 判斷 value 是否為數字，並且是否需要保留前導零
             // 檢查是否有指定格式
             if (format != null)
             {
                 sheet.Cell(rowIndex, colIndex).Style.NumberFormat.Format = format;
             }
-
-            // 判斷 value 是否為數字，並且是否需要保留前導零
             if (value is string strValue && strValue.StartsWith("0") && double.TryParse(strValue, out _))
             {
                 // 如果 value 是以 "0" 開頭的字符串且可以解析為數字，則保留字符串形式

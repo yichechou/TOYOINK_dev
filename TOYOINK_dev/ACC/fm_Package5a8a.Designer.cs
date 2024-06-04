@@ -694,7 +694,7 @@
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "fm_Package5a8a";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "銷貨成本分析月報5a及品種別月報8a (20240528 1500)";
+            this.Text = "銷貨成本分析月報5a及品種別月報8a (20240604 1300)";
             this.Load += new System.EventHandler(this.fm_Package5a8a_Load);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
