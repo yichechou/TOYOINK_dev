@@ -33,6 +33,7 @@
             this.btn_premium = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.btn_Acc_PurSale = new System.Windows.Forms.Button();
             this.btn_Acc_RelatedVOU = new System.Windows.Forms.Button();
             this.btn_Acc_F22_1 = new System.Windows.Forms.Button();
             this.btn_Acc_5b = new System.Windows.Forms.Button();
@@ -98,6 +99,7 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.btn_Acc_PurSale);
             this.tabPage1.Controls.Add(this.btn_Acc_RelatedVOU);
             this.tabPage1.Controls.Add(this.btn_Acc_F22_1);
             this.tabPage1.Controls.Add(this.btn_Acc_5b);
@@ -112,6 +114,18 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "會計相關";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // btn_Acc_PurSale
+            // 
+            this.btn_Acc_PurSale.Font = new System.Drawing.Font("微軟正黑體", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.btn_Acc_PurSale.Location = new System.Drawing.Point(244, 239);
+            this.btn_Acc_PurSale.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btn_Acc_PurSale.Name = "btn_Acc_PurSale";
+            this.btn_Acc_PurSale.Size = new System.Drawing.Size(222, 70);
+            this.btn_Acc_PurSale.TabIndex = 9;
+            this.btn_Acc_PurSale.Text = "進貨之銷售資料";
+            this.btn_Acc_PurSale.UseVisualStyleBackColor = true;
+            this.btn_Acc_PurSale.Click += new System.EventHandler(this.btn_Acc_PurSale_Click);
             // 
             // btn_Acc_RelatedVOU
             // 
@@ -269,7 +283,7 @@
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "fm_menu";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "台灣東洋先端_系統開發(20240604 1300)";
+            this.Text = "台灣東洋先端_系統開發(20240614 0830)";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.fm_menu_FormClosed);
             this.Load += new System.EventHandler(this.fm_menu_Load);
             this.tabControl1.ResumeLayout(false);
@@ -297,6 +311,7 @@
         private System.Windows.Forms.Button btn_Acc_F22_1;
         private System.Windows.Forms.Button btn_Acc_RelatedVOU;
         private System.Windows.Forms.Button btn_PC_PURTC;
+        private System.Windows.Forms.Button btn_Acc_PurSale;
     }
 }
 

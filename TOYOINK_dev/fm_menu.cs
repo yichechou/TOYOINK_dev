@@ -7,17 +7,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TOYOINK_dev;
 
 namespace TOYOINK_dev
 {
-    /*
-  * 使用到的TABLE
-  * fm_AUOPlannedOrder: 有使用[SAP].[dbo].fm_COPTC_log、[SAP].[dbo].fm_COPTD_log，同ERP欄位 前面加入 DEL_DATE
-  * 20240314 生管 梁姿儂提出 fm_AUOPlannedOrder 前回差報表的部分，調整成依照FAB,ERPNO,MATERIAL_TYPE 排序
-  * 20240401 生管 梁姿儂提出 fm_AUOPlannedOrder 上傳ERP排序，加入[ERPNO]，[FAB],[ERPNO],[MATERIAL_TYPE]]
-  * 
-  * 
-  */
+	   /*
+     * 使用到的TABLE
+     * fm_AUOPlannedOrder: 有使用[SAP].[dbo].fm_COPTC_log、[SAP].[dbo].fm_COPTD_log，同ERP欄位 前面加入 DEL_DATE
+     * 
+     * 
+     */
     public partial class fm_menu : Form
     {
         TOYOINK_dev.Premium fm_Premium = new TOYOINK_dev.Premium();
@@ -29,6 +28,7 @@ namespace TOYOINK_dev
         TOYOINK_dev.fm_Acc_5b fm_Acc_5b = new TOYOINK_dev.fm_Acc_5b();
         TOYOINK_dev.fm_Acc_F22_1 fm_Acc_F22_1 = new TOYOINK_dev.fm_Acc_F22_1();
         TOYOINK_dev.fm_Acc_RelatedVOU fm_Acc_RelatedVOU = new TOYOINK_dev.fm_Acc_RelatedVOU();
+        TOYOINK_dev.fm_Acc_PurSale fm_Acc_PurSale = new TOYOINK_dev.fm_Acc_PurSale();
         //TOYOINK_dev.fm_trycode fm_trycode = new TOYOINK_dev.fm_trycode();
         //TOYOINK_dev.fm_PC_PURTC fm_PC_PURTC = new TOYOINK_dev.fm_PC_PURTC();
 
@@ -226,6 +226,8 @@ namespace TOYOINK_dev
             fm_login.Show();
         }
 
+        //20240229 生管 林玲禎提出fm_AUO_NF_COPTC(北廠).fm_AUOCOPTC(南廠)，財務聯絡因財務報表製作時需要［部門別］資訊 COPMA.MA015對應訂單單頭COPTC.TC005
+
         private void btn_AUO_NF_COPTC_Click(object sender, EventArgs e)
         {
             this.Hide(); //隱藏父視窗
@@ -243,7 +245,15 @@ namespace TOYOINK_dev
 
         }
 
+        private void btn_Acc_PurSale_Click(object sender, EventArgs e)
+        {
+            fm_Acc_PurSale.Show();
+            this.Hide();
+        }
+
         //fm_AUO_NF_COPTC
+        //20240229 生管 林玲禎提出fm_AUO_NF_COPTC(北廠).fm_AUOCOPTC(南廠)，財務聯絡因財務報表製作時需要［部門別］資訊 COPMA.MA015對應訂單單頭COPTC.TC005
+
         private void btn_AUOCOPTC_Click(object sender, EventArgs e)
         {
             this.Hide(); //隱藏父視窗

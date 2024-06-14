@@ -29,7 +29,7 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ProductName>系統開發相關程式</ProductName>
     <PublisherName>TOYOINK MIS</PublisherName>
-    <ApplicationRevision>102</ApplicationRevision>
+    <ApplicationRevision>103</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -243,6 +243,12 @@
     <Compile Include="ACC\fm_Acc_F22_1.designer.cs">
       <DependentUpon>fm_Acc_F22_1.cs</DependentUpon>
     </Compile>
+    <Compile Include="ACC\fm_Acc_PurSale.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ACC\fm_Acc_PurSale.Designer.cs">
+      <DependentUpon>fm_Acc_PurSale.cs</DependentUpon>
+    </Compile>
     <Compile Include="ACC\fm_Acc_RelatedVOU.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -314,6 +320,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ACC\fm_Acc_F22_1.resx">
       <DependentUpon>fm_Acc_F22_1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ACC\fm_Acc_PurSale.resx">
+      <DependentUpon>fm_Acc_PurSale.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ACC\fm_Acc_RelatedVOU.resx">
       <DependentUpon>fm_Acc_RelatedVOU.cs</DependentUpon>
