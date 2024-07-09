@@ -30,8 +30,12 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(fm_Acc_PurSale));
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tab_Search = new System.Windows.Forms.TabPage();
-            this.dgv_Search = new System.Windows.Forms.DataGridView();
+            this.tab_COPTH = new System.Windows.Forms.TabPage();
+            this.dgv_COPTH = new System.Windows.Forms.DataGridView();
+            this.tab_COPTJ = new System.Windows.Forms.TabPage();
+            this.dgv_COPTJ = new System.Windows.Forms.DataGridView();
+            this.tab_ACTML = new System.Windows.Forms.TabPage();
+            this.dgv_ACTML = new System.Windows.Forms.DataGridView();
             this.panel2 = new System.Windows.Forms.Panel();
             this.btn_up = new System.Windows.Forms.Button();
             this.txterr = new System.Windows.Forms.TextBox();
@@ -52,15 +56,21 @@
             this.txt_date_s = new System.Windows.Forms.TextBox();
             this.Btn_date_s = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
-            this.tab_Search.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_Search)).BeginInit();
+            this.tab_COPTH.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_COPTH)).BeginInit();
+            this.tab_COPTJ.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_COPTJ)).BeginInit();
+            this.tab_ACTML.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_ACTML)).BeginInit();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
             // 
-            this.tabControl1.Controls.Add(this.tab_Search);
+            this.tabControl1.Controls.Add(this.tab_COPTH);
+            this.tabControl1.Controls.Add(this.tab_COPTJ);
+            this.tabControl1.Controls.Add(this.tab_ACTML);
             this.tabControl1.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.tabControl1.HotTrack = true;
             this.tabControl1.Location = new System.Drawing.Point(12, 195);
@@ -69,32 +79,82 @@
             this.tabControl1.Size = new System.Drawing.Size(1285, 645);
             this.tabControl1.TabIndex = 11;
             // 
-            // tab_Search
+            // tab_COPTH
             // 
-            this.tab_Search.Controls.Add(this.dgv_Search);
-            this.tab_Search.Location = new System.Drawing.Point(4, 34);
-            this.tab_Search.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tab_Search.Name = "tab_Search";
-            this.tab_Search.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tab_Search.Size = new System.Drawing.Size(1277, 607);
-            this.tab_Search.TabIndex = 1;
-            this.tab_Search.Text = "查詢結果";
-            this.tab_Search.UseVisualStyleBackColor = true;
+            this.tab_COPTH.Controls.Add(this.dgv_COPTH);
+            this.tab_COPTH.Location = new System.Drawing.Point(4, 34);
+            this.tab_COPTH.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tab_COPTH.Name = "tab_COPTH";
+            this.tab_COPTH.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tab_COPTH.Size = new System.Drawing.Size(1277, 607);
+            this.tab_COPTH.TabIndex = 1;
+            this.tab_COPTH.Text = "銷貨單";
+            this.tab_COPTH.UseVisualStyleBackColor = true;
             // 
-            // dgv_Search
+            // dgv_COPTH
             // 
-            this.dgv_Search.AllowUserToAddRows = false;
-            this.dgv_Search.AllowUserToDeleteRows = false;
-            this.dgv_Search.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            this.dgv_Search.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgv_Search.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgv_Search.Location = new System.Drawing.Point(4, 5);
-            this.dgv_Search.Name = "dgv_Search";
-            this.dgv_Search.ReadOnly = true;
-            this.dgv_Search.RowHeadersWidth = 51;
-            this.dgv_Search.RowTemplate.Height = 27;
-            this.dgv_Search.Size = new System.Drawing.Size(1269, 597);
-            this.dgv_Search.TabIndex = 0;
+            this.dgv_COPTH.AllowUserToAddRows = false;
+            this.dgv_COPTH.AllowUserToDeleteRows = false;
+            this.dgv_COPTH.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.dgv_COPTH.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_COPTH.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgv_COPTH.Location = new System.Drawing.Point(4, 5);
+            this.dgv_COPTH.Name = "dgv_COPTH";
+            this.dgv_COPTH.ReadOnly = true;
+            this.dgv_COPTH.RowHeadersWidth = 51;
+            this.dgv_COPTH.RowTemplate.Height = 27;
+            this.dgv_COPTH.Size = new System.Drawing.Size(1269, 597);
+            this.dgv_COPTH.TabIndex = 0;
+            // 
+            // tab_COPTJ
+            // 
+            this.tab_COPTJ.Controls.Add(this.dgv_COPTJ);
+            this.tab_COPTJ.Location = new System.Drawing.Point(4, 34);
+            this.tab_COPTJ.Name = "tab_COPTJ";
+            this.tab_COPTJ.Size = new System.Drawing.Size(1277, 607);
+            this.tab_COPTJ.TabIndex = 2;
+            this.tab_COPTJ.Text = "銷退單";
+            this.tab_COPTJ.UseVisualStyleBackColor = true;
+            // 
+            // dgv_COPTJ
+            // 
+            this.dgv_COPTJ.AllowUserToAddRows = false;
+            this.dgv_COPTJ.AllowUserToDeleteRows = false;
+            this.dgv_COPTJ.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.dgv_COPTJ.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_COPTJ.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgv_COPTJ.Location = new System.Drawing.Point(0, 0);
+            this.dgv_COPTJ.Name = "dgv_COPTJ";
+            this.dgv_COPTJ.ReadOnly = true;
+            this.dgv_COPTJ.RowHeadersWidth = 51;
+            this.dgv_COPTJ.RowTemplate.Height = 27;
+            this.dgv_COPTJ.Size = new System.Drawing.Size(1277, 607);
+            this.dgv_COPTJ.TabIndex = 1;
+            // 
+            // tab_ACTML
+            // 
+            this.tab_ACTML.Controls.Add(this.dgv_ACTML);
+            this.tab_ACTML.Location = new System.Drawing.Point(4, 34);
+            this.tab_ACTML.Name = "tab_ACTML";
+            this.tab_ACTML.Size = new System.Drawing.Size(1277, 607);
+            this.tab_ACTML.TabIndex = 3;
+            this.tab_ACTML.Text = "明細分類帳";
+            this.tab_ACTML.UseVisualStyleBackColor = true;
+            // 
+            // dgv_ACTML
+            // 
+            this.dgv_ACTML.AllowUserToAddRows = false;
+            this.dgv_ACTML.AllowUserToDeleteRows = false;
+            this.dgv_ACTML.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.dgv_ACTML.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_ACTML.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgv_ACTML.Location = new System.Drawing.Point(0, 0);
+            this.dgv_ACTML.Name = "dgv_ACTML";
+            this.dgv_ACTML.ReadOnly = true;
+            this.dgv_ACTML.RowHeadersWidth = 51;
+            this.dgv_ACTML.RowTemplate.Height = 27;
+            this.dgv_ACTML.Size = new System.Drawing.Size(1277, 607);
+            this.dgv_ACTML.TabIndex = 2;
             // 
             // panel2
             // 
@@ -240,7 +300,7 @@
             this.btn_ToExcel.Name = "btn_ToExcel";
             this.btn_ToExcel.Size = new System.Drawing.Size(356, 50);
             this.btn_ToExcel.TabIndex = 25;
-            this.btn_ToExcel.Text = "進貨之銷貨資料";
+            this.btn_ToExcel.Text = "進貨之銷售資料";
             this.btn_ToExcel.UseVisualStyleBackColor = false;
             this.btn_ToExcel.Click += new System.EventHandler(this.btn_ToExcel_Click);
             // 
@@ -327,11 +387,15 @@
             this.Controls.Add(this.panel2);
             this.Name = "fm_Acc_PurSale";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "進貨之銷售資料(20240614 0830)";
+            this.Text = "進貨之銷售資料(20240627 1310)";
             this.Load += new System.EventHandler(this.fm_Acc_PurSale_Load);
             this.tabControl1.ResumeLayout(false);
-            this.tab_Search.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_Search)).EndInit();
+            this.tab_COPTH.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_COPTH)).EndInit();
+            this.tab_COPTJ.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_COPTJ)).EndInit();
+            this.tab_ACTML.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_ACTML)).EndInit();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.panel3.ResumeLayout(false);
@@ -343,8 +407,8 @@
         #endregion
 
         private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tab_Search;
-        private System.Windows.Forms.DataGridView dgv_Search;
+        private System.Windows.Forms.TabPage tab_COPTH;
+        private System.Windows.Forms.DataGridView dgv_COPTH;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Button btn_up;
         private System.Windows.Forms.TextBox txterr;
@@ -364,5 +428,9 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox txt_date_s;
         private System.Windows.Forms.Button Btn_date_s;
+        private System.Windows.Forms.TabPage tab_COPTJ;
+        private System.Windows.Forms.TabPage tab_ACTML;
+        private System.Windows.Forms.DataGridView dgv_COPTJ;
+        private System.Windows.Forms.DataGridView dgv_ACTML;
     }
 }
