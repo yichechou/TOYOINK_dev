@@ -28,6 +28,8 @@ namespace TOYOINK_dev
      *  3.明細報表扣除 科目編號 ('2166','2218', '2219')內摘要(TB010+TB012)含有'%國稅局%'字樣剔除。
      *  cond_Month_A 與 cond_Quarter 加入【and not ((MN001 IN ('2166','2218', '2219') AND (TB010+TB012) LIKE '%國稅局%'))】
      *  4.彙總明細表，加入 order by MN001,MN004 排序
+     *  20241004 財務 許秀玉提出，指定結案先取消 成本結轉 控管
+     *  20241007 財務 許秀玉提出，報表先取消 成本結轉 控管
      */
     public partial class fm_Acc_RelatedVOU : Form
     {
@@ -487,14 +489,16 @@ EXCEL轉出，若月份遇到03.06.09.12，將改為Q1.Q2.Q3.Q4。
                                                 where (({0} {2}) and (ACTMN.MODI_DATE like '{1}%')) ", cond_N, str_修改日期.Substring(0,6), cond_LastN3456);
             MyCode.Sql_dgv(sql_str_N, dt_N, dgv_N);
 
-            if (dt_Cost_N.Rows.Count == 0 && dt_Cost_y.Rows.Count == 0)
-            {
-                MessageBox.Show("立沖帳尚未查看到【成本結轉】，請確認完成【成本結轉】作業後再執行", "警告訊息", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                btn_y.Enabled = false;
-                btn_N.Enabled = false;
-                return;
-            }
-            else if (dt_y.Rows.Count == 0 && dt_N.Rows.Count > 0)
+            //20241004 財務 許秀玉提出，先取消 成本結轉 控管
+            //if (dt_Cost_N.Rows.Count == 0 && dt_Cost_y.Rows.Count == 0)
+            //{
+            //    MessageBox.Show("立沖帳尚未查看到【成本結轉】，請確認完成【成本結轉】作業後再執行", "警告訊息", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            //    btn_y.Enabled = false;
+            //    btn_N.Enabled = false;
+            //    return;
+            //}
+            //else if (dt_y.Rows.Count == 0 && dt_N.Rows.Count > 0)
+            if (dt_y.Rows.Count == 0 && dt_N.Rows.Count > 0)
             {
                 MessageBox.Show("立沖帳本月已有【指定結案(y)】，僅能【取消結案(N)】", "警告訊息", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 dgv_PostingCost.DataSource = dt_Cost_y;
@@ -634,11 +638,12 @@ EXCEL轉出，若月份遇到03.06.09.12，將改為Q1.Q2.Q3.Q4。
                                                 where {0} and MN004 like '{1}%'", cond_Cost_y, str_date_ym_e);
             MyCode.Sql_dt(sql_str_Cost_y, dt_Cost_y);
 
-            if (dt_Cost_y.Rows.Count == 0) 
-            {
-                MessageBox.Show("報表查詢月份找不到【成本結轉】，請先執行【指定結案】作業", "警告訊息", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                return;
-            }
+            //20241007 財務 許秀玉提出，先取消 成本結轉 控管
+            //if (dt_Cost_y.Rows.Count == 0) 
+            //{
+            //    MessageBox.Show("報表查詢月份找不到【成本結轉】，請先執行【指定結案】作業", "警告訊息", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            //    return;
+            //}
 
             ////銀行存款明細帳細項_評價後及匯入暫存表CT_F22_1_SGLDT_After_Temp
             //string sql_str_Insert_CT_F22_1_SGLDT_After_Temp = String.Format(@"

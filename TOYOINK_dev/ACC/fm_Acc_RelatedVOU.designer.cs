@@ -930,7 +930,7 @@
             this.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.Name = "fm_Acc_RelatedVOU";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "未結案關係人立沖帳(20240119 1020)";
+            this.Text = "未結案關係人立沖帳(20241007 1240)";
             this.Load += new System.EventHandler(this.fm_Acc_RelatedVOU_Load);
             this.tabControl2.ResumeLayout(false);
             this.tp_CClosed.ResumeLayout(false);
